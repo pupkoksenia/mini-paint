@@ -1,25 +1,47 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: "/",
+    component: () => import("../App.vue"),
+    children: [
+      {
+        path: "/home",
+        name: "Home",
+        component: () => import("../views/HomeView.vue"),
+        children: [ ],
+      },
+      {
+        path: "/authentication",
+        component: () => import("../views/AuthenticationView.vue"),
+        children: [
+          {
+            path: "/register",
+            name: "register",
+            component: () => import("../components/RegisterForm.vue"),
+          },
+          {
+            path: "/sign-in",
+            name: "sign-in",
+            component: () => import("../components/SignInForm.vue"),
+          },
+        ],
+      },
+    ],
   },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
+});
+
+router.beforeEach((to,from,next) => {
+  // && !isAuthenticated 
+  //debugger
+  if (to.path === '/' && localStorage.getItem('email') === null && from.path !=='/authentication') next({path: '/authentication'})
+  else if(to.path === '/' && localStorage.getItem('email') !== null && from.path !=='/home') next({path: '/home'})
+  else next()
 })
 
-export default router
+export default router;

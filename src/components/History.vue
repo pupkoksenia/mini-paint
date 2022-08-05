@@ -1,26 +1,36 @@
 <template>
   <div class="a" style="color: aquamarine">History.vue</div>
-  <!--button
-      v-for="n in names"
-      v-bind:key="tab.name"
-      v-bind:class="['tab-button', { active: currentTab === tab }]"
-      v-on:click="currentTab = tab"
+  <ul id="v-for-object" class="demo">
+    <li
+      v-for="paint in paintsResult"
+      :key="paint.toString"
+      style="color: aquamarine"
     >
-      {{ tab.name }}
-    </button-->
+      {{ paint }}
+    </li>
+  </ul>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { nameFiles } from "../components/mocks/nameFiles";
+import { defineComponent, ref, onMounted } from "vue";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../main";
 
 export default defineComponent({
   name: "HistoryPart",
   setup() {
-    const names = ref(nameFiles);
-    const volumeOn = ref(true);
+    const paintsResult = ref();
 
-    return { names, volumeOn };
+    onMounted(() => {
+      getDocs(collection(db, "users")).then((docs) => {
+        docs.forEach((doc) => {
+          if (doc.data().name === localStorage.getItem("email"))
+            paintsResult.value = doc.data().paints;
+        });
+      });
+    });
+
+    return { paintsResult };
   },
 });
 </script>

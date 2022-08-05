@@ -16,14 +16,10 @@
 import { defineComponent, ref } from "vue";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
-//import { getDatabase, get,child } from "firebase/database";
 
 export default defineComponent({
   name: "SignInForm",
   setup() {
-
-    //const dbRef = ref(getDatabase());
-    //get(child(dbRef, 'users/0'))
     const form = ref({
       email: "",
       password: "",

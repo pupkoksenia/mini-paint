@@ -3,10 +3,10 @@
   <ul id="v-for-object" class="demo">
     <li
       v-for="paint in paintsResult"
-      :key="paint.toString"
+      :key="paint.nameOfPaint.toString"
       style="color: aquamarine"
     >
-      {{ paint }}
+      {{ paint.nameOfPaint }}
     </li>
   </ul>
 </template>

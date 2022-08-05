@@ -6,7 +6,7 @@
       <p>
         <input type="password" placeholder="Password" v-model="form.password" />
       </p>
-      <p v-if="errMsg">{{ errMsg }}</p>
+      <p v-if="errMsg" style="color: aquamarine">{{ errMsg }}</p>
       <p><button @click="handleSubmit">Submit</button></p>
     </div>
   </div>
@@ -14,8 +14,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
+import {signIn} from '../components/composables'
 
 export default defineComponent({
   name: "SignInForm",
@@ -24,32 +24,19 @@ export default defineComponent({
       email: "",
       password: "",
     });
+    const errMsg = ref()
     const router = useRouter();
-    const auth = getAuth();
-    const errMsg = ref();
-    const handleSubmit = () =>
-      signInWithEmailAndPassword(auth, form.value.email, form.value.password)
-        .then((userCredential) => {
-          localStorage.setItem("email", userCredential.user.email || "");
-          router.push({ path: "/home" }); // redirect to the feed
-        })
-        .catch((error) => {
-          switch (error.code) {
-            case "auth/invalid-email":
-              errMsg.value = "Invalid email";
-              break;
-            case "auth/user-not-found":
-              errMsg.value = "No account with that email was found";
-              break;
-            case "auth/wrong-password":
-              errMsg.value = "Incorrect password";
-              break;
-            default:
-              errMsg.value = "Email or password was incorrect";
-              break;
-          }
-        });
-    return { form, handleSubmit, errMsg };
+    const handleSubmit = () => {
+      let result = signIn(form.value.email, form.value.password)
+      result.then((msg)=>{
+        if(msg === "ok") {
+          router.push({ path: "/home" })
+        }
+        else errMsg.value=msg
+      }
+      )
+    }
+    return { form, handleSubmit,errMsg };
   },
 });
 </script>

@@ -14,8 +14,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
+import {register} from '../components/composables'
 
 export default defineComponent({
   name: "RegisterForm",
@@ -24,26 +24,18 @@ export default defineComponent({
       email: "",
       password: "",
     });
+    const errMsg = ref()
     const router = useRouter();
-    const auth = getAuth();
-    const errMsg = ref();
-    const handleSubmit = () =>
-      createUserWithEmailAndPassword(
-        auth,
-        form.value.email,
-        form.value.password
+    const handleSubmit = () => {
+      let result = register(form.value.email, form.value.password)
+      result.then((msg)=>{
+        if(msg === "ok") {
+          router.push({ path: "/home" })
+        }
+        else errMsg.value=msg
+      }
       )
-        .then((userCredential) => {
-          localStorage.setItem('email',userCredential.user.email || "")
-          router.push({path: "/home"});
-        })
-        .catch((error) => {
-          switch (error.code) {
-            case "auth/invalid-email":
-              errMsg.value = "Invalid email";
-              break;
-          }
-        });
+    }
     return { form, handleSubmit, errMsg };
   },
 });

@@ -16,8 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../main";
+import { getFeedPaints } from "../components/composables";
 
 export default defineComponent({
   name: "FeedUsers",
@@ -28,36 +27,27 @@ export default defineComponent({
     const form = ref({
       email: "",
     });
+
     const handleSubmit = () => {
       paintsResultUsers.value = bufferPaints.value.filter(
         (p: any) => p.userName === form.value.email
       );
-      console.log(bufferPaints.value)
     };
-    const handleReset = () =>{
-        paintsResultUsers.value = bufferPaints.value
-    }
-    onMounted(() => {
-      getDocs(collection(db, "users")).then((docs) => {
-        let resDocs: any = [];
-        docs.forEach((doc) => {
-          doc.data().paints.forEach((paint: any) => {
-            resDocs.push({
-              nameOfPaint: paint.nameOfPaint,
-              date: new Date(paint.date.seconds * 1000).toLocaleDateString(),
-              userName: doc.data().name,
-            });
-          });
-        });
-        resDocs = resDocs
-          .sort(
-            (prev: any, curr: any) =>
-              Date.parse(prev.date) - Date.parse(curr.date)
-          )
-          .reverse();
-        bufferPaints.value = resDocs;
-         paintsResultUsers.value=resDocs;
+
+    const handleReset = () => {
+      paintsResultUsers.value = bufferPaints.value;
+    };
+
+    function setFeedPaints() {
+      let resFeed = getFeedPaints();
+      resFeed.then((res) => {
+        bufferPaints.value = res;
+        paintsResultUsers.value = res;
       });
+    }
+
+    onMounted(() => {
+      setFeedPaints();
     });
 
     return { paintsResultUsers, handleSubmit, form, handleReset };

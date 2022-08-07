@@ -13,21 +13,24 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../main";
+import { getUserPaints } from "../components/composables";
+//import { collection, getDocs } from "firebase/firestore";
+//import { db } from "../main";
 
 export default defineComponent({
   name: "HistoryPart",
   setup() {
     const paintsResult = ref();
 
-    onMounted(() => {
-      getDocs(collection(db, "users")).then((docs) => {
-        docs.forEach((doc) => {
-          if (doc.data().name === localStorage.getItem("email"))
-            paintsResult.value = doc.data().paints;
-        });
+    function setPaintsResult() {
+      let result = getUserPaints();
+      result.then((res: any) => {
+        paintsResult.value = res;
       });
+    }
+
+    onMounted(() => {
+      setPaintsResult();
     });
 
     return { paintsResult };

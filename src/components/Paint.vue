@@ -75,7 +75,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import VueDrawingCanvas from "vue-drawing-canvas";
-import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
+import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "../main";
 
 export default defineComponent({
@@ -153,21 +153,26 @@ export default defineComponent({
 
     const handleSubmit = () => {
       let id = "";
-      getDocs(collection(db, "users")).then((docs) => {
-        docs.forEach((doc) => {
-          if (doc.data().name === localStorage.getItem("email")) id=doc.id;
+      let getPaints:any=[]
+      getDocs(collection(db, "users"))
+        .then((docs) => {
+          docs.forEach((doc) => {
+            if (doc.data().name === localStorage.getItem("email")){
+               id = doc.id;
+               getPaints=doc.data().paints
+            }
+          });
+        })
+        .then(() => {
+          getPaints.push({ nameOfPaint: NameOfPaint.value, date: new Date()} )
+          setDoc(
+            doc(db, "users", id),
+            {
+              paints: getPaints,
+            },
+            { merge: true }
+          );
         });
-      }).then(()=>{
-        updateDoc(
-        doc(db, "users", id),
-        {
-          paints: {
-            nameOfPaint: NameOfPaint.value,
-            date: new Date(),
-          },
-        },
-      );
-      });
     };
 
     function removeSavedStrokes() {

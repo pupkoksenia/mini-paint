@@ -145,10 +145,12 @@ export default defineComponent({
     }
 
     function getStrokes() {
-      window.localStorage.setItem(
+      localStorage.setItem(
         "vue-drawing-canvas",
         JSON.stringify(VueCanvasDrawing.value.getAllStrokes())
       );
+      console.log("VueCanvasDrawing.value.getAllStrokes()",VueCanvasDrawing.value.getAllStrokes(), "img.value", image.value)
+      //VueCanvasDrawing.value.
     }
 
     const handleSubmit = () => {

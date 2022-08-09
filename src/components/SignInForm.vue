@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <div style="color: aquamarine">Sign in form</div>
+
     <div id="v-model-basic" class="demo">
       <p><input type="text" placeholder="Email" v-model="form.email" /></p>
       <p>
@@ -15,28 +15,26 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import {signIn} from '../components/composables'
+import { useFireBase } from "../components/composables/useFireBase";
 
 export default defineComponent({
   name: "SignInForm",
   setup() {
+    const { signIn } = useFireBase();
     const form = ref({
       email: "",
       password: "",
     });
-    const errMsg = ref()
+    const errMsg = ref();
     const router = useRouter();
     const handleSubmit = () => {
-      let result = signIn(form.value.email, form.value.password)
-      result.then((msg)=>{
-        if(msg === "ok") {
-          router.push({ path: "/home" })
-        }
-        else errMsg.value=msg
-      }
-      )
-    }
-    return { form, handleSubmit,errMsg };
+      signIn(form.value.email, form.value.password).then((msg) => {
+        if (msg === "ok") {
+          router.push({ path: "/home" });
+        } else errMsg.value = msg;
+      });
+    };
+    return { form, handleSubmit, errMsg };
   },
 });
 </script>

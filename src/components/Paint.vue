@@ -1,5 +1,5 @@
 <template>
-  <div class="a" style="color: aquamarine">Paint.vue</div>
+  <div style="color: aquamarine">Paint.vue</div>
   <!--el-dialog
     Название="Посмотреть изображение"
     :visible.sync="dialogJPG"

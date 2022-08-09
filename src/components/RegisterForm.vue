@@ -1,6 +1,5 @@
 <template>
   <div class="register">
-    <div style="color: aquamarine">Register form</div>
     <div id="v-model-basic" class="demo">
       <p><input type="text" placeholder="Email" v-model="form.email" /></p>
       <p>
@@ -15,11 +14,12 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import {register} from '../components/composables'
+import {useFireBase} from '../components/composables/useFireBase'
 
 export default defineComponent({
   name: "RegisterForm",
   setup() {
+    const {register}=useFireBase()
     const form = ref({
       email: "",
       password: "",
@@ -27,8 +27,7 @@ export default defineComponent({
     const errMsg = ref()
     const router = useRouter();
     const handleSubmit = () => {
-      let result = register(form.value.email, form.value.password)
-      result.then((msg)=>{
+      register(form.value.email, form.value.password).then((msg)=>{
         if(msg === "ok") {
           router.push({ path: "/home" })
         }

@@ -1,5 +1,4 @@
 <template>
-  <div class="a" style="color: aquamarine">FeedUsers.vue</div>
   <p><input type="text" placeholder="email" v-model="form.email" /></p>
   <p><button @click="handleSubmit">Submit</button></p>
   <p><button @click="handleReset">Reset</button></p>
@@ -16,11 +15,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { getFeedPaints } from "../components/composables";
+import { useFireBase } from "../components/composables/useFireBase";
 
 export default defineComponent({
   name: "FeedUsers",
   setup() {
+    const { getFeedPaints } = useFireBase();
     const paintsResultUsers = ref();
     const bufferPaints = ref();
 
@@ -38,16 +38,15 @@ export default defineComponent({
       paintsResultUsers.value = bufferPaints.value;
     };
 
-    function setFeedPaints() {
-      let resFeed = getFeedPaints();
-      resFeed.then((res) => {
+    const feedPaints = () => {
+      getFeedPaints().then((res) => {
         bufferPaints.value = res;
         paintsResultUsers.value = res;
       });
-    }
+    };
 
     onMounted(() => {
-      setFeedPaints();
+      feedPaints();
     });
 
     return { paintsResultUsers, handleSubmit, form, handleReset };

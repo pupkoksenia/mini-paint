@@ -1,39 +1,29 @@
 <template>
-  <div class="a" style="color: aquamarine">History.vue</div>
   <ul id="v-for-object" class="demo">
-    <li
+    <!--li
       v-for="paint in paintsResult"
       :key="paint.nameOfPaint.toString"
       style="color: aquamarine"
     >
       {{ paint.nameOfPaint }}
-    </li>
+    </li-->
   </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { getUserPaints } from "../components/composables";
-//import { collection, getDocs } from "firebase/firestore";
-//import { db } from "../main";
+//import { useFireBase } from "../components/composables";
 
 export default defineComponent({
   name: "HistoryPart",
-  setup() {
+  /*setup() {
+    const { getUserPaints } = useFireBase();
     const paintsResult = ref();
-
-    function setPaintsResult() {
-      let result = getUserPaints();
-      result.then((res: any) => {
-        paintsResult.value = res;
-      });
-    }
-
     onMounted(() => {
-      setPaintsResult();
+     paintsResult.value = getUserPaints();
     });
 
     return { paintsResult };
-  },
+  },*/
 });
 </script>

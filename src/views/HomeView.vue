@@ -1,5 +1,4 @@
 <template>
-  <div class="a" style="color: aquamarine">HomeView.vue</div>
   <div id="dynamic-component-demo" class="demo">
     <button
       v-for="tab in tabs"

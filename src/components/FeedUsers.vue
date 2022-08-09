@@ -4,7 +4,7 @@
   <p><button @click="handleReset">Reset</button></p>
   <ul id="v-for-object" class="demo">
     <li
-      v-for="paint in paintsResultUsers"
+      v-for="paint in sortedFeedPaints"
       :key="paint.toString"
       style="color: aquamarine"
     >
@@ -14,42 +14,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import { useFireBase } from "../components/composables/useFireBase";
+import { defineComponent, ref, onMounted} from "vue";
+import { useFireBasePaints } from "../components/composables/useFireDasePaints";
 
 export default defineComponent({
   name: "FeedUsers",
   setup() {
-    const { getFeedPaints } = useFireBase();
-    const paintsResultUsers = ref();
-    const bufferPaints = ref();
-
+    const { getFeedPaints, sortedFeedPaints, setFilterValue } = useFireBasePaints();
     const form = ref({
       email: "",
     });
 
     const handleSubmit = () => {
-      paintsResultUsers.value = bufferPaints.value.filter(
-        (p: any) => p.userName === form.value.email
-      );
+      setFilterValue(form.value.email)
     };
 
     const handleReset = () => {
-      paintsResultUsers.value = bufferPaints.value;
-    };
-
-    const feedPaints = () => {
-      getFeedPaints().then((res) => {
-        bufferPaints.value = res;
-        paintsResultUsers.value = res;
-      });
+      setFilterValue('')
     };
 
     onMounted(() => {
-      feedPaints();
+      getFeedPaints();
     });
 
-    return { paintsResultUsers, handleSubmit, form, handleReset };
+    return { handleSubmit, form, handleReset, sortedFeedPaints };
   },
 });
 </script>

@@ -16,6 +16,12 @@
     <input type="color" v-model="strokeStyle" />
   </span>
 
+  <select v-model="stateOfFigure">
+    <option v-for="n in arrayStateOfFigure" :key="'option-' + n" :value="n">
+      {{ n }}
+    </option>
+  </select>
+
   <span
     ><p :style="{ color: 'white' }">Choose width:</p>
     <input
@@ -51,7 +57,8 @@ export default defineComponent({
     const strokeStyleValue = ref("black");
     const lineWidth = ref(5);
     const strokeType = ref("line");
-    const bufferContex = ref();
+    const stateOfFigure = ref('stroke');
+    const arrayStateOfFigure = ref(['stroke', 'fill']);
 
     const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle"]);
 
@@ -61,6 +68,7 @@ export default defineComponent({
       contex.value.lineCap = "round";
       contex.value.lineWidth = lineWidth.value;
       contex.value.strokeStyle = strokeStyle.value;
+      stateOfFigure.value = "stroke"
       strokeType.value = "line";
     });
 
@@ -75,21 +83,6 @@ export default defineComponent({
         }
       },
     });
-
-    const moveMouse = (e: MouseEvent) => {
-      x.value = e.offsetX;
-      y.value = e.offsetY;
-      dx.value = e.movementX;
-      dy.value = e.movementY;
-
-      if (e.buttons > 0) {
-        contex.value.beginPath();
-        contex.value.moveTo(x.value, y.value);
-        contex.value.lineTo(x.value - dx.value, y.value - dy.value);
-        contex.value.stroke();
-        contex.value.closePath();
-      }
-    };
 
     const chooseLineWidth = () => {
       contex.value.lineWidth = lineWidth.value;
@@ -119,13 +112,9 @@ export default defineComponent({
           }
         };
       };
-      contex.value.save();
-      console.log(contex.value.save);
     };
 
     const drawRectangle = () => {
-      bufferContex.value = contex.value;
-      
       canvas.value.onmousedown = function (e: MouseEvent) {
         x.value = e.offsetX;
         y.value = e.offsetY;
@@ -141,6 +130,7 @@ export default defineComponent({
               canvas.value.width,
               canvas.value.height
             );
+
             contex.value.beginPath();
             contex.value.rect(
               x.value,
@@ -148,7 +138,7 @@ export default defineComponent({
               Math.abs(x.value - x2.value),
               Math.abs(y.value - y2.value)
             );
-            contex.value.stroke();
+            stateOfFigure.value === "stroke"? contex.value.stroke() : contex.value.fill()
           };
 
           if (e.buttons > 0) {
@@ -180,7 +170,7 @@ export default defineComponent({
             contex.value.lineTo(x2.value, Math.abs(y.value - y2.value));
             contex.value.moveTo(x2.value, Math.abs(y.value - y2.value));
             contex.value.lineTo(x.value, y.value);
-            contex.value.stroke();
+            stateOfFigure.value === "stroke"? contex.value.stroke() : contex.value.fill()
           };
 
           if (e.buttons > 0) {
@@ -202,7 +192,7 @@ export default defineComponent({
           const makeCircle = () => {
             let a = x.value - x2.value;
             let b = y.value - y2.value;
-            let radius = Math.sqrt(a ^ (2 + b) ^ 2);
+            let radius = Math.sqrt(a * a + b * b);
 
             contex.value.clearRect(
               0,
@@ -213,7 +203,7 @@ export default defineComponent({
             contex.value.beginPath();
             contex.value.moveTo(x.value, y.value);
             contex.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
-            contex.value.stroke();
+            stateOfFigure.value === "stroke"? contex.value.stroke() : contex.value.fill()
           };
 
           if (e.buttons > 0) {
@@ -225,7 +215,6 @@ export default defineComponent({
 
     return {
       canvas,
-      moveMouse,
       backgroundColor,
       strokeStyle,
       contex,
@@ -234,6 +223,8 @@ export default defineComponent({
       arrayStrokeType,
       strokeType,
       chooseStrokeType,
+      stateOfFigure,
+      arrayStateOfFigure,
     };
   },
 });

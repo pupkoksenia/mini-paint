@@ -37,6 +37,8 @@
       {{ n }}
     </option>
   </select>
+
+  <button @click="clearStrokes">clearStrokes</button>
 </template>
 
 <script lang="ts">
@@ -57,8 +59,8 @@ export default defineComponent({
     const strokeStyleValue = ref("black");
     const lineWidth = ref(5);
     const strokeType = ref("line");
-    const stateOfFigure = ref('stroke');
-    const arrayStateOfFigure = ref(['stroke', 'fill']);
+    const stateOfFigure = ref("stroke");
+    const arrayStateOfFigure = ref(["stroke", "fill"]);
 
     const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle"]);
 
@@ -68,7 +70,7 @@ export default defineComponent({
       contex.value.lineCap = "round";
       contex.value.lineWidth = lineWidth.value;
       contex.value.strokeStyle = strokeStyle.value;
-      stateOfFigure.value = "stroke"
+      stateOfFigure.value = "stroke";
       strokeType.value = "line";
     });
 
@@ -86,6 +88,22 @@ export default defineComponent({
 
     const chooseLineWidth = () => {
       contex.value.lineWidth = lineWidth.value;
+    };
+
+    const clearStrokes = () => {
+      canvas.value.onmousedown = function (e: MouseEvent) {
+        x.value = e.offsetX;
+        y.value = e.offsetY;
+        canvas.value.onmousemove = function (e: MouseEvent) {
+          x2.value = e.offsetX;
+          y2.value = e.offsetY;
+
+          if (e.buttons > 0) {
+            contex.value.clearRect(x.value, y.value, lineWidth.value, lineWidth.value);
+            contex.value.clearRect(x2.value, y2.value, lineWidth.value, lineWidth.value);
+          }
+        };
+      };
     };
 
     const chooseStrokeType = () => {
@@ -138,7 +156,9 @@ export default defineComponent({
               Math.abs(x.value - x2.value),
               Math.abs(y.value - y2.value)
             );
-            stateOfFigure.value === "stroke"? contex.value.stroke() : contex.value.fill()
+            stateOfFigure.value === "stroke"
+              ? contex.value.stroke()
+              : contex.value.fill();
           };
 
           if (e.buttons > 0) {
@@ -170,7 +190,9 @@ export default defineComponent({
             contex.value.lineTo(x2.value, Math.abs(y.value - y2.value));
             contex.value.moveTo(x2.value, Math.abs(y.value - y2.value));
             contex.value.lineTo(x.value, y.value);
-            stateOfFigure.value === "stroke"? contex.value.stroke() : contex.value.fill()
+            stateOfFigure.value === "stroke"
+              ? contex.value.stroke()
+              : contex.value.fill();
           };
 
           if (e.buttons > 0) {
@@ -203,7 +225,9 @@ export default defineComponent({
             contex.value.beginPath();
             contex.value.moveTo(x.value, y.value);
             contex.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
-            stateOfFigure.value === "stroke"? contex.value.stroke() : contex.value.fill()
+            stateOfFigure.value === "stroke"
+              ? contex.value.stroke()
+              : contex.value.fill();
           };
 
           if (e.buttons > 0) {
@@ -225,6 +249,7 @@ export default defineComponent({
       chooseStrokeType,
       stateOfFigure,
       arrayStateOfFigure,
+      clearStrokes,
     };
   },
 });

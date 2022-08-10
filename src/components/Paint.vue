@@ -1,208 +1,239 @@
 <template>
-  <div class="a" style="color: aquamarine">Paint.vue</div>
-  <vue-drawing-canvas
-    ref="VueCanvasDrawing"
-    v-model:image="image"
-    :width="800"
-    :height="550"
-    :stroke-type="strokeType"
-    :fill-shape="fillShape"
-    :eraser="eraser"
-    :lineWidth="line"
-    :color="color"
-    :background-color="backgroundColor"
-    :background-image="backgroundImage"
-    :initial-image="initialImage"
-    saveAs="png"
-    :styles="{
-      border: 'solid 1px #000',
-    }"
-    :lock="disabled"
-    :additional-images="additionalImages"
+  <canvas
+    id="canvas"
+    width="800"
+    height="400"
+    :style="{ 'background-color': backgroundColor }"
   />
 
-  <p><input type="text" placeholder="Name of paint" v-model="NameOfPaint" /></p>
-  <p><button @click="handleSubmit">Submit</button></p>
+  <span>
+    <p :style="{ color: 'white' }">Background Color:</p>
+    <input type="color" v-model="backgroundColor" />
+  </span>
 
-  <button type="button" @click.prevent="VueCanvasDrawing.undo()">Undo</button>
+  <span>
+    <p :style="{ color: 'white' }">Color:</p>
+    <input type="color" v-model="strokeStyle" />
+  </span>
 
-  <button type="button" @click.prevent="VueCanvasDrawing.redo()">Redo</button>
+  <span
+    ><p :style="{ color: 'white' }">Choose width:</p>
+    <input
+      type="range"
+      v-model="lineWidth"
+      min="1"
+      max="25"
+      @change="chooseLineWidth"
+  /></span>
 
-  <button type="button" @click.prevent="VueCanvasDrawing.redraw()">
-    Refresh
-  </button>
-  <button type="button" @click.prevent="eraser = !eraser">
-    <span v-if="eraser"> Eraser </span>
-    <span v-else> Draw </span>
-  </button>
-
-  <select v-model="line">
-    <option v-for="n in 25" :key="'option-' + n" :value="n">
+  <select v-model="strokeType" v-on:click="chooseStrokeType">
+    <option v-for="n in arrayStrokeType" :key="'option-' + n" :value="n">
       {{ n }}
     </option>
   </select>
-
-  <input type="color" v-model="color" />
-
-  <select v-model="strokeType">
-    <option
-      v-for="stroke in arrayStrokeType"
-      :key="stroke"
-      v-on:click="strokeType = stroke"
-    >
-      {{ stroke }}
-    </option>
-  </select>
-
-  <button type="button" @click.prevent="fillShape = !fillShape">
-    <span v-if="fillShape"> Fill </span>
-    <span v-else> Stroke </span>
-  </button>
-  <button type="button" @click.prevent="getStrokes()">Save All Strokes</button>
-  <button type="button" @click.prevent="removeSavedStrokes()">
-    Remove Saved Strokes
-  </button>
-  <span>
-    <p>Background Color:</p>
-    <input type="color" v-model="backgroundColor" />
-  </span>
-  <span>
-    <p>Upload Background Image:</p>
-    <input type="file" @change="setImage($event)" />
-  </span>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import VueDrawingCanvas from "vue-drawing-canvas";
-import { doc, setDoc, getDocs, collection } from "firebase/firestore";
-import { db } from "../main";
+import { defineComponent, ref, onMounted, computed } from "vue";
 
 export default defineComponent({
   name: "PaintPart",
-  components: {
-    VueDrawingCanvas,
-  },
   setup() {
-    const x = ref(0);
-    const y = ref(0);
-    const image = ref("");
-    const eraser = ref(false);
-    const disabled = ref(false);
-    const fillShape = ref(false);
-    const line = ref(5);
-    const color = ref("#000000");
-    const strokeType = ref("dash");
-    const backgroundColor = ref("#FFFFFF");
-    const backgroundImage = ref("");
-    const additionalImages = ref([]);
-    const VueCanvasDrawing = ref();
-    const NameOfPaint = ref();
-    const initialImage = ref([
-      {
-        type: "dash",
-        from: {
-          x: 262,
-          y: 154,
-        },
-        coordinates: [],
-        color: "#000000",
-        width: 5,
-        fill: false,
-      },
-    ]);
+    const canvas = ref();
+    const contex = ref();
+    const x = ref();
+    const y = ref();
+    const dx = ref();
+    const dy = ref();
+    const x2 = ref();
+    const y2 = ref();
+    const backgroundColor = ref("white");
+    const strokeStyleValue = ref("black");
+    const lineWidth = ref(5);
+    const strokeType = ref("line");
+    const bufferContex = ref();
 
-    const arrayStrokeType = ref([
-      "dash",
-      "line",
-      "circle",
-      "square",
-      "triangle",
-      "half_triangle",
-    ]);
-    const arrayLineCap = ref([
-      "lineCap round",
-      "lineCap square",
-      " lineCap butt",
-    ]);
+    const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle"]);
 
-    function setDrawingCanvas() {
-      if ("vue-drawing-canvas" in window.localStorage) {
-        initialImage.value = JSON.parse(
-          localStorage.getItem("vue-drawing-canvas") || ""
-        );
-      }
-    }
     onMounted(() => {
-      setDrawingCanvas();
-      strokeType.value = arrayStrokeType.value[0];
+      canvas.value = document.getElementById("canvas") as HTMLCanvasElement;
+      contex.value = canvas.value.getContext("2d");
+      contex.value.lineCap = "round";
+      contex.value.lineWidth = lineWidth.value;
+      contex.value.strokeStyle = strokeStyle.value;
+      strokeType.value = "line";
     });
 
-    async function setImage(event: any) {
-      let URL = window.URL;
-      backgroundImage.value = URL.createObjectURL(event.target.files[0]);
-      await VueCanvasDrawing.value.redraw();
-    }
+    const strokeStyle = computed({
+      get: () => {
+        return strokeStyleValue.value;
+      },
+      set: (newVal) => {
+        if (newVal) {
+          strokeStyleValue.value = newVal;
+          contex.value.strokeStyle = newVal;
+        }
+      },
+    });
 
-    function getStrokes() {
-      localStorage.setItem(
-        "vue-drawing-canvas",
-        JSON.stringify(VueCanvasDrawing.value.getAllStrokes())
-      );
-      console.log("VueCanvasDrawing.value.getAllStrokes()",VueCanvasDrawing.value.getAllStrokes(), "img.value", image.value)
-      //VueCanvasDrawing.value.
-    }
+    const moveMouse = (e: MouseEvent) => {
+      x.value = e.offsetX;
+      y.value = e.offsetY;
+      dx.value = e.movementX;
+      dy.value = e.movementY;
 
-    const handleSubmit = () => {
-      let id = "";
-      let getPaints:any=[]
-      getDocs(collection(db, "users"))
-        .then((docs) => {
-          docs.forEach((doc) => {
-            if (doc.data().name === localStorage.getItem("email")){
-               id = doc.id;
-               getPaints=doc.data().paints
-            }
-          });
-        })
-        .then(() => {
-          getPaints.push({ nameOfPaint: NameOfPaint.value, date: new Date()} )
-          setDoc(
-            doc(db, "users", id),
-            {
-              paints: getPaints,
-            },
-            { merge: true }
-          );
-        });
+      if (e.buttons > 0) {
+        contex.value.beginPath();
+        contex.value.moveTo(x.value, y.value);
+        contex.value.lineTo(x.value - dx.value, y.value - dy.value);
+        contex.value.stroke();
+        contex.value.closePath();
+      }
     };
 
-    function removeSavedStrokes() {
-      window.localStorage.removeItem("vue-drawing-canvas");
-    }
+    const chooseLineWidth = () => {
+      contex.value.lineWidth = lineWidth.value;
+    };
+
+    const chooseStrokeType = () => {
+      if (strokeType.value === "line") drawLine();
+      else if (strokeType.value === "rectangle") drawRectangle();
+      else if (strokeType.value === "triangle") drawTriangle();
+      else if (strokeType.value === "circle") drawCircle();
+    };
+
+    const drawLine = () => {
+      canvas.value.onmousedown = function (e: MouseEvent) {
+        canvas.value.onmousemove = function (e: MouseEvent) {
+          x.value = e.offsetX;
+          y.value = e.offsetY;
+          dx.value = e.movementX;
+          dy.value = e.movementY;
+
+          if (e.buttons > 0) {
+            contex.value.beginPath();
+            contex.value.moveTo(x.value, y.value);
+            contex.value.lineTo(x.value - dx.value, y.value - dy.value);
+            contex.value.stroke();
+            contex.value.closePath();
+          }
+        };
+      };
+      contex.value.save();
+      console.log(contex.value.save);
+    };
+
+    const drawRectangle = () => {
+      bufferContex.value = contex.value;
+      
+      canvas.value.onmousedown = function (e: MouseEvent) {
+        x.value = e.offsetX;
+        y.value = e.offsetY;
+
+        canvas.value.onmousemove = function (e: MouseEvent) {
+          x2.value = e.offsetX;
+          y2.value = e.offsetY;
+
+          const makeRectungle = () => {
+            contex.value.clearRect(
+              0,
+              0,
+              canvas.value.width,
+              canvas.value.height
+            );
+            contex.value.beginPath();
+            contex.value.rect(
+              x.value,
+              y.value,
+              Math.abs(x.value - x2.value),
+              Math.abs(y.value - y2.value)
+            );
+            contex.value.stroke();
+          };
+
+          if (e.buttons > 0) {
+            makeRectungle();
+          }
+        };
+      };
+    };
+
+    const drawTriangle = () => {
+      canvas.value.onmousedown = function (e: MouseEvent) {
+        x.value = e.offsetX;
+        y.value = e.offsetY;
+
+        canvas.value.onmousemove = function (e: MouseEvent) {
+          x2.value = e.offsetX;
+          y2.value = e.offsetY;
+
+          const makeTriangle = () => {
+            contex.value.clearRect(
+              0,
+              0,
+              canvas.value.width,
+              canvas.value.height
+            );
+            contex.value.beginPath();
+            contex.value.moveTo(x.value, y.value);
+            contex.value.lineTo(x2.value, y2.value);
+            contex.value.lineTo(x2.value, Math.abs(y.value - y2.value));
+            contex.value.moveTo(x2.value, Math.abs(y.value - y2.value));
+            contex.value.lineTo(x.value, y.value);
+            contex.value.stroke();
+          };
+
+          if (e.buttons > 0) {
+            makeTriangle();
+          }
+        };
+      };
+    };
+
+    const drawCircle = () => {
+      canvas.value.onmousedown = function (e: MouseEvent) {
+        x.value = e.offsetX;
+        y.value = e.offsetY;
+
+        canvas.value.onmousemove = function (e: MouseEvent) {
+          x2.value = e.offsetX;
+          y2.value = e.offsetY;
+
+          const makeCircle = () => {
+            let a = x.value - x2.value;
+            let b = y.value - y2.value;
+            let radius = Math.sqrt(a ^ (2 + b) ^ 2);
+
+            contex.value.clearRect(
+              0,
+              0,
+              canvas.value.width,
+              canvas.value.height
+            );
+            contex.value.beginPath();
+            contex.value.moveTo(x.value, y.value);
+            contex.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
+            contex.value.stroke();
+          };
+
+          if (e.buttons > 0) {
+            makeCircle();
+          }
+        };
+      };
+    };
 
     return {
-      initialImage,
-      x,
-      y,
-      image,
-      eraser,
-      disabled,
-      fillShape,
-      line,
-      color,
-      strokeType,
+      canvas,
+      moveMouse,
       backgroundColor,
-      backgroundImage,
-      additionalImages,
-      getStrokes,
-      setImage,
-      removeSavedStrokes,
-      VueCanvasDrawing,
+      strokeStyle,
+      contex,
+      lineWidth,
+      chooseLineWidth,
       arrayStrokeType,
-      arrayLineCap,
-      NameOfPaint,
-      handleSubmit,
+      strokeType,
+      chooseStrokeType,
     };
   },
 });

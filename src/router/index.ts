@@ -38,20 +38,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const { checkIsRegistred, state } = useFireBase();
-  checkIsRegistred();
-
+  const { state } = useFireBase();
   if (
     to.path === "/" &&
-    state.user.email==="" &&
+    state.user.email === "" &&
     from.path !== "/authentication"
   )
     next({ path: "/authentication" });
-  else if (
-    to.path === "/" &&
-    state.user.email!==""  &&
-    from.path !== "/home"
-  )
+  else if (to.path === "/" && state.user.email !== "" && from.path !== "/home")
     next({ path: "/home" });
   else next();
 });

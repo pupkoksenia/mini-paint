@@ -1,16 +1,13 @@
 <template>
-  <div class="register">
-
-    <div id="v-model-basic" class="demo">
-      <p><input type="text" placeholder="Email" v-model="form.email" /></p>
-      <p>
-        <input type="password" placeholder="Password" v-model="form.password" />
-      </p>
-      <p v-if="errMsg" style="color: aquamarine">{{ errMsg }}</p>
-      <p><button @click="handleSubmit">Submit</button></p>
-    </div>
+  <div class="sign-in-form">
+    <form>
+      <input type="text" placeholder="Email" v-model="form.email" />
+      <input type="password" placeholder="Password" v-model="form.password" />
+      <input type="submit" @click="handleSubmit" value="Submit" />
+    </form>
+    <p v-if="errMsg">{{ errMsg }}</p>
   </div>
-</template>
+</template>>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
@@ -38,3 +35,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.sign-in-form {
+  padding-left: 10;
+  color: white;
+}
+</style>

@@ -14,21 +14,18 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted } from "vue";
-import HistoryPart from "../components/History.vue";
 import PaintPart from "../components/Paint.vue";
-import FeedUsers from "../components/FeedUsers.vue"
+import FeedUsers from "../components/FeedUsers.vue";
 
 export default defineComponent({
   name: "HomeView",
   components: {
-    HistoryPart,
     PaintPart,
-    FeedUsers
+    FeedUsers,
   },
   setup() {
     const currentTab = ref();
     const tabs = ref([
-      { comp: "HistoryPart", name: "History" },
       { comp: "PaintPart", name: "Paint" },
       { comp: "FeedUsers", name: "Feed" },
     ]);

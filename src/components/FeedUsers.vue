@@ -6,7 +6,7 @@
     <li
       v-for="paint in sortedFeedPaints"
       :key="paint.toString"
-      style="color: aquamarine"
+      style="color: white"
     >
       {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
     </li>
@@ -14,23 +14,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted} from "vue";
-import { useFireBasePaints } from "../components/composables/useFireDasePaints";
+import { defineComponent, ref, onMounted } from "vue";
+import { useFireBasePaints } from "../components/composables/useFireBasePaints";
 
 export default defineComponent({
   name: "FeedUsers",
   setup() {
-    const { getFeedPaints, sortedFeedPaints, setFilterValue } = useFireBasePaints();
+    const { getFeedPaints, sortedFeedPaints, setFilterValue } =
+      useFireBasePaints();
     const form = ref({
       email: "",
     });
 
     const handleSubmit = () => {
-      setFilterValue(form.value.email)
+      setFilterValue(form.value.email);
     };
 
     const handleReset = () => {
-      setFilterValue('')
+      setFilterValue("");
     };
 
     onMounted(() => {

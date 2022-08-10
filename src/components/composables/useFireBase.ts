@@ -5,15 +5,13 @@ import {
   onAuthStateChanged,
   Unsubscribe,
 } from "firebase/auth";
-import { collection, getDocs, Timestamp } from "firebase/firestore";
-import { db } from "../../main";
-import { readonly, reactive, DeepReadonly, computed, ComputedRef } from "vue";
+import { readonly, reactive, DeepReadonly } from "vue";
 import { DataPaint } from "../types";
 
 export interface State {
   user: {
     email: string | null;
-    aid: string;
+    uid: string;
   };
   dataPaints: DataPaint[];
   filter: string;
@@ -22,7 +20,7 @@ export interface State {
 const state = reactive<State>({
   user: {
     email: "",
-    aid: "",
+    uid: "",
   },
   dataPaints: [],
   filter: "",
@@ -30,12 +28,9 @@ const state = reactive<State>({
 
 export interface FireBase {
   state: DeepReadonly<typeof state>;
-  sortedFeedPaints: ComputedRef<DataPaint[]>;
   signIn: (email: string, password: string) => Promise<string>;
-  getFeedPaints: () => Promise<void>;
   register: (email: string, password: string) => Promise<string | undefined>;
   checkIsRegistred: Unsubscribe;
-  setFilterValue: (value: string) => void;
 }
 
 export const useFireBase: () => FireBase = () => {
@@ -45,7 +40,7 @@ export const useFireBase: () => FireBase = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         state.user.email = userCredential.user.email;
-        state.user.aid = userCredential.user.uid;
+        state.user.uid = userCredential.user.uid;
         return "ok";
       })
       .catch((error) => {
@@ -65,7 +60,7 @@ export const useFireBase: () => FireBase = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         state.user.email = userCredential.user.email;
-        state.user.aid = userCredential.user.uid;
+        state.user.uid = userCredential.user.uid;
         return "ok";
       })
       .catch((error) => {
@@ -75,55 +70,17 @@ export const useFireBase: () => FireBase = () => {
         }
       });
 
-  const getFeedPaints = () =>
-    getDocs(collection(db, "users")).then((docs) => {
-      docs.forEach((doc) => {
-        doc
-          .data()
-          .paints.forEach((paint: { nameOfPaint: string; date: Timestamp }) => {
-            state.dataPaints?.push({
-              nameOfPaint: paint.nameOfPaint,
-              date: new Date(paint.date.seconds * 1000).toLocaleDateString(),
-              userName: doc.data().name,
-            });
-          });
-      });
-    });
-
   const checkIsRegistred = () =>
     onAuthStateChanged(auth, (user) => {
       if (user) {
         state.user.email = user.email;
-        state.user.aid = user.uid;
+        state.user.uid = user.uid;
       }
     });
 
-  const filteredItems = computed(() => {
-    if (state.filter)
-      return state.dataPaints.filter(
-        (p: DataPaint) => p.userName === state.filter
-      );
-    return state.dataPaints;
-  });
-
-  const sortedFeedPaints = computed(() =>
-    filteredItems.value
-      .sort(
-        (prev: DataPaint, curr: DataPaint) =>
-          Date.parse(prev.date) - Date.parse(curr.date)
-      )
-      .reverse()
-  );
-
-  const setFilterValue = (value: string) => {
-    state.filter = value;
-  };
   return {
     state: readonly(state),
-    sortedFeedPaints,
-    setFilterValue,
     signIn,
-    getFeedPaints,
     register,
     checkIsRegistred,
   };

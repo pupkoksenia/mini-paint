@@ -6,7 +6,6 @@
     <li
       v-for="paint in sortedFeedPaints"
       :key="paint.toString"
-      style="color: white"
     >
       {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
     </li>
@@ -42,3 +41,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+li {
+  color: white;
+}
+</style>

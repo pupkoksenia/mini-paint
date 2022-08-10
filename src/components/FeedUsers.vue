@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { useFireBasePaints } from "../components/composables/useFireBasePaints";
+import { useFireBasePaints } from "../composables/useFireBasePaints";
 
 export default defineComponent({
   name: "FeedUsers",

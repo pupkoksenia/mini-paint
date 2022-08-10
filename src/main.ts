@@ -4,8 +4,8 @@ import router from "./router";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { createFirebaseConfig } from "./components/composables/createFirebaseConfig";
-import { useFireBase } from "../src/components/composables/useFireBase";
+import { createFirebaseConfig } from "./composables/createFirebaseConfig";
+import { useFireBase } from "./composables/useFireBase";
 
 createApp(App).use(router).mount("#app");
 const { firebaseConfig } = createFirebaseConfig();

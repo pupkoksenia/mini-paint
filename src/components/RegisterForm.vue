@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useFireBase } from "../components/composables/useFireBase";
+import { useFireBase } from "../composables/useFireBase";
 
 export default defineComponent({
   name: "RegisterForm",

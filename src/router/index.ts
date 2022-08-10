@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import { useFireBase } from "../components/composables/useFireBase";
+import { useFireBase } from "../composables/useFireBase";
 
 const routes: Array<RouteRecordRaw> = [
   {

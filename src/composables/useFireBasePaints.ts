@@ -1,5 +1,5 @@
 import { collection, getDocs, Timestamp } from "firebase/firestore";
-import { db } from "../../main";
+import { db } from "../main";
 import { readonly, reactive, DeepReadonly, computed, ComputedRef } from "vue";
 import { DataPaint } from "../types";
 

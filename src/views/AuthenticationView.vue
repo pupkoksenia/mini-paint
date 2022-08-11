@@ -1,5 +1,4 @@
 <template>
-<div class="a" style="color:aquamarine">AuthenticationView.vue</div>
 <nav>
     <router-link to="/register">Register</router-link>
 </nav>

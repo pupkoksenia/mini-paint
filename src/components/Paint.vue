@@ -1,5 +1,5 @@
 <template>
-<div class="a" style="color:aquamarine">Paint.vue</div>
+<div></div>
 </template>
 
 <script lang="ts">

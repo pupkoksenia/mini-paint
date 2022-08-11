@@ -1,50 +1,44 @@
 <template>
-  <div class="register">
-    <div style="color: aquamarine">Register form</div>
-    <div id="v-model-basic" class="demo">
-      <p><input type="text" placeholder="Email" v-model="form.email" /></p>
-      <p>
-        <input type="password" placeholder="Password" v-model="form.password" />
-      </p>
-      <p v-if="errMsg">{{ errMsg }}</p>
-      <p><button @click="handleSubmit">Submit</button></p>
-    </div>
+  <div class="register-form">
+    <form>
+      <input type="text" placeholder="Email" v-model="form.email" />
+      <input type="password" placeholder="Password" v-model="form.password" />
+      <input type="submit" @click="handleSubmit" value="Submit" />
+    </form>
+    <p v-if="errMsg">{{ errMsg }}</p>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
+import { useFireBase } from "../composables/useFireBase";
 
 export default defineComponent({
   name: "RegisterForm",
   setup() {
+    const { register } = useFireBase();
     const form = ref({
       email: "",
       password: "",
     });
-    const router = useRouter();
-    const auth = getAuth();
     const errMsg = ref();
-    const handleSubmit = () =>
-      createUserWithEmailAndPassword(
-        auth,
-        form.value.email,
-        form.value.password
-      )
-        .then((userCredential) => {
-          localStorage.setItem('email',userCredential.user.email || "")
-          router.push({path: "/home"});
-        })
-        .catch((error) => {
-          switch (error.code) {
-            case "auth/invalid-email":
-              errMsg.value = "Invalid email";
-              break;
-          }
-        });
+    const router = useRouter();
+    const handleSubmit = () => {
+      register(form.value.email, form.value.password).then((msg) => {
+        if (msg === "ok") {
+          router.push({ path: "/home" });
+        } else errMsg.value = msg;
+      });
+    };
     return { form, handleSubmit, errMsg };
   },
 });
 </script>
+
+<style>
+.register-form {
+  padding-left: 10;
+  color: white;
+}
+</style>

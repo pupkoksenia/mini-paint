@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import { useFireBase } from "../composables/useFireBase";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/home",
         name: "Home",
         component: () => import("../views/HomeView.vue"),
-        children: [ ],
+        children: [],
       },
       {
         path: "/authentication",
@@ -36,12 +37,17 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to,from,next) => {
-  // && !isAuthenticated 
-  //debugger
-  if (to.path === '/' && localStorage.getItem('email') === null && from.path !=='/authentication') next({path: '/authentication'})
-  else if(to.path === '/' && localStorage.getItem('email') !== null && from.path !=='/home') next({path: '/home'})
-  else next()
-})
+router.beforeEach((to, from, next) => {
+  const { state } = useFireBase();
+  if (
+    to.path === "/" &&
+    state.user.email === "" &&
+    from.path !== "/authentication"
+  )
+    next({ path: "/authentication" });
+  else if (to.path === "/" && state.user.email !== "" && from.path !== "/home")
+    next({ path: "/home" });
+  else next();
+});
 
 export default router;

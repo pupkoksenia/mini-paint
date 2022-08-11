@@ -39,14 +39,19 @@
   </select>
 
   <button @click="clearStrokes">clearStrokes</button>
+  <button @click="undo(canvas,contex)">unDo</button>
+  <button @click="redo(canvas,contex)">reDo</button>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from "vue";
+import { useHistoryPaint } from "../components/historyPaint";
 
 export default defineComponent({
   name: "PaintPart",
   setup() {
+    const { saveState, undo, redo, restoreState, history } = useHistoryPaint();
+
     const canvas = ref();
     const contex = ref();
     const x = ref();
@@ -61,15 +66,15 @@ export default defineComponent({
     const strokeType = ref("line");
     const stateOfFigure = ref("stroke");
     const arrayStateOfFigure = ref(["stroke", "fill"]);
-
     const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle"]);
+    const imgData = ref();
 
     onMounted(() => {
       canvas.value = document.getElementById("canvas") as HTMLCanvasElement;
       contex.value = canvas.value.getContext("2d");
       contex.value.lineCap = "round";
       contex.value.lineWidth = lineWidth.value;
-      contex.value.strokeStyle = strokeStyle.value;
+      contex.value.strokeStyle = strokeStyleValue.value;
       stateOfFigure.value = "stroke";
       strokeType.value = "line";
     });
@@ -99,8 +104,18 @@ export default defineComponent({
           y2.value = e.offsetY;
 
           if (e.buttons > 0) {
-            contex.value.clearRect(x.value, y.value, lineWidth.value, lineWidth.value);
-            contex.value.clearRect(x2.value, y2.value, lineWidth.value, lineWidth.value);
+            contex.value.clearRect(
+              x.value,
+              y.value,
+              lineWidth.value,
+              lineWidth.value
+            );
+            contex.value.clearRect(
+              x2.value,
+              y2.value,
+              lineWidth.value,
+              lineWidth.value
+            );
           }
         };
       };
@@ -126,10 +141,17 @@ export default defineComponent({
             contex.value.moveTo(x.value, y.value);
             contex.value.lineTo(x.value - dx.value, y.value - dy.value);
             contex.value.stroke();
+            saveState(canvas.value, [""], true)
             contex.value.closePath();
           }
         };
       };
+      imgData.value = contex.value.getImageData(
+        0,
+        0,
+        canvas.value.width,
+        canvas.value.height
+      );
     };
 
     const drawRectangle = () => {
@@ -148,7 +170,7 @@ export default defineComponent({
               canvas.value.width,
               canvas.value.height
             );
-
+            contex.value.putImageData(imgData.value, 0, 0);
             contex.value.beginPath();
             contex.value.rect(
               x.value,
@@ -163,6 +185,13 @@ export default defineComponent({
 
           if (e.buttons > 0) {
             makeRectungle();
+          } else {
+            imgData.value = contex.value.getImageData(
+              0,
+              0,
+              canvas.value.width,
+              canvas.value.height
+            );
           }
         };
       };
@@ -184,6 +213,7 @@ export default defineComponent({
               canvas.value.width,
               canvas.value.height
             );
+            contex.value.putImageData(imgData.value, 0, 0);
             contex.value.beginPath();
             contex.value.moveTo(x.value, y.value);
             contex.value.lineTo(x2.value, y2.value);
@@ -197,6 +227,13 @@ export default defineComponent({
 
           if (e.buttons > 0) {
             makeTriangle();
+          } else {
+            imgData.value = contex.value.getImageData(
+              0,
+              0,
+              canvas.value.width,
+              canvas.value.height
+            );
           }
         };
       };
@@ -222,7 +259,7 @@ export default defineComponent({
               canvas.value.width,
               canvas.value.height
             );
-            contex.value.beginPath();
+            contex.value.putImageData(imgData.value, 0, 0);
             contex.value.moveTo(x.value, y.value);
             contex.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
             stateOfFigure.value === "stroke"
@@ -232,6 +269,8 @@ export default defineComponent({
 
           if (e.buttons > 0) {
             makeCircle();
+          } else {
+            contex.value.putImageData(imgData.value, 0, 0);
           }
         };
       };
@@ -250,6 +289,9 @@ export default defineComponent({
       stateOfFigure,
       arrayStateOfFigure,
       clearStrokes,
+      history,
+      undo,
+      redo
     };
   },
 });

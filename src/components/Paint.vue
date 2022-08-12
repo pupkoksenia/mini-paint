@@ -114,7 +114,6 @@ export default defineComponent({
     const reDo = () => {
       if (n > 1) n = n - 1;
       else n = 1;
-
       context.value.putImageData(history.value.at(-n), 0, 0);
     };
 
@@ -143,6 +142,27 @@ export default defineComponent({
       saveImageOnComp(createEl, canvas.value, NameOfPaint.value);
     };
 
+    const toHistoryPush = () => {
+      history.value.push(
+        context.value.getImageData(
+          0,
+          0,
+          canvas.value.width,
+          canvas.value.height
+        )
+      );
+    };
+
+    const toGetImageData = () => {
+      return context.value.getImageData(
+        0,
+        0,
+        canvas.value.width,
+        canvas.value.height
+      );
+    };
+
+
     const clearStrokes = () => {
       canvas.value.onmousedown = function (e: MouseEvent) {
         x.value = e.offsetX;
@@ -166,24 +186,12 @@ export default defineComponent({
             );
           }
         };
-        history.value.push(
-          context.value.getImageData(
-            0,
-            0,
-            canvas.value.width,
-            canvas.value.height
-          )
-        );
+        toHistoryPush();
       };
     };
 
     const chooseStrokeType = () => {
-      imgData.value = context.value.getImageData(
-        0,
-        0,
-        canvas.value.width,
-        canvas.value.height
-      );
+      imgData.value = toGetImageData();
       if (strokeType.value === "line") drawLine();
       else if (strokeType.value === "rectangle") drawRectangle();
       else if (strokeType.value === "triangle") drawTriangle();
@@ -205,20 +213,8 @@ export default defineComponent({
             context.value.closePath();
           }
         };
-        imgData.value = context.value.getImageData(
-          0,
-          0,
-          canvas.value.width,
-          canvas.value.height
-        );
-        history.value.push(
-          context.value.getImageData(
-            0,
-            0,
-            canvas.value.width,
-            canvas.value.height
-          )
-        );
+        imgData.value = toGetImageData();
+        toHistoryPush();
       };
     };
 
@@ -251,22 +247,10 @@ export default defineComponent({
           if (e.buttons > 0) {
             makeRectungle();
           } else {
-            imgData.value = context.value.getImageData(
-              0,
-              0,
-              canvas.value.width,
-              canvas.value.height
-            );
+            imgData.value = toGetImageData();
           }
         };
-        history.value.push(
-          context.value.getImageData(
-            0,
-            0,
-            canvas.value.width,
-            canvas.value.height
-          )
-        );
+        toHistoryPush();
       };
     };
 
@@ -301,22 +285,10 @@ export default defineComponent({
           if (e.buttons > 0) {
             makeTriangle();
           } else {
-            imgData.value = context.value.getImageData(
-              0,
-              0,
-              canvas.value.width,
-              canvas.value.height
-            );
+            imgData.value = toGetImageData();
           }
         };
-        history.value.push(
-          context.value.getImageData(
-            0,
-            0,
-            canvas.value.width,
-            canvas.value.height
-          )
-        );
+        toHistoryPush();
       };
     };
 
@@ -351,22 +323,10 @@ export default defineComponent({
           if (e.buttons > 0) {
             makeCircle();
           } else {
-            imgData.value = context.value.getImageData(
-              0,
-              0,
-              canvas.value.width,
-              canvas.value.height
-            );
+            imgData.value = toGetImageData();
           }
         };
-        history.value.push(
-          context.value.getImageData(
-            0,
-            0,
-            canvas.value.width,
-            canvas.value.height
-          )
-        );
+        toHistoryPush();
       };
     };
 

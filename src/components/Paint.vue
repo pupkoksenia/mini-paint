@@ -76,7 +76,6 @@ export default defineComponent({
     const imgData = ref();
     const NameOfPaint = ref();
     const history = ref();
-    const unDoHistory = ref();
 
     onMounted(() => {
       canvas.value = document.getElementById("canvas") as HTMLCanvasElement;

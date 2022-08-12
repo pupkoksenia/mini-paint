@@ -1,4 +1,5 @@
 <template>
+  <p><input type="text" placeholder="Name of paint" v-model="NameOfPaint" /></p>
   <canvas
     id="canvas"
     width="800"
@@ -39,21 +40,24 @@
   </select>
 
   <button @click="clearStrokes">clearStrokes</button>
-  <button @click="undo(canvas,contex)">unDo</button>
-  <button @click="redo(canvas,contex)">reDo</button>
+
+  <button @click="imageOnServer">Save image on server</button>
+  <button @click="imageOnComp">Save image on computer</button>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from "vue";
-import { useHistoryPaint } from "../components/historyPaint";
+import { useFireBasePaints } from "../composables/useFireBasePaints";
+import { savePaints } from "../composables/savePaints";
 
 export default defineComponent({
   name: "PaintPart",
   setup() {
-    const { saveState, undo, redo, restoreState, history } = useHistoryPaint();
+    const { saveImageOnServer } = useFireBasePaints();
+    const { saveImageOnComp } = savePaints();
 
     const canvas = ref();
-    const contex = ref();
+    const context = ref();
     const x = ref();
     const y = ref();
     const dx = ref();
@@ -68,15 +72,17 @@ export default defineComponent({
     const arrayStateOfFigure = ref(["stroke", "fill"]);
     const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle"]);
     const imgData = ref();
+    const NameOfPaint = ref();
 
     onMounted(() => {
       canvas.value = document.getElementById("canvas") as HTMLCanvasElement;
-      contex.value = canvas.value.getContext("2d");
-      contex.value.lineCap = "round";
-      contex.value.lineWidth = lineWidth.value;
-      contex.value.strokeStyle = strokeStyleValue.value;
+      context.value = canvas.value.getContext("2d");
+      context.value.lineCap = "round";
+      context.value.lineWidth = lineWidth.value;
+      context.value.strokeStyle = strokeStyleValue.value;
       stateOfFigure.value = "stroke";
       strokeType.value = "line";
+      NameOfPaint.value = "untitled";
     });
 
     const strokeStyle = computed({
@@ -86,13 +92,22 @@ export default defineComponent({
       set: (newVal) => {
         if (newVal) {
           strokeStyleValue.value = newVal;
-          contex.value.strokeStyle = newVal;
+          context.value.strokeStyle = newVal;
         }
       },
     });
 
     const chooseLineWidth = () => {
-      contex.value.lineWidth = lineWidth.value;
+      context.value.lineWidth = lineWidth.value;
+    };
+
+    const imageOnServer = () => {
+      saveImageOnServer(NameOfPaint.value, canvas.value.toDataURL());
+    };
+
+    const imageOnComp = () => {
+      const createEl = document.createElement("a");
+      saveImageOnComp(createEl, canvas.value, NameOfPaint.value);
     };
 
     const clearStrokes = () => {
@@ -104,13 +119,13 @@ export default defineComponent({
           y2.value = e.offsetY;
 
           if (e.buttons > 0) {
-            contex.value.clearRect(
+            context.value.clearRect(
               x.value,
               y.value,
               lineWidth.value,
               lineWidth.value
             );
-            contex.value.clearRect(
+            context.value.clearRect(
               x2.value,
               y2.value,
               lineWidth.value,
@@ -122,6 +137,12 @@ export default defineComponent({
     };
 
     const chooseStrokeType = () => {
+      imgData.value = context.value.getImageData(
+        0,
+        0,
+        canvas.value.width,
+        canvas.value.height
+      );
       if (strokeType.value === "line") drawLine();
       else if (strokeType.value === "rectangle") drawRectangle();
       else if (strokeType.value === "triangle") drawTriangle();
@@ -135,58 +156,53 @@ export default defineComponent({
           y.value = e.offsetY;
           dx.value = e.movementX;
           dy.value = e.movementY;
-
           if (e.buttons > 0) {
-            contex.value.beginPath();
-            contex.value.moveTo(x.value, y.value);
-            contex.value.lineTo(x.value - dx.value, y.value - dy.value);
-            contex.value.stroke();
-            saveState(canvas.value, [""], true)
-            contex.value.closePath();
+            context.value.beginPath();
+            context.value.moveTo(x.value, y.value);
+            context.value.lineTo(x.value - dx.value, y.value - dy.value);
+            context.value.stroke();
+            context.value.closePath();
           }
         };
+        imgData.value = context.value.getImageData(
+          0,
+          0,
+          canvas.value.width,
+          canvas.value.height
+        );
       };
-      imgData.value = contex.value.getImageData(
-        0,
-        0,
-        canvas.value.width,
-        canvas.value.height
-      );
     };
 
     const drawRectangle = () => {
       canvas.value.onmousedown = function (e: MouseEvent) {
         x.value = e.offsetX;
         y.value = e.offsetY;
-
         canvas.value.onmousemove = function (e: MouseEvent) {
           x2.value = e.offsetX;
           y2.value = e.offsetY;
-
           const makeRectungle = () => {
-            contex.value.clearRect(
+            context.value.clearRect(
               0,
               0,
               canvas.value.width,
               canvas.value.height
             );
-            contex.value.putImageData(imgData.value, 0, 0);
-            contex.value.beginPath();
-            contex.value.rect(
+            context.value.putImageData(imgData.value, 0, 0);
+            context.value.beginPath();
+            context.value.rect(
               x.value,
               y.value,
               Math.abs(x.value - x2.value),
               Math.abs(y.value - y2.value)
             );
             stateOfFigure.value === "stroke"
-              ? contex.value.stroke()
-              : contex.value.fill();
+              ? context.value.stroke()
+              : context.value.fill();
           };
-
           if (e.buttons > 0) {
             makeRectungle();
           } else {
-            imgData.value = contex.value.getImageData(
+            imgData.value = context.value.getImageData(
               0,
               0,
               canvas.value.width,
@@ -207,28 +223,28 @@ export default defineComponent({
           y2.value = e.offsetY;
 
           const makeTriangle = () => {
-            contex.value.clearRect(
+            context.value.clearRect(
               0,
               0,
               canvas.value.width,
               canvas.value.height
             );
-            contex.value.putImageData(imgData.value, 0, 0);
-            contex.value.beginPath();
-            contex.value.moveTo(x.value, y.value);
-            contex.value.lineTo(x2.value, y2.value);
-            contex.value.lineTo(x2.value, Math.abs(y.value - y2.value));
-            contex.value.moveTo(x2.value, Math.abs(y.value - y2.value));
-            contex.value.lineTo(x.value, y.value);
+            context.value.putImageData(imgData.value, 0, 0);
+            context.value.beginPath();
+            context.value.moveTo(x.value, y.value);
+            context.value.lineTo(x2.value, y2.value);
+            context.value.lineTo(x2.value, Math.abs(y.value - y2.value));
+            context.value.moveTo(x2.value, Math.abs(y.value - y2.value));
+            context.value.lineTo(x.value, y.value);
             stateOfFigure.value === "stroke"
-              ? contex.value.stroke()
-              : contex.value.fill();
+              ? context.value.stroke()
+              : context.value.fill();
           };
 
           if (e.buttons > 0) {
             makeTriangle();
           } else {
-            imgData.value = contex.value.getImageData(
+            imgData.value = context.value.getImageData(
               0,
               0,
               canvas.value.width,
@@ -253,24 +269,30 @@ export default defineComponent({
             let b = y.value - y2.value;
             let radius = Math.sqrt(a * a + b * b);
 
-            contex.value.clearRect(
+            context.value.clearRect(
               0,
               0,
               canvas.value.width,
               canvas.value.height
             );
-            contex.value.putImageData(imgData.value, 0, 0);
-            contex.value.moveTo(x.value, y.value);
-            contex.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
+          
+            context.value.moveTo(x.value, y.value);
+            context.value.putImageData(imgData.value, 0, 0);
+            context.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
             stateOfFigure.value === "stroke"
-              ? contex.value.stroke()
-              : contex.value.fill();
+              ? context.value.stroke()
+              : context.value.fill();
           };
 
           if (e.buttons > 0) {
             makeCircle();
-          } else {
-            contex.value.putImageData(imgData.value, 0, 0);
+          }else {
+             imgData.value = context.value.getImageData(
+              0,
+              0,
+              canvas.value.width,
+              canvas.value.height
+            );
           }
         };
       };
@@ -280,7 +302,7 @@ export default defineComponent({
       canvas,
       backgroundColor,
       strokeStyle,
-      contex,
+      context,
       lineWidth,
       chooseLineWidth,
       arrayStrokeType,
@@ -289,9 +311,12 @@ export default defineComponent({
       stateOfFigure,
       arrayStateOfFigure,
       clearStrokes,
-      history,
-      undo,
-      redo
+      NameOfPaint,
+      saveImageOnServer,
+      imageOnServer,
+      imageOnComp,
+      //undo,
+      //redo
     };
   },
 });

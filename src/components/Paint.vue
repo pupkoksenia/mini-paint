@@ -43,6 +43,8 @@
 
   <button @click="imageOnServer">Save image on server</button>
   <button @click="imageOnComp">Save image on computer</button>
+  <button @click="unDo">unDo</button>
+  <button @click="reDo">reDo</button>
 </template>
 
 <script lang="ts">
@@ -73,6 +75,8 @@ export default defineComponent({
     const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle"]);
     const imgData = ref();
     const NameOfPaint = ref();
+    const history = ref();
+    const unDoHistory = ref();
 
     onMounted(() => {
       canvas.value = document.getElementById("canvas") as HTMLCanvasElement;
@@ -83,7 +87,40 @@ export default defineComponent({
       stateOfFigure.value = "stroke";
       strokeType.value = "line";
       NameOfPaint.value = "untitled";
+
+      imgData.value = context.value.getImageData(
+        0,
+        0,
+        canvas.value.width,
+        canvas.value.height
+      );
+      history.value = [
+        context.value.getImageData(
+          0,
+          0,
+          canvas.value.width,
+          canvas.value.height
+        ),
+      ];
     });
+
+    let n = 0;
+    const unDo = () => {
+      n = n + 1;
+      if (n > 0) {
+        context.value.putImageData(history.value.at(-n), 0, 0);
+      }
+
+      console.log("undo", n, history.value);
+    };
+
+    const reDo = () => {
+      if (n > 1) n = n - 1;
+      else n = 1;
+
+      context.value.putImageData(history.value.at(-n), 0, 0);
+      console.log("redo", n, history.value);
+    };
 
     const strokeStyle = computed({
       get: () => {
@@ -133,6 +170,14 @@ export default defineComponent({
             );
           }
         };
+        history.value.push(
+          context.value.getImageData(
+            0,
+            0,
+            canvas.value.width,
+            canvas.value.height
+          )
+        );
       };
     };
 
@@ -169,6 +214,14 @@ export default defineComponent({
           0,
           canvas.value.width,
           canvas.value.height
+        );
+        history.value.push(
+          context.value.getImageData(
+            0,
+            0,
+            canvas.value.width,
+            canvas.value.height
+          )
         );
       };
     };
@@ -210,6 +263,14 @@ export default defineComponent({
             );
           }
         };
+        history.value.push(
+          context.value.getImageData(
+            0,
+            0,
+            canvas.value.width,
+            canvas.value.height
+          )
+        );
       };
     };
 
@@ -252,6 +313,14 @@ export default defineComponent({
             );
           }
         };
+        history.value.push(
+          context.value.getImageData(
+            0,
+            0,
+            canvas.value.width,
+            canvas.value.height
+          )
+        );
       };
     };
 
@@ -275,7 +344,7 @@ export default defineComponent({
               canvas.value.width,
               canvas.value.height
             );
-          
+
             context.value.moveTo(x.value, y.value);
             context.value.putImageData(imgData.value, 0, 0);
             context.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
@@ -286,8 +355,8 @@ export default defineComponent({
 
           if (e.buttons > 0) {
             makeCircle();
-          }else {
-             imgData.value = context.value.getImageData(
+          } else {
+            imgData.value = context.value.getImageData(
               0,
               0,
               canvas.value.width,
@@ -295,6 +364,14 @@ export default defineComponent({
             );
           }
         };
+        history.value.push(
+          context.value.getImageData(
+            0,
+            0,
+            canvas.value.width,
+            canvas.value.height
+          )
+        );
       };
     };
 
@@ -315,8 +392,8 @@ export default defineComponent({
       saveImageOnServer,
       imageOnServer,
       imageOnComp,
-      //undo,
-      //redo
+      unDo,
+      reDo,
     };
   },
 });

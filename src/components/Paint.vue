@@ -109,8 +109,6 @@ export default defineComponent({
       if (n > 0) {
         context.value.putImageData(history.value.at(-n), 0, 0);
       }
-
-      console.log("undo", n, history.value);
     };
 
     const reDo = () => {
@@ -118,7 +116,6 @@ export default defineComponent({
       else n = 1;
 
       context.value.putImageData(history.value.at(-n), 0, 0);
-      console.log("redo", n, history.value);
     };
 
     const strokeStyle = computed({

@@ -1,8 +1,14 @@
-import { collection, getDocs, Timestamp, setDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  Timestamp,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../main";
 import { readonly, reactive, DeepReadonly, computed, ComputedRef } from "vue";
 import { DataPaint } from "../types";
-import { useFireBase } from '../composables/useFireBase'
+import { useFireBase } from "../composables/useFireBase";
 
 export interface StatePaint {
   dataPaints: DataPaint[];
@@ -19,11 +25,10 @@ export interface FireBasePaints {
   sortedFeedPaints: ComputedRef<DataPaint[]>;
   getFeedPaints: () => Promise<void>;
   setFilterValue: (value: string) => void;
-  saveImageOnServer: (NameOfPaint: string, imageURL: string) => void
+  saveImageOnServer: (NameOfPaint: string, imageURL: string) => void;
 }
 
 export const useFireBasePaints: () => FireBasePaints = () => {
-
   const { state } = useFireBase();
 
   const getFeedPaints = () =>
@@ -31,14 +36,29 @@ export const useFireBasePaints: () => FireBasePaints = () => {
       docs.forEach((doc) => {
         doc
           .data()
-          .paints.forEach((paint: { nameOfPaint: string; date: Timestamp, url: string }) => {
-            statePaint.dataPaints?.push({
-              nameOfPaint: paint.nameOfPaint,
-              date: new Date(paint.date.seconds * 1000).toLocaleDateString(),
-              userName: doc.data().name,
-              urlOfPaint: paint.url
-            });
-          });
+          .paints.forEach(
+            (paint: { nameOfPaint: string; date: Timestamp; url: string }) => {
+              let isPushed = false;
+              statePaint.dataPaints?.forEach((p) => {
+                if (
+                  p.urlOfPaint === paint.url &&
+                  p.nameOfPaint === paint.nameOfPaint
+                )
+                  isPushed = true;
+              });
+
+              if (isPushed === false) {
+                statePaint.dataPaints?.push({
+                  nameOfPaint: paint.nameOfPaint,
+                  date: new Date(
+                    paint.date.seconds * 1000
+                  ).toLocaleDateString(),
+                  userName: doc.data().name,
+                  urlOfPaint: paint.url,
+                });
+              }
+            }
+          );
       });
     });
 
@@ -89,8 +109,7 @@ export const useFireBasePaints: () => FireBasePaints = () => {
           { merge: true }
         );
       });
-    }
-
+  };
 
   return {
     statePaint: readonly(statePaint),

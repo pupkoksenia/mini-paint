@@ -1,5 +1,4 @@
 <template>
-  <div>App.vue</div>
   <router-view />
 </template>
 
@@ -15,7 +14,7 @@ export default defineComponent({
 #app {
   background-color: black;
   width: 100vw;
-  height: 100%;
+  height: 100vh;
 }
 </style>
 

@@ -1,17 +1,19 @@
 <template>
-  <p><input type="text" placeholder="email" v-model="form.email" /></p>
-  <p><button @click="handleSubmit">Submit</button></p>
-  <p><button @click="handleReset">Reset</button></p>
-  <ul>
-    <li
-      v-for="paint in sortedFeedPaints"
-      :key="paint.toString"
-      @click="goToPaint(paint.urlOfPaint)"
-    >
-     <img :src="paint.urlOfPaint" width="100" height="100" style="backgroundColor: white"/>
-      {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
-    </li>
-  </ul>
+  <div class="feed-users">
+    <p><input type="text" placeholder="email" v-model="form.email" /></p>
+    <p><button @click="handleSubmit">Submit</button></p>
+    <p><button @click="handleReset">Reset</button></p>
+    <ul>
+      <li
+        v-for="paint in sortedFeedPaints"
+        :key="paint.toString"
+        @click="goToPaint(paint.urlOfPaint)"
+      >
+        <img :src="paint.urlOfPaint" width="100" height="100" />
+        {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
@@ -62,5 +64,8 @@ export default defineComponent({
 <style>
 li {
   color: white;
+}
+img {
+  background-color: white;
 }
 </style>

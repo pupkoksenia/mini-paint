@@ -343,9 +343,8 @@ export default defineComponent({
               canvas.value.width,
               canvas.value.height
             );
-
-            context.value.moveTo(x.value, y.value);
             context.value.putImageData(imgData.value, 0, 0);
+            context.value.moveTo(x.value, y.value);
             context.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
             stateOfFigure.value === "stroke"
               ? context.value.stroke()

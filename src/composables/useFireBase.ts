@@ -6,15 +6,12 @@ import {
   Unsubscribe,
 } from "firebase/auth";
 import { readonly, reactive, DeepReadonly } from "vue";
-import { DataPaint } from "../types";
 
 export interface State {
   user: {
     email: string | null;
     uid: string;
   };
-  dataPaints: DataPaint[];
-  filter: string;
 }
 
 const state = reactive<State>({
@@ -22,8 +19,6 @@ const state = reactive<State>({
     email: "",
     uid: "",
   },
-  dataPaints: [],
-  filter: "",
 });
 
 export interface FireBase {

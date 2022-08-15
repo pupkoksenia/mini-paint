@@ -49,6 +49,8 @@ export default defineComponent({
   margin-bottom: 40px;
   user-select: none;
   overflow-x: auto;
+  height: 100%;
+  background-color: black;
 }
 
 .tab-button {

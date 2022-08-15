@@ -39,6 +39,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const { state } = useFireBase();
+
   if (
     to.path === "/" &&
     state.user.email === "" &&

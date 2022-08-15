@@ -105,15 +105,23 @@ export default defineComponent({
 
     let n = 0;
     const unDo = () => {
-      n = n + 1;
-      if (n > 0) {
-        context.value.putImageData(history.value.at(-n), 0, 0);
-      }
+      console.log("n before undo", n);
+      if (n === 0) {
+        toHistoryPush();
+        n = n + 2;
+      } else if (n === 1) {
+        toHistoryPush();
+        n = n + 1;
+      } else n = n + 1;
+      console.log("n after undo", n);
+      context.value.putImageData(history.value.at(-n), 0, 0);
     };
 
     const reDo = () => {
+      console.log("n before redo", n);
       if (n > 1) n = n - 1;
       else n = 1;
+      console.log("n after redo", n);
       context.value.putImageData(history.value.at(-n), 0, 0);
     };
 

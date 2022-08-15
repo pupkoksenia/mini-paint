@@ -105,7 +105,6 @@ export default defineComponent({
 
     let n = 0;
     const unDo = () => {
-      console.log("n before undo", n);
       if (n === 0) {
         toHistoryPush();
         n = n + 2;
@@ -113,7 +112,6 @@ export default defineComponent({
         toHistoryPush();
         n = n + 1;
       } else n = n + 1;
-      console.log("n after undo", n);
       context.value.putImageData(history.value.at(-n), 0, 0);
     };
 

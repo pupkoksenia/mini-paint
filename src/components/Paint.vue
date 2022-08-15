@@ -162,7 +162,6 @@ export default defineComponent({
       );
     };
 
-
     const clearStrokes = () => {
       canvas.value.onmousedown = function (e: MouseEvent) {
         x.value = e.offsetX;
@@ -240,6 +239,7 @@ export default defineComponent({
               Math.abs(x.value - x2.value),
               Math.abs(y.value - y2.value)
             );
+            context.value.closePath();
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();
@@ -277,6 +277,7 @@ export default defineComponent({
             context.value.lineTo(x2.value, Math.abs(y.value - y2.value));
             context.value.moveTo(x2.value, Math.abs(y.value - y2.value));
             context.value.lineTo(x.value, y.value);
+            context.value.closePath();
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();
@@ -312,13 +313,15 @@ export default defineComponent({
               canvas.value.width,
               canvas.value.height
             );
+            context.value.beginPath();
             context.value.putImageData(imgData.value, 0, 0);
             context.value.moveTo(x.value, y.value);
-            context.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
+            context.value.arc(x.value, y.value, radius, 0, Math.PI * 2, false);
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();
           };
+          context.value.closePath();
 
           if (e.buttons > 0) {
             makeCircle();

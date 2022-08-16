@@ -12,7 +12,7 @@ export default defineComponent({
 
 <style>
 #app {
-  background-color: black;
+  background-color: white;
   width: 100vw;
   height: 100vh;
 }

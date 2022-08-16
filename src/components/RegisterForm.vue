@@ -1,16 +1,19 @@
 <template>
-  <div class="register-form">
-    <form>
-      <input type="text" placeholder="Email" v-model="form.email" />
-      <input
-        :type="passwordFieldType"
-        placeholder="Password"
-        v-model="form.password"
-      />
-      <button @click="switchVisibility">show / hide</button>
-      <input type="submit" @click="handleSubmit" value="Submit" />
-    </form>
-    <p v-if="errMsg">{{ errMsg }}</p>
+  <div class="w-screen h-screen">
+    <div class="flex items-center justify-center pt-1 grid grid-cols-2 gap-3">
+      <div class="grid justify-items-end">
+        <nav>
+          <router-link to="/register">Register</router-link>
+        </nav>
+      </div>
+
+      <div>
+        <nav>
+            <router-link to="/sign-in">Sign in</router-link>
+          </nav>
+          <router-view />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,10 +48,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.register-form {
-  padding-left: 10;
-  color: white;
-}
-</style>

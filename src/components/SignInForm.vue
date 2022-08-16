@@ -1,14 +1,20 @@
 <template>
-  <div class="sign-in-form">
-    <form>
-      <input type="text" placeholder="Email" v-model="form.email" />
+  <div class="grid gap-2 grid-cols-1 grid-rows-2  mt-3">
+    <form class="grid gap-2 grid-cols-1 grid-rows-2 mt-3">
+      <input
+        type="text"
+        placeholder="Email"
+        v-model="form.email"
+        class="border-black border-2 rounded w-60"
+      />
       <input
         :type="passwordFieldType"
         placeholder="Password"
         v-model="form.password"
+        class="border-black border-2 rounded w-60"
       />
-      <button @click="switchVisibility">show / hide</button>
-      <input type="submit" @click="handleSubmit" value="Submit" />
+      <button @click="switchVisibility" class="w-60">show / hide</button>
+      <input type="submit" @click="handleSubmit" value="Submit" class="w-60"/>
     </form>
     <p v-if="errMsg">{{ errMsg }}</p>
   </div>
@@ -46,10 +52,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.sign-in-form {
-  padding-left: 10;
-  color: white;
-}
-</style>

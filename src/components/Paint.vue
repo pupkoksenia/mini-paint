@@ -1,50 +1,112 @@
 <template>
-  <p><input type="text" placeholder="Name of paint" v-model="NameOfPaint" /></p>
-  <canvas
-    id="canvas"
-    width="800"
-    height="400"
-    :style="{ 'background-color': backgroundColor }"
-  />
-
-  <span>
-    <p :style="{ color: 'white' }">Background Color:</p>
-    <input type="color" v-model="backgroundColor" />
-  </span>
-
-  <span>
-    <p :style="{ color: 'white' }">Color:</p>
-    <input type="color" v-model="strokeStyle" />
-  </span>
-
-  <select v-model="stateOfFigure">
-    <option v-for="n in arrayStateOfFigure" :key="'option-' + n" :value="n">
-      {{ n }}
-    </option>
-  </select>
-
-  <span
-    ><p :style="{ color: 'white' }">Choose width:</p>
+  <div class="pt-6">
     <input
-      type="range"
-      v-model="lineWidth"
-      min="1"
-      max="25"
-      @change="chooseLineWidth"
-  /></span>
+      type="text"
+      placeholder="Name of paint"
+      v-model="NameOfPaint"
+      class="border-black border-2 rounded"
+    />
+    <canvas
+      id="canvas"
+      width="800"
+      height="400"
+      :style="{ 'background-color': backgroundColor }"
+      class="border-black border-2 rounded mt-3 "
+    />
 
-  <select v-model="strokeType" v-on:click="chooseStrokeType">
-    <option v-for="n in arrayStrokeType" :key="'option-' + n" :value="n">
-      {{ n }}
-    </option>
-  </select>
+    <div class="grid gap-3 grid-cols-7 grid-rows-1  mt-3">
+      <span>
+        <p class="text-black font-thin">Background Color:</p>
+        <input
+          type="color"
+          v-model="backgroundColor"
+          class="py-0.1 px-0.1 rounded"
+        />
+      </span>
 
-  <button @click="clearStrokes">clearStrokes</button>
+      <span>
+        <p class="text-black font-thin">Color:</p>
+        <input
+          type="color"
+          v-model="strokeStyle"
+          class="py-0.1 px-0.1 rounded"
+        />
+      </span>
 
-  <button @click="imageOnServer">Save image on server</button>
-  <button @click="imageOnComp">Save image on computer</button>
-  <button @click="unDo">unDo</button>
-  <button @click="reDo">reDo</button>
+      <select
+        v-model="stateOfFigure"
+        class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+      >
+        <option
+          v-for="n in arrayStateOfFigure"
+          :key="'option-' + n"
+          :value="n"
+          class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+        >
+          {{ n }}
+        </option>
+      </select>
+
+      <span
+        ><p class="text-black font-thin">Choose width:</p>
+        <input
+          type="range"
+          v-model="lineWidth"
+          min="1"
+          max="25"
+          @change="chooseLineWidth"
+      /></span>
+
+      <select
+        v-model="strokeType"
+        v-on:click="chooseStrokeType"
+        class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+      >
+        <option
+          v-for="n in arrayStrokeType"
+          :key="'option-' + n"
+          :value="n"
+          class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+        >
+          {{ n }}
+        </option>
+      </select>
+    </div>
+
+    <div class="grid gap-3 grid-cols-7 grid-rows-1  mt-3">
+      <button
+        @click="clearStrokes"
+        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+      >
+        clearStrokes
+      </button>
+
+      <button
+        @click="imageOnServer"
+        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+      >
+        Save image on server
+      </button>
+      <button
+        @click="imageOnComp"
+        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+      >
+        Save image on computer
+      </button>
+      <button
+        @click="unDo"
+        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+      >
+        unDo
+      </button>
+      <button
+        @click="reDo"
+        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+      >
+        reDo
+      </button>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -116,10 +178,8 @@ export default defineComponent({
     };
 
     const reDo = () => {
-      console.log("n before redo", n);
       if (n > 1) n = n - 1;
       else n = 1;
-      console.log("n after redo", n);
       context.value.putImageData(history.value.at(-n), 0, 0);
     };
 
@@ -246,6 +306,7 @@ export default defineComponent({
               Math.abs(y.value - y2.value)
             );
             context.value.closePath();
+            context.value.fillStyle = strokeStyleValue.value;
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();
@@ -284,6 +345,7 @@ export default defineComponent({
             context.value.moveTo(x2.value, Math.abs(y.value - y2.value));
             context.value.lineTo(x.value, y.value);
             context.value.closePath();
+            context.value.fillStyle = strokeStyleValue.value;
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();
@@ -323,6 +385,7 @@ export default defineComponent({
             context.value.putImageData(imgData.value, 0, 0);
             context.value.moveTo(x.value, y.value);
             context.value.arc(x.value, y.value, radius, 0, Math.PI * 2, false);
+            context.value.fillStyle = strokeStyleValue.value;
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();

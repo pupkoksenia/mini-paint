@@ -6,7 +6,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../main";
-import { readonly, reactive, DeepReadonly, computed, ComputedRef } from "vue";
+import { reactive, DeepReadonly, computed, ComputedRef } from "vue";
 import { DataPaint } from "../types";
 import { useFireBase } from "../composables/useFireBase";
 
@@ -45,7 +45,8 @@ export const useFireBasePaints: () => FireBasePaints = () => {
                 if (
                   p.urlOfPaint === paint.url &&
                   p.nameOfPaint === paint.nameOfPaint
-                )isPushed = true;
+                )
+                  isPushed = true;
               });
 
               if (isPushed === false) {
@@ -138,7 +139,25 @@ export const useFireBasePaints: () => FireBasePaints = () => {
           }
         );
         getPaints.splice(idOfPaint, 1);
-        statePaint.dataPaints.splice(idOfPaint, 1);
+
+        let id = 0
+        statePaint.dataPaints.forEach(
+          (
+            paint: {
+              nameOfPaint: string;
+              date: string;
+              dateInTimestamp: Timestamp;
+              userName: string;
+              urlOfPaint: string;
+            },
+            index: number
+          ) => {
+            if (paint.nameOfPaint === NameOfPaint && paint.urlOfPaint === url && state.user.email === paint.userName)
+              id = index;
+          }
+        );
+        statePaint.dataPaints.splice(id,1)
+
         setDoc(
           doc(db, "users", idUser),
           {
@@ -150,7 +169,7 @@ export const useFireBasePaints: () => FireBasePaints = () => {
   };
 
   return {
-    statePaint: readonly(statePaint),
+    statePaint: statePaint,
     sortedFeedPaints,
     setFilterValue,
     getFeedPaints,

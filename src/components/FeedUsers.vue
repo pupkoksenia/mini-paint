@@ -80,7 +80,6 @@ export default defineComponent({
 
     const deleteButton = (NameOfPaint: string, url: string) => {
       deleteUserPaint(NameOfPaint, url);
-      getFeedPaints();
       setFilterValue("");
     };
     onMounted(() => {

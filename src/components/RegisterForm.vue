@@ -1,21 +1,25 @@
 <template>
-  <div class="w-screen h-screen">
-    <div class="flex items-center justify-center pt-1 grid grid-cols-2 gap-3">
-      <div class="grid justify-items-end">
-        <nav>
-          <router-link to="/register">Register</router-link>
-        </nav>
-      </div>
-
-      <div>
-        <nav>
-            <router-link to="/sign-in">Sign in</router-link>
-          </nav>
-          <router-view />
-      </div>
-    </div>
+  <div class="grid gap-2 grid-cols-1 grid-rows-2 mt-3">
+    <form class="grid gap-2 grid-cols-1 grid-rows-2 mt-3">
+      <input
+        type="text"
+        placeholder="Email"
+        v-model="form.email"
+        class="border-black border-2 rounded w-60"
+      />
+      <input
+        :type="passwordFieldType"
+        placeholder="Password"
+        v-model="form.password"
+        class="border-black border-2 rounded w-60"
+      />
+      <button @click="switchVisibility" class="w-60">show / hide</button>
+      <input type="submit" @click="handleSubmit" value="Submit" class="w-60" />
+    </form>
+    <p v-if="errMsg">{{ errMsg }}</p>
   </div>
-</template>
+</template>>
+
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";

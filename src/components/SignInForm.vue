@@ -1,5 +1,5 @@
 <template>
-  <div class="grid gap-2 grid-cols-1 grid-rows-2  mt-3">
+  <div class="grid gap-2 grid-cols-1 grid-rows-2 mt-3">
     <form class="grid gap-2 grid-cols-1 grid-rows-2 mt-3">
       <input
         type="text"
@@ -14,14 +14,14 @@
         class="border-black border-2 rounded w-60"
       />
       <button @click="switchVisibility" class="w-60">show / hide</button>
-      <input type="submit" @click="handleSubmit" value="Submit" class="w-60"/>
+      <input type="submit" @click="handleSubmit" value="Submit" class="w-60" />
     </form>
     <p v-if="errMsg">{{ errMsg }}</p>
   </div>
 </template>>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useFireBase } from "../composables/useFireBase";
 
@@ -47,7 +47,16 @@ export default defineComponent({
     const switchVisibility = () => {
       passwordFieldType.value =
         passwordFieldType.value === "password" ? "text" : "password";
+      localStorage.setItem("email", form.value.email)
+      localStorage.setItem("password",form.value.password)
     };
+    const checkLocalStorage = () => {
+      if (localStorage.getItem("email"))
+        form.value.email = localStorage.getItem("email") || "";
+      if (localStorage.getItem("password"))
+        form.value.password = localStorage.getItem("password") || "";
+    };
+    onMounted(() => checkLocalStorage());
     return { form, handleSubmit, errMsg, switchVisibility, passwordFieldType };
   },
 });

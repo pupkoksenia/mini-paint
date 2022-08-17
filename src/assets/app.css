@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .button-paint {
+        @apply bg-black font-thin text-white py-0.5 px-0.5 rounded
+    }
+  }

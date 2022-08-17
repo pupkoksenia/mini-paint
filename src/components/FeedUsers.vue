@@ -4,13 +4,13 @@
     <input type="text" placeholder="email" v-model="form.email" class="border-black border-2 rounded"/>
     <button
       @click="handleSubmit"
-      class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+      class="button-paint"
     >
       Submit
     </button>
     <button
       @click="handleReset"
-      class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+      class="button-paint"
     >
       Reset
     </button>
@@ -30,7 +30,7 @@
       <button
         v-if="paint.userName === state.user.email"
         @click="deleteButton(paint.nameOfPaint, paint.urlOfPaint)"
-        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+        class="button-paint"
       >
         Delete
       </button>

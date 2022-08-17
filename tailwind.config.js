@@ -8,5 +8,11 @@ module.exports = {
     variants: {
       extend: {},
     },
-    plugins: [],
+    plugins: [
+      /*plugin(function ({ addComponents, theme }) {
+        addComponents({
+          
+        })
+      })*/
+    ]
 }

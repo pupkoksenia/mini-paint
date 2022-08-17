@@ -76,32 +76,32 @@
     <div class="grid gap-3 grid-cols-7 grid-rows-1  mt-3">
       <button
         @click="clearStrokes"
-        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+        class="button-paint"
       >
         clearStrokes
       </button>
 
       <button
         @click="imageOnServer"
-        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+        class="button-paint"
       >
         Save image on server
       </button>
       <button
         @click="imageOnComp"
-        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+        class="button-paint"
       >
         Save image on computer
       </button>
       <button
         @click="unDo"
-        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+        class="button-paint"
       >
         unDo
       </button>
       <button
         @click="reDo"
-        class="bg-black font-thin text-white py-0.5 px-0.5 rounded"
+        class="button-paint"
       >
         reDo
       </button>

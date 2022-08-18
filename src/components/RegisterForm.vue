@@ -40,7 +40,7 @@ export default defineComponent({
     const handleSubmit = () => {
       register(form.value.email, form.value.password).then((msg) => {
         if (msg === "ok") {
-          router.push({ path: "/home" });
+          router.push({ path: "/" });
         } else errMsg.value = msg;
       });
     };

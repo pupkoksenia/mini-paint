@@ -4,31 +4,15 @@ import { useFireBase } from "../composables/useFireBase";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    component: () => import("../App.vue"),
-    children: [
-      {
-        path: "/home",
-        name: "Home",
-        component: () => import("../views/HomeView.vue"),
-        children: [],
-      },
-      {
-        path: "/authentication",
-        component: () => import("../views/AuthenticationView.vue"),
-        children: [
-          {
-            path: "/register",
-            name: "register",
-            component: () => import("../components/RegisterForm.vue"),
-          },
-          {
-            path: "/sign-in",
-            name: "sign-in",
-            component: () => import("../components/SignInForm.vue"),
-          },
-        ],
-      },
-    ],
+    component: () => import("../views/HomeView.vue"),
+  },
+  {
+    path: "/register",
+    component: () => import("../components/RegisterForm.vue"),
+  },
+  {
+    path: "/sign-in",
+    component: () => import("../components/SignInForm.vue"),
   },
 ];
 
@@ -40,14 +24,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const { state } = useFireBase();
 
-  if (
-    to.path === "/" &&
-    state.user.email === "" &&
-    from.path !== "/authentication"
-  )
-    next({ path: "/authentication" });
-  else if (to.path === "/" && state.user.email !== "" && from.path !== "/home")
-    next({ path: "/home" });
+  console.log("state.user.email", state.user.email);
+
+  if (to.path === "/" && state.user.email === "" && from.path !== "/sign-in")
+    next({ path: "/sign-in" });
   else next();
 });
 

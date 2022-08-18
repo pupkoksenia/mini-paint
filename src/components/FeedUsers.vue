@@ -1,5 +1,5 @@
 <template>
-<div class="pt-6">
+<div class="pt-6 ">
   <div class="flex justify-start inline-grid gap-1 grid-cols-1 grid-rows-3">
     <input type="text" placeholder="email" v-model="form.email" class="border-black border-2 rounded"/>
     <button
@@ -45,6 +45,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
+import Loader from "../Loader.vue";
 
 export default defineComponent({
   name: "FeedUsers",
@@ -82,6 +83,7 @@ export default defineComponent({
       deleteUserPaint(NameOfPaint, url);
       setFilterValue("");
     };
+
     onMounted(() => {
       getFeedPaints();
     });

@@ -17,8 +17,9 @@
       <input type="submit" @click="handleSubmit" value="Submit" class="w-60" />
     </form>
     <p v-if="errMsg">{{ errMsg }}</p>
+    <button v-on:click="redirectToRegister">Register</button>
   </div>
-</template>>
+</template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
@@ -40,15 +41,15 @@ export default defineComponent({
     const handleSubmit = () => {
       signIn(form.value.email, form.value.password).then((msg) => {
         if (msg === "ok") {
-          router.push({ path: "/home" });
+           router.push("/");
         } else errMsg.value = msg;
       });
     };
     const switchVisibility = () => {
       passwordFieldType.value =
         passwordFieldType.value === "password" ? "text" : "password";
-      localStorage.setItem("email", form.value.email)
-      localStorage.setItem("password",form.value.password)
+      localStorage.setItem("email", form.value.email);
+      localStorage.setItem("password", form.value.password);
     };
     const checkLocalStorage = () => {
       if (localStorage.getItem("email"))
@@ -57,7 +58,11 @@ export default defineComponent({
         form.value.password = localStorage.getItem("password") || "";
     };
     onMounted(() => checkLocalStorage());
-    return { form, handleSubmit, errMsg, switchVisibility, passwordFieldType };
+
+    const redirectToRegister = () => {
+        router.push("/register");
+    }
+    return { form, handleSubmit, errMsg, switchVisibility, passwordFieldType, redirectToRegister };
   },
 });
 </script>

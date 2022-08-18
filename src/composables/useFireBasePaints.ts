@@ -137,8 +137,7 @@ export const useFireBasePaints: () => FireBasePaints = () => {
             if (paint.nameOfPaint === NameOfPaint && paint.url === url)
               idOfPaint = index;
           }
-        );
-        getPaints.splice(idOfPaint, 1);
+        );        getPaints.splice(idOfPaint, 1);
 
         let id = 0
         statePaint.dataPaints.forEach(

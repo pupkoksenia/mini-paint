@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   Unsubscribe,
+  signOut,
 } from "firebase/auth";
 import { readonly, reactive, DeepReadonly } from "vue";
 
@@ -26,6 +27,7 @@ export interface FireBase {
   signIn: (email: string, password: string) => Promise<string>;
   register: (email: string, password: string) => Promise<string | undefined>;
   checkIsRegistred: Unsubscribe;
+  signOutFirebase: () => void;
 }
 
 export const useFireBase: () => FireBase = () => {
@@ -73,10 +75,19 @@ export const useFireBase: () => FireBase = () => {
       }
     });
 
+  const signOutFirebase = () => {
+    signOut(auth).then(() => {
+      console.log("okay");
+      state.user.email = "";
+      state.user.uid = "";
+    });
+  };
+
   return {
     state: readonly(state),
     signIn,
     register,
     checkIsRegistred,
+    signOutFirebase,
   };
 };

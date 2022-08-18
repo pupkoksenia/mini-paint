@@ -1,40 +1,33 @@
 <template>
-  <div class="pl-5 pt-6">
-    <button
-      v-for="tab in tabs"
-      v-bind:key="tab.name"
-      class="bg-neutral-300	border-2 py-0.5 px-0.5 border-black rounded"
-      v-on:click="currentTab = tab"
-    >
-      {{ tab.name }}
-    </button>
-    <component v-bind:is="currentTabComponent" class="tab"></component>
-  </div>
+  <HeaderPart @currentTabComponent = "(currTab: string) => setTabComponent(currTab)"/>
+  <component v-bind:is="currentTabComponent"></component>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
-import PaintPart from "../components/Paint.vue";
+import { defineComponent, ref, onMounted } from "vue";
+import HeaderPart from '../components/Header.vue'
 import FeedUsers from "../components/FeedUsers.vue";
+import PaintPart from "../components/Paint.vue";
 
 export default defineComponent({
   name: "HomeView",
   components: {
-    PaintPart,
+    HeaderPart,
     FeedUsers,
+    PaintPart,
   },
   setup() {
-    const currentTab = ref();
-    const tabs = ref([
-      { comp: "PaintPart", name: "Paint" },
-      { comp: "FeedUsers", name: "Feed" },
-    ]);
-    const currentTabComponent = computed(() => currentTab.value?.comp);
-
+    const currentTabComponent = ref()
     onMounted(() => {
-      currentTab.value = tabs.value[0];
+      currentTabComponent.value = "FeedUsers"
     });
-    return { currentTab, tabs, currentTabComponent };
-  },
+    const setTabComponent = (currTab: string) => {
+      if( currTab === "Feed") currentTabComponent.value = "FeedUsers"
+      else currentTabComponent.value = "PaintPart"
+
+    }
+    return {currentTabComponent, setTabComponent}
+
+  }
 });
 </script>

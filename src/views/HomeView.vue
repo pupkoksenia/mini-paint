@@ -1,6 +1,8 @@
 <template>
-  <HeaderPart @currentTabComponent = "(currTab: string) => setTabComponent(currTab)"/>
+<div class = "bg-gradient-to-t from-indigo-500/75 to-white">
+   <HeaderPart @currentTabComponent = "(currTab: string) => setTabComponent(currTab)"/>
   <component v-bind:is="currentTabComponent"></component>
+</div>
 </template>
 
 <script lang="ts">

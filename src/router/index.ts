@@ -5,6 +5,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     component: () => import("../views/HomeView.vue"),
+    //meta: {state: }
   },
   {
     path: "/register",
@@ -23,12 +24,22 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const { state } = useFireBase();
-
-  console.log("state.user.email", state.user.email);
-
-  if (to.path === "/" && state.user.email === "" && from.path !== "/sign-in")
-    next({ path: "/sign-in" });
+  console.log(to.path, from.path, localStorage.getItem("email"));
+  if (to.path === "/" && state.user.email === "" && from.path !== "/sign-in") next({ path: "/sign-in" });
+  else if (to.path === "/sign-in" &&  state.user.email !== "" ) next({ path: "/" });
   else next();
+  /*if (
+    to.path === "/" &&
+    localStorage.getItem("email") === "" &&
+    from.path !== "/sign-in"
+  )
+   
+  /*if (to.path === "/sign-in" && localStorage.getItem("email") !== "" )
+    next({ path: "/" });
+  if (to.path === "/register" && localStorage.getItem("email") !== "" )
+    next({ path: "/" });*/
+  
+  
 });
 
 export default router;

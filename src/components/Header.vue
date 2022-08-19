@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-8 w-screen h-16">
     <div class="col-span-1 justify-items-end">
-      <img src="../assets/62414.jpg" class="h-16" />
+      <img src="../assets/62414.jpg" class="h-16 mx-4" />
     </div>
     <div
       class="flex items-center justify-start col-span-3 text-cyan-700 font-bold"

@@ -73,11 +73,10 @@ export const useFireBase: () => FireBase = () => {
         state.user.email = user.email;
         state.user.uid = user.uid;
       }
-    });
+    })
 
   const signOutFirebase = () => {
     signOut(auth).then(() => {
-      console.log("okay");
       state.user.email = "";
       state.user.uid = "";
     });

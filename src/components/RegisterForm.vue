@@ -1,24 +1,56 @@
 <template>
-  <div class="grid gap-2 grid-cols-1 grid-rows-2 mt-3">
-    <form class="grid gap-2 grid-cols-1 grid-rows-2 mt-3">
-      <input
-        type="text"
-        placeholder="Email"
-        v-model="form.email"
-        class="border-black border-2 rounded w-60"
-      />
-      <input
-        :type="passwordFieldType"
-        placeholder="Password"
-        v-model="form.password"
-        class="border-black border-2 rounded w-60"
-      />
-      <button @click="switchVisibility" class="w-60">show / hide</button>
-      <input type="submit" @click="handleSubmit" value="Submit" class="w-60" />
+  <div
+    class="
+      w-screen
+      h-screen
+      flex
+      justify-center
+      items-center
+      bg-gradient-to-t
+      from-indigo-500/75
+      to-white
+    "
+  >
+    <form class="p-10 bg-white rounded-xl drop-shadow-lg space-y-5">
+      <h1 class="text-center text-3xl">Mini-paint</h1>
+      <div class="flex flex-col space-y-2">
+        <label class="text-sm font-light" for="email">Email</label>
+        <input
+          class="w-96 px-3 py-2 rounded-md border border-slate-400"
+          placeholder="Your Email"
+          v-model="form.email"
+        />
+      </div>
+      <div class="flex flex-col space-y-2">
+        <label class="text-sm font-light" for="password">Password</label>
+        <input
+          class="w-96 px-3 py-2 rounded-md border border-slate-400"
+          v-model="form.password"
+          placeholder="Your Password"
+        />
+      </div>
+      <button
+        class="
+          w-full
+          px-10
+          py-2
+          bg-blue-600
+          text-white
+          rounded-md
+          hover:bg-blue-500 hover:drop-shadow-md
+          duration-300
+          ease-in
+        "
+        @click="handleSubmit"
+        type="submit"
+      >
+        Log In
+      </button>
+      <p v-if="errMsg">{{ errMsg }}</p>
     </form>
-    <p v-if="errMsg">{{ errMsg }}</p>
   </div>
-</template>>
+</template>
+
 
 
 <script lang="ts">

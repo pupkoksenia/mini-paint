@@ -1,110 +1,101 @@
 <template>
-  <div class="pt-6">
+  <div class="pt-6 ml-4 w-screen h-screen">
     <input
       type="text"
       placeholder="Name of paint"
       v-model="NameOfPaint"
-      class="border-black border-2 rounded"
+      class="border-cyan-700 border-2 rounded"
     />
-    <canvas
-      id="canvas"
-      width="800"
-      height="400"
-      :style="{ 'background-color': backgroundColor }"
-      class="border-black border-2 rounded mt-3 "
-    />
+    <div class="grid gap-1 grid-cols-2 grid-rows-1 mt-3">
+      <canvas
+        id="canvas"
+        width="800"
+        height="500"
+        :style="{ 'background-color': backgroundColor }"
+        class="border-cyan-700 border-2 rounded mt-3"
+      />
 
-    <div class="grid gap-3 grid-cols-7 grid-rows-1  mt-3">
-      <span>
-        <p class="text-black font-thin">Background Color:</p>
-        <input
-          type="color"
-          v-model="backgroundColor"
-          class="py-0.1 px-0.1 rounded"
-        />
-      </span>
+      <div class="inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-4/6 ml-14">
+        <span>
+          <p class="text-black font-thin">Background Color:</p>
+          <input
+            type="color"
+            v-model="backgroundColor"
+            class="py-0.1 px-0.1 rounded"
+          />
+        </span>
 
-      <span>
-        <p class="text-black font-thin">Color:</p>
-        <input
-          type="color"
-          v-model="strokeStyle"
-          class="py-0.1 px-0.1 rounded"
-        />
-      </span>
+        <span>
+          <p class="text-black font-thin">Color:</p>
+          <input
+            type="color"
+            v-model="strokeStyle"
+            class="py-0.1 px-0.1 rounded"
+          />
+        </span>
 
-      <select
-        v-model="stateOfFigure"
-        class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
-      >
-        <option
-          v-for="n in arrayStateOfFigure"
-          :key="'option-' + n"
-          :value="n"
+        <select
+          v-model="stateOfFigure"
           class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
         >
-          {{ n }}
-        </option>
-      </select>
+          <option
+            v-for="n in arrayStateOfFigure"
+            :key="'option-' + n"
+            :value="n"
+            class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+          >
+            {{ n }}
+          </option>
+        </select>
 
-      <span
-        ><p class="text-black font-thin">Choose width:</p>
-        <input
-          type="range"
-          v-model="lineWidth"
-          min="1"
-          max="25"
-          @change="chooseLineWidth"
-      /></span>
+        <span
+          ><p class="text-black font-thin">Choose width:</p>
+          <input
+            type="range"
+            v-model="lineWidth"
+            min="1"
+            max="25"
+            @change="chooseLineWidth"
+        /></span>
 
-      <select
-        v-model="strokeType"
-        v-on:click="chooseStrokeType"
-        class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
-      >
-        <option
-          v-for="n in arrayStrokeType"
-          :key="'option-' + n"
-          :value="n"
+        <select
+          v-model="strokeType"
+          v-on:click="chooseStrokeType"
           class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
         >
-          {{ n }}
-        </option>
-      </select>
-    </div>
+          <option
+            v-for="n in arrayStrokeType"
+            :key="'option-' + n"
+            :value="n"
+            class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+          >
+            {{ n }}
+          </option>
+        </select>
+        <button @click="clearStrokes" class="button-paint">clearStrokes</button>
 
-    <div class="grid gap-3 grid-cols-7 grid-rows-1  mt-3">
-      <button
-        @click="clearStrokes"
-        class="button-paint"
-      >
-        clearStrokes
-      </button>
+        <button @click="imageOnServer" class="button-paint">
+          Save image on server
+        </button>
+        <button @click="imageOnComp" class="button-paint">
+          Save image on computer
+        </button>
+        <button @click="unDo" class="button-paint">unDo</button>
+        <button @click="reDo" class="button-paint">reDo</button>
+      </div>
 
-      <button
-        @click="imageOnServer"
-        class="button-paint"
-      >
-        Save image on server
-      </button>
-      <button
-        @click="imageOnComp"
-        class="button-paint"
-      >
-        Save image on computer
-      </button>
-      <button
-        @click="unDo"
-        class="button-paint"
-      >
-        unDo
-      </button>
-      <button
-        @click="reDo"
-        class="button-paint"
-      >
-        reDo
-      </button>
+      <!--div class="grid gap-3 grid-cols-7 grid-rows-1 mt-3">
+        <button @click="clearStrokes" class="button-paint">clearStrokes</button>
+
+        <button @click="imageOnServer" class="button-paint">
+          Save image on server
+        </button>
+        <button @click="imageOnComp" class="button-paint">
+          Save image on computer
+        </button>
+        <button @click="unDo" class="button-paint">unDo</button>
+        <button @click="reDo" class="button-paint">reDo</button>
+      </div-->
     </div>
   </div>
 </template>

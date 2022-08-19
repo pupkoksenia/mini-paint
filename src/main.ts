@@ -13,5 +13,6 @@ const { firebaseConfig } = createFirebaseConfig();
 const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
 export const db = getFirestore(app);
+
 const { checkIsRegistred } = useFireBase();
-checkIsRegistred();
+checkIsRegistred()

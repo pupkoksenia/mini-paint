@@ -1,21 +1,29 @@
 <template>
- <div class="lds-dual-ring"></div>
+  <div v-if="$props.isLoading === true" class="lds-dual-ring"></div>
+  <div v-else class="hidden"></div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
-
 export default defineComponent({
   name: "LoaderElement",
+  props: {
+    isLoading: Boolean,
+  },
+  setup(props) {
+    return props.isLoading;
+  },
 });
 </script>
 
 <style>
 .lds-dual-ring {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 200px;
+  width: 100wv;
+  height: 100hv;
 }
 .lds-dual-ring:after {
   content: " ";
@@ -24,8 +32,8 @@ export default defineComponent({
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid black;
-  border-color: black transparent black transparent;
+  border: 6px solid blue;
+  border-color:  blue transparent  blue transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {

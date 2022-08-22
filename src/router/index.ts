@@ -1,4 +1,4 @@
-import { ref } from "vue";
+
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { useFireBase } from "../composables/useFireBase";
 
@@ -15,6 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/sign-in",
     component: () => import("../components/SignInForm.vue"),
   },
+  { path: '/:pathMatch(.*)*', component: () => import("../components/NotFound.vue"), }
 ];
 
 const router = createRouter({

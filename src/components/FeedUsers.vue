@@ -21,8 +21,20 @@
           <img
             :src="paint.urlOfPaint"
             v-on:click="goToPaint(paint.urlOfPaint)"
-            class="px-3 py-2 rounded-md border border-slate-400 w-11/12 bg-white"
+            class="
+              px-3
+              py-2
+              rounded-md
+              border border-slate-400
+              w-11/12
+              bg-white
+            "
           />
+             <ModalWindow
+              :open="isOpen"
+              :urlOfpaint="urlOfpaint"
+              @open="(isOpened: boolean) => setOpen(isOpened)"
+            />
           <div class="text-black w-full">
             {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
 
@@ -46,6 +58,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "./Loader.vue";
+import ModalWindow from "../components/ModalWindowPaint.vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -58,21 +71,21 @@ export default defineComponent({
       email: "",
     });
     const loadingListener = ref();
-     const router = useRouter();
+    const isOpen = ref();
+    const urlOfpaint = ref();
+    const router = useRouter();
     const handleSubmit = () => {
       setFilterValue(form.value.email);
     };
     const handleReset = () => {
       setFilterValue("");
     };
-    const goToPaint = (urlOfPaint: string) => {
-      window
-        .open()
-        ?.document.write(
-          '<iframe src="' +
-            urlOfPaint +
-            '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>'
-        );
+    const goToPaint = (urlPaint: string) => {
+      isOpen.value = true;
+      urlOfpaint.value = urlPaint;
+    };
+    const setOpen = (isOpened: boolean) => {
+      isOpen.value = isOpened;
     };
     const deleteButton = (NameOfPaint: string, url: string) => {
       deleteUserPaint(NameOfPaint, url);
@@ -82,6 +95,7 @@ export default defineComponent({
     onMounted(() => {
       loadingListener.value = true;
       getFeedPaints().then(() => (loadingListener.value = false));
+      isOpen.value = false;
     });
     return {
       handleSubmit,
@@ -92,8 +106,11 @@ export default defineComponent({
       state,
       deleteButton,
       loadingListener,
+      setOpen,
+      urlOfpaint,
+      isOpen,
     };
   },
-  components: { Loader },
+  components: { Loader, ModalWindow },
 });
 </script>

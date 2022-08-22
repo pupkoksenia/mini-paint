@@ -71,7 +71,6 @@ export const useFireBase: () => FireBase = () => {
     return new Promise((resolve, reject) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log('aaaa')
           state.user.email = user.email;
           state.user.uid = user.uid;
           resolve(true)

@@ -11,7 +11,7 @@
       to-white
     "
   >
-    <form class="p-10 bg-white rounded-xl drop-shadow-lg space-y-5">
+    <div class="p-10 bg-white rounded-xl drop-shadow-lg space-y-5">
       <h1 class="text-center text-3xl">Mini-paint</h1>
       <div class="flex flex-col space-y-2">
         <label class="text-sm font-light" for="email">Email</label>
@@ -41,13 +41,12 @@
           duration-300
           ease-in
         "
-        @click="handleSubmit"
-        type="submit"
+        @click="sendInfo"
       >
         Log In
       </button>
       <p v-if="errMsg">{{ errMsg }}</p>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -69,7 +68,7 @@ export default defineComponent({
     const errMsg = ref();
     const router = useRouter();
     const passwordFieldType = ref("password");
-    const handleSubmit = () => {
+    const sendInfo = () => {
       register(form.value.email, form.value.password).then((msg) => {
         if (msg === "ok") {
           router.push({ path: "/" });
@@ -80,7 +79,7 @@ export default defineComponent({
       passwordFieldType.value =
         passwordFieldType.value === "password" ? "text" : "password";
     };
-    return { form, handleSubmit, errMsg, switchVisibility, passwordFieldType };
+    return { form, sendInfo, errMsg, switchVisibility, passwordFieldType };
   },
 });
 </script>

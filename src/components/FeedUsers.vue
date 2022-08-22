@@ -46,6 +46,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "./Loader.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "FeedUsers",
@@ -53,11 +54,11 @@ export default defineComponent({
     const { getFeedPaints, sortedFeedPaints, setFilterValue, deleteUserPaint } =
       useFireBasePaints();
     const { state } = useFireBase();
-     console.log(state.user)
     const form = ref({
       email: "",
     });
     const loadingListener = ref();
+     const router = useRouter();
     const handleSubmit = () => {
       setFilterValue(form.value.email);
     };
@@ -75,6 +76,7 @@ export default defineComponent({
     };
     const deleteButton = (NameOfPaint: string, url: string) => {
       deleteUserPaint(NameOfPaint, url);
+      router.push("/sign-in");
       setFilterValue("");
     };
     onMounted(() => {

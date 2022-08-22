@@ -26,7 +26,7 @@ export interface FireBase {
   state: DeepReadonly<typeof state>;
   signIn: (email: string, password: string) => Promise<string>;
   register: (email: string, password: string) => Promise<string | undefined>;
-  checkIsRegistred: Unsubscribe;
+  checkIsRegistred: () => Promise<unknown>;
   signOutFirebase: () => void;
 }
 
@@ -67,13 +67,18 @@ export const useFireBase: () => FireBase = () => {
         }
       });
 
-  const checkIsRegistred = () =>
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        state.user.email = user.email;
-        state.user.uid = user.uid;
-      }
-    })
+  const checkIsRegistred = () => {
+    return new Promise((resolve, reject) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          console.log('aaaa')
+          state.user.email = user.email;
+          state.user.uid = user.uid;
+          resolve(true)
+        }else reject(false)
+      });
+    });
+  };
 
   const signOutFirebase = () => {
     signOut(auth).then(() => {

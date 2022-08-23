@@ -13,7 +13,7 @@
       class="flex items-center justify-start col-span-1 text-cyan-700 font-bold"
       v-on:click="$emit('currentTabComponent', tabs[0])"
     >
-      {{ tabs[0]}}
+      {{ tabs[0] }}
     </button>
 
     <button
@@ -23,7 +23,12 @@
       {{ tabs[1] }}
     </button>
 
-        <button v-on:click="signOutUser" class="flex items-center justify-start col-span-1 text-cyan-700 font-bold">Log Out</button>
+    <button
+      v-on:click="signOutUser"
+      class="flex items-center justify-start col-span-1 text-cyan-700 font-bold"
+    >
+      Log Out
+    </button>
   </div>
 </template>
 
@@ -36,17 +41,17 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   name: "HeaderPart",
   setup() {
-
-    const tabs = ref(["Paint","Feed"]);
+    const tabs = ref(["Paint", "Feed"]);
     const { state, signOutFirebase } = useFireBase();
     const router = useRouter();
+
 
     const signOutUser = () => {
       signOutFirebase();
       router.push("/sign-in");
     };
 
-    return { tabs, state, signOutUser };
+    return { tabs, state, signOutUser};
   },
 });
 </script>

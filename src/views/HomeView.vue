@@ -1,5 +1,5 @@
 <template>
-<div class = "bg-gradient-to-t from-indigo-500/75 to-white">
+<div class = "bg-gradient-to-t from-indigo-500/75 to-white w-screen max-h-fit min-h-screen">
    <HeaderPart @currentTabComponent = "(currTab: string) => setTabComponent(currTab)"/>
   <component v-bind:is="currentTabComponent"></component>
 </div>

@@ -11,7 +11,6 @@
       <button @click="handleReset" class="button-paint">Reset</button>
     </div>
     <div class="flex justify-center pt-6 inline-grid gap-3 grid-cols-2">
-      <Loader v-bind:isLoading="loadingListener" />
       <div
         v-for="paint in sortedFeedPaints"
         :key="paint.toString"
@@ -51,6 +50,7 @@
       </div>
     </div>
   </div>
+   <Loader v-bind:isLoading="loadingListener" />
 </template>
 
 <script lang="ts">

@@ -19,9 +19,8 @@ export default defineComponent({
 
 <style>
 .lds-dual-ring {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 200px;
+  margin-left: 45%;
+  margin-top: 15%;
   width: 100wv;
   height: 100hv;
 }
@@ -32,8 +31,8 @@ export default defineComponent({
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid blue;
-  border-color:  blue transparent  blue transparent;
+  border: 6px solid #6366f1;
+  border-color: #6366f1 transparent #6366f1 transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {

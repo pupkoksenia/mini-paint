@@ -83,19 +83,6 @@
         <button @click="unDo" class="button-paint">unDo</button>
         <button @click="reDo" class="button-paint">reDo</button>
       </div>
-
-      <!--div class="grid gap-3 grid-cols-7 grid-rows-1 mt-3">
-        <button @click="clearStrokes" class="button-paint">clearStrokes</button>
-
-        <button @click="imageOnServer" class="button-paint">
-          Save image on server
-        </button>
-        <button @click="imageOnComp" class="button-paint">
-          Save image on computer
-        </button>
-        <button @click="unDo" class="button-paint">unDo</button>
-        <button @click="reDo" class="button-paint">reDo</button>
-      </div-->
     </div>
   </div>
 </template>

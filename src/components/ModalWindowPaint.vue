@@ -1,15 +1,16 @@
 <template>
-  <div class="container mx-auto">
-    <div class="flex justify-center">
+  <div class="flex justify-center content-center ">
+    <div class="flex justify-center content-center">
       <div
         v-show="$props.open"
         class="
+          min-h-screen-2xl
           absolute
           inset-0
           flex
           items-center
           justify-center
-          bg-gray-700 bg-opacity-50
+          bg-indigo-200 bg-opacity-30
         "
       >
         <div class="max-w-2xl p-6 mx-4 bg-white rounded-md shadow-xl">
@@ -56,11 +57,8 @@ export default defineComponent({
   name: "ModalWindow",
   props: {
     open: Boolean,
-    urlOfpaint: String
+    urlOfpaint: String,
   },
-  setup(props){
-    console.log(props.open)
-  }
 });
 </script>
 

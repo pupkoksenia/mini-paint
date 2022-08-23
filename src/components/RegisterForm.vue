@@ -75,11 +75,7 @@ export default defineComponent({
         } else errMsg.value = msg;
       });
     };
-    const switchVisibility = () => {
-      passwordFieldType.value =
-        passwordFieldType.value === "password" ? "text" : "password";
-    };
-    return { form, sendInfo, errMsg, switchVisibility, passwordFieldType };
+    return { form, sendInfo, errMsg, passwordFieldType };
   },
 });
 </script>

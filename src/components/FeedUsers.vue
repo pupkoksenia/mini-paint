@@ -16,6 +16,11 @@
         :key="paint.toString"
         class="inline-grid gap-1 grid-cols-1"
       >
+         <ModalWindow
+              :open="isOpen"
+              :urlOfpaint="urlOfpaint"
+              @open="(isOpened: boolean) => setOpen(isOpened)"
+            />
         <div>
           <img
             :src="paint.urlOfPaint"
@@ -29,11 +34,6 @@
               bg-white
             "
           />
-             <ModalWindow
-              :open="isOpen"
-              :urlOfpaint="urlOfpaint"
-              @open="(isOpened: boolean) => setOpen(isOpened)"
-            />
           <div class="text-black w-full">
             {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
 

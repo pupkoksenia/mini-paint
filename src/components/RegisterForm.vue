@@ -81,7 +81,7 @@ export default defineComponent({
     };
 
     const redirectToSignIn = () => {
-      router.push("/register");
+      router.push("/sign-in");
     };
     return { form, sendInfo, errMsg, passwordFieldType, redirectToSignIn };
   },

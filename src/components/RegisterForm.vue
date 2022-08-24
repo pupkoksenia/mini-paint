@@ -44,10 +44,10 @@
         "
         @click="sendInfo"
       >
-        Log In
+        Register
       </button>
       <p v-if="errMsg">{{ errMsg }}</p>
-      <div v-on:click="redirectToSignIn" class="">
+      <div v-on:click="redirectToSignIn" class="text-blue-600 cursor-pointer">
         Already have an account? Sign-in!
       </div>
     </div>

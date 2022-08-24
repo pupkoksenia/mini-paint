@@ -47,7 +47,7 @@
         Sign In
       </button>
       <p v-if="errMsg">{{ errMsg }}</p>
-      <div v-on:click="redirectToRegister" class="">
+      <div v-on:click="redirectToRegister" class="text-blue-600 cursor-pointer">
         Don't have an account? Register!
       </div>
     </div>

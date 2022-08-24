@@ -10,12 +10,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/register",
     component: () => import("../components/RegisterForm.vue"),
-    meta: { auth: false },
   },
   {
     path: "/sign-in",
     component: () => import("../components/SignInForm.vue"),
-    meta: { auth: false },
   },
   {
     path: "/:pathMatch(.*)*",

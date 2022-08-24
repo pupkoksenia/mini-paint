@@ -24,6 +24,7 @@
       <div class="flex flex-col space-y-2">
         <label class="text-sm font-light" for="password">Password</label>
         <input
+          type="password"
           class="w-96 px-3 py-2 rounded-md border border-slate-400"
           v-model="form.password"
           placeholder="Your Password"
@@ -46,6 +47,9 @@
         Log In
       </button>
       <p v-if="errMsg">{{ errMsg }}</p>
+      <div v-on:click="redirectToSignIn" class="">
+        Already have an account? Sign-in!
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +79,11 @@ export default defineComponent({
         } else errMsg.value = msg;
       });
     };
-    return { form, sendInfo, errMsg, passwordFieldType };
+
+    const redirectToSignIn = () => {
+      router.push("/register");
+    };
+    return { form, sendInfo, errMsg, passwordFieldType, redirectToSignIn };
   },
 });
 </script>

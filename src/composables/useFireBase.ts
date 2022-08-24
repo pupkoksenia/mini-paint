@@ -3,9 +3,10 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
-  Unsubscribe,
   signOut,
 } from "firebase/auth";
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
+import { db } from "../main";
 import { readonly, reactive, DeepReadonly } from "vue";
 
 export interface State {
@@ -58,6 +59,22 @@ export const useFireBase: () => FireBase = () => {
       .then((userCredential) => {
         state.user.email = userCredential.user.email;
         state.user.uid = userCredential.user.uid;
+
+        let id:string
+
+        getDocs(collection(db, "users"))
+          .then((docs) => (id = docs.size.toString()))
+          .then(() => {
+            setDoc(
+              doc(db, "users", id),
+              {
+                name: userCredential.user.email,
+                paints: [],
+              },
+              { merge: true }
+            );
+          });
+
         return "ok";
       })
       .catch((error) => {
@@ -73,8 +90,8 @@ export const useFireBase: () => FireBase = () => {
         if (user) {
           state.user.email = user.email;
           state.user.uid = user.uid;
-          resolve(true)
-        }else reject(false)
+          resolve(true);
+        } else reject(false);
       });
     });
   };

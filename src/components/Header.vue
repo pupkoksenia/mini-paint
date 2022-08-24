@@ -45,13 +45,12 @@ export default defineComponent({
     const { state, signOutFirebase } = useFireBase();
     const router = useRouter();
 
-
     const signOutUser = () => {
       signOutFirebase();
       router.push("/sign-in");
     };
 
-    return { tabs, state, signOutUser};
+    return { tabs, state, signOutUser };
   },
 });
 </script>

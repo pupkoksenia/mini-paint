@@ -3,8 +3,10 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
-  Unsubscribe,
+  signOut,
 } from "firebase/auth";
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
+import { db } from "../main";
 import { readonly, reactive, DeepReadonly } from "vue";
 
 export interface State {
@@ -25,7 +27,8 @@ export interface FireBase {
   state: DeepReadonly<typeof state>;
   signIn: (email: string, password: string) => Promise<string>;
   register: (email: string, password: string) => Promise<string | undefined>;
-  checkIsRegistred: Unsubscribe;
+  checkIsRegistred: () => Promise<unknown>;
+  signOutFirebase: () => void;
 }
 
 export const useFireBase: () => FireBase = () => {
@@ -56,6 +59,22 @@ export const useFireBase: () => FireBase = () => {
       .then((userCredential) => {
         state.user.email = userCredential.user.email;
         state.user.uid = userCredential.user.uid;
+
+        let id:string
+
+        getDocs(collection(db, "users"))
+          .then((docs) => (id = docs.size.toString()))
+          .then(() => {
+            setDoc(
+              doc(db, "users", id),
+              {
+                name: userCredential.user.email,
+                paints: [],
+              },
+              { merge: true }
+            );
+          });
+
         return "ok";
       })
       .catch((error) => {
@@ -65,18 +84,30 @@ export const useFireBase: () => FireBase = () => {
         }
       });
 
-  const checkIsRegistred = () =>
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        state.user.email = user.email;
-        state.user.uid = user.uid;
-      }
+  const checkIsRegistred = () => {
+    return new Promise((resolve, reject) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          state.user.email = user.email;
+          state.user.uid = user.uid;
+          resolve(true);
+        } else reject(false);
+      });
     });
+  };
+
+  const signOutFirebase = () => {
+    signOut(auth).then(() => {
+      state.user.email = "";
+      state.user.uid = "";
+    });
+  };
 
   return {
     state: readonly(state),
     signIn,
     register,
     checkIsRegistred,
+    signOutFirebase,
   };
 };

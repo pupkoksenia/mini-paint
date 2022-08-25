@@ -10,11 +10,4 @@ export default defineComponent({
 });
 </script>
 
-<style>
-#app {
-  background-color: black;
-  width: 100vw;
-  height: 100vh;
-}
-</style>
 

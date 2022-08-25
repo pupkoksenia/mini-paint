@@ -1,76 +1,35 @@
 <template>
-  <div id="dynamic-component-demo" class="demo">
-    <button
-      v-for="tab in tabs"
-      v-bind:key="tab.name"
-      v-bind:class="['tab-button', { active: currentTab === tab }]"
-      v-on:click="currentTab = tab"
-    >
-      {{ tab.name }}
-    </button>
-    <component v-bind:is="currentTabComponent" class="tab"></component>
-  </div>
+<div class = "bg-gradient-to-t from-indigo-500/75 dark:bg-purple-900 to-white dark:to-black w-screen max-h-fit min-h-screen">
+   <HeaderPart @currentTabComponent = "(currTab: string) => setTabComponent(currTab)"/>
+  <component v-bind:is="currentTabComponent"></component>
+</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
-import PaintPart from "../components/Paint.vue";
+import { defineComponent, ref, onMounted } from "vue";
+import HeaderPart from '../components/Header.vue'
 import FeedUsers from "../components/FeedUsers.vue";
+import PaintPart from "../components/Paint.vue";
 
 export default defineComponent({
   name: "HomeView",
   components: {
-    PaintPart,
+    HeaderPart,
     FeedUsers,
+    PaintPart,
   },
   setup() {
-    const currentTab = ref();
-    const tabs = ref([
-      { comp: "PaintPart", name: "Paint" },
-      { comp: "FeedUsers", name: "Feed" },
-    ]);
-    const currentTabComponent = computed(() => currentTab.value?.comp);
-
+    const currentTabComponent = ref()
     onMounted(() => {
-      currentTab.value = tabs.value[0];
+      currentTabComponent.value = "FeedUsers"
     });
-    return { currentTab, tabs, currentTabComponent };
-  },
+    const setTabComponent = (currTab: string) => {
+      if( currTab === "Feed") currentTabComponent.value = "FeedUsers"
+      else currentTabComponent.value = "PaintPart"
+
+    }
+    return {currentTabComponent, setTabComponent}
+
+  }
 });
 </script>
-
-<style>
-.demo {
-  font-family: sans-serif;
-  border: 1px solid #eee;
-  border-radius: 2px;
-  padding: 20px 30px;
-  margin-top: 1em;
-  margin-bottom: 40px;
-  user-select: none;
-  overflow-x: auto;
-  height: 100%;
-  background-color: black;
-}
-
-.tab-button {
-  padding: 6px 10px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  background: #f0f0f0;
-  margin-bottom: -1px;
-  margin-right: -1px;
-}
-.tab-button:hover {
-  background: #e0e0e0;
-}
-.tab-button.active {
-  background: #e0e0e0;
-}
-.demo-tab {
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-</style>

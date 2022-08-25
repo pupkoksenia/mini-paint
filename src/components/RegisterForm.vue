@@ -1,18 +1,80 @@
 <template>
-  <div class="register-form">
-    <form>
-      <input type="text" placeholder="Email" v-model="form.email" />
-      <input
-        :type="passwordFieldType"
-        placeholder="Password"
-        v-model="form.password"
-      />
-      <button @click="switchVisibility">show / hide</button>
-      <input type="submit" @click="handleSubmit" value="Submit" />
-    </form>
-    <p v-if="errMsg">{{ errMsg }}</p>
+  <div
+    class="
+      w-screen
+      h-screen
+      flex
+      justify-center
+      items-center
+      bg-gradient-to-t
+      from-indigo-500/75
+      to-white
+    "
+  >
+    <div class="p-10 bg-white rounded-xl drop-shadow-lg space-y-5">
+      <h1 class="text-center text-3xl dark:text-white">Mini-paint</h1>
+      <DarkMode />
+      <div class="flex flex-col space-y-2">
+        <label class="text-sm font-light" for="email dark:text-white"
+          >Email</label
+        >
+        <input
+          class="
+            w-96
+            px-3
+            py-2
+            rounded-md
+            border border-slate-400
+            dark:text-white dark:bg-violet-500
+          "
+          placeholder="Your Email"
+          v-model="form.email"
+        />
+      </div>
+      <div class="flex flex-col space-y-2">
+        <label class="text-sm font-light dark:text-white" for="password"
+          >Password</label
+        >
+        <input
+          type="password"
+          class="
+            w-96
+            px-3
+            py-2
+            rounded-md
+            border border-slate-400
+            dark:text-white dark:bg-violet-500
+          "
+          v-model="form.password"
+          placeholder="Your Password"
+        />
+      </div>
+      <button
+        class="
+          w-full
+          px-10
+          py-2
+          bg-blue-600
+          text-white
+          rounded-md
+          hover:bg-blue-500 hover:drop-shadow-md
+          duration-300
+          ease-in
+          dark:bg-violet-500
+        "
+        @click="sendInfo"
+      >
+        Register
+      </button>
+      <p v-if="errMsg" class="dark:text-white">{{ errMsg }}</p>
+      <div v-on:click="redirectToSignIn" class="text-blue-600 cursor-pointer dark:text-white">
+        Already have an account? Sign-in!
+      </div>
+    </div>
   </div>
 </template>
+
+
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
@@ -30,25 +92,18 @@ export default defineComponent({
     const errMsg = ref();
     const router = useRouter();
     const passwordFieldType = ref("password");
-    const handleSubmit = () => {
+    const sendInfo = () => {
       register(form.value.email, form.value.password).then((msg) => {
         if (msg === "ok") {
-          router.push({ path: "/home" });
+          router.push({ path: "/" });
         } else errMsg.value = msg;
       });
     };
-    const switchVisibility = () => {
-      passwordFieldType.value =
-        passwordFieldType.value === "password" ? "text" : "password";
+
+    const redirectToSignIn = () => {
+      router.push("/sign-in");
     };
-    return { form, handleSubmit, errMsg, switchVisibility, passwordFieldType };
+    return { form, sendInfo, errMsg, passwordFieldType, redirectToSignIn };
   },
 });
 </script>
-
-<style>
-.register-form {
-  padding-left: 10;
-  color: white;
-}
-</style>

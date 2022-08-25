@@ -1,50 +1,90 @@
 <template>
-  <p><input type="text" placeholder="Name of paint" v-model="NameOfPaint" /></p>
-  <canvas
-    id="canvas"
-    width="800"
-    height="400"
-    :style="{ 'background-color': backgroundColor }"
-  />
-
-  <span>
-    <p :style="{ color: 'white' }">Background Color:</p>
-    <input type="color" v-model="backgroundColor" />
-  </span>
-
-  <span>
-    <p :style="{ color: 'white' }">Color:</p>
-    <input type="color" v-model="strokeStyle" />
-  </span>
-
-  <select v-model="stateOfFigure">
-    <option v-for="n in arrayStateOfFigure" :key="'option-' + n" :value="n">
-      {{ n }}
-    </option>
-  </select>
-
-  <span
-    ><p :style="{ color: 'white' }">Choose width:</p>
+  <div class="pt-6 ml-4 w-screen h-screen">
     <input
-      type="range"
-      v-model="lineWidth"
-      min="1"
-      max="25"
-      @change="chooseLineWidth"
-  /></span>
+      type="text"
+      placeholder="Name of paint"
+      v-model="NameOfPaint"
+      class="border-cyan-700 border-2 rounded"
+    />
+    <div class="grid gap-1 grid-cols-2 grid-rows-1 mt-3">
+      <canvas
+        id="canvas"
+        width="800"
+        height="500"
+        :style="{ 'background-color': backgroundColor }"
+        class="border-cyan-700 border-2 rounded mt-3"
+      />
 
-  <select v-model="strokeType" v-on:click="chooseStrokeType">
-    <option v-for="n in arrayStrokeType" :key="'option-' + n" :value="n">
-      {{ n }}
-    </option>
-  </select>
+      <div class="inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-4/6 ml-14">
+        <span>
+          <p class="text-black font-thin dark:text-white">Background Color:</p>
+          <input
+            type="color"
+            v-model="backgroundColor"
+            class="py-0.1 px-0.1 rounded"
+          />
+        </span>
 
-  <button @click="clearStrokes">clearStrokes</button>
+        <span>
+          <p class="text-black font-thin  dark:text-white">Color:</p>
+          <input
+            type="color"
+            v-model="strokeStyle"
+            class="py-0.1 px-0.1 rounded"
+          />
+        </span>
 
-  <button @click="imageOnServer">Save image on server</button>
-  <button @click="imageOnComp">Save image on computer</button>
-  <button @click="unDo">unDo</button>
-  <button @click="reDo">reDo</button>
+        <select
+          v-model="stateOfFigure"
+          class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+        >
+          <option
+            v-for="n in arrayStateOfFigure"
+            :key="'option-' + n"
+            :value="n"
+            class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+          >
+            {{ n }}
+          </option>
+        </select>
+
+        <span
+          ><p class="text-black font-thin dark:text-white">Choose width:</p>
+          <input
+            type="range"
+            v-model="lineWidth"
+            min="1"
+            max="25"
+            @change="chooseLineWidth"
+        /></span>
+
+        <select
+          v-model="strokeType"
+          v-on:click="chooseStrokeType"
+          class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+        >
+          <option
+            v-for="n in arrayStrokeType"
+            :key="'option-' + n"
+            :value="n"
+            class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+          >
+            {{ n }}
+          </option>
+        </select>
+        <button @click="clearStrokes" class="button-paint">clearStrokes</button>
+
+        <button @click="imageOnServer" class="button-paint">
+          Save image on server
+        </button>
+        <button @click="imageOnComp" class="button-paint">
+          Save image on computer
+        </button>
+        <button @click="unDo" class="button-paint">unDo</button>
+        <button @click="reDo" class="button-paint">reDo</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -105,10 +145,14 @@ export default defineComponent({
 
     let n = 0;
     const unDo = () => {
-      n = n + 1;
-      if (n > 0) {
-        context.value.putImageData(history.value.at(-n), 0, 0);
-      }
+      if (n === 0) {
+        toHistoryPush();
+        n = n + 2;
+      } else if (n === 1) {
+        toHistoryPush();
+        n = n + 1;
+      } else n = n + 1;
+      context.value.putImageData(history.value.at(-n), 0, 0);
     };
 
     const reDo = () => {
@@ -161,7 +205,6 @@ export default defineComponent({
         canvas.value.height
       );
     };
-
 
     const clearStrokes = () => {
       canvas.value.onmousedown = function (e: MouseEvent) {
@@ -240,6 +283,8 @@ export default defineComponent({
               Math.abs(x.value - x2.value),
               Math.abs(y.value - y2.value)
             );
+            context.value.closePath();
+            context.value.fillStyle = strokeStyleValue.value;
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();
@@ -277,6 +322,8 @@ export default defineComponent({
             context.value.lineTo(x2.value, Math.abs(y.value - y2.value));
             context.value.moveTo(x2.value, Math.abs(y.value - y2.value));
             context.value.lineTo(x.value, y.value);
+            context.value.closePath();
+            context.value.fillStyle = strokeStyleValue.value;
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();
@@ -312,13 +359,16 @@ export default defineComponent({
               canvas.value.width,
               canvas.value.height
             );
+            context.value.beginPath();
             context.value.putImageData(imgData.value, 0, 0);
             context.value.moveTo(x.value, y.value);
-            context.value.arc(x.value, y.value, radius, 0, 2 * Math.PI, false);
+            context.value.arc(x.value, y.value, radius, 0, Math.PI * 2, false);
+            context.value.fillStyle = strokeStyleValue.value;
             stateOfFigure.value === "stroke"
               ? context.value.stroke()
               : context.value.fill();
           };
+          context.value.closePath();
 
           if (e.buttons > 0) {
             makeCircle();

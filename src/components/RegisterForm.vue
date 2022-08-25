@@ -8,14 +8,25 @@
       items-center
       bg-gradient-to-t
       from-indigo-500/75
+      dark:bg-purple-900
       to-white
+      dark:to-black
     "
   >
-    <div class="p-10 bg-white rounded-xl drop-shadow-lg space-y-5">
+    <div
+      class="
+        p-10
+        bg-white
+        dark:bg-purple-900
+        rounded-xl
+        drop-shadow-lg
+        space-y-5
+      "
+    >
       <h1 class="text-center text-3xl dark:text-white">Mini-paint</h1>
       <DarkMode />
       <div class="flex flex-col space-y-2">
-        <label class="text-sm font-light" for="email dark:text-white"
+        <label class="text-sm font-light dark:text-white" for="email"
           >Email</label
         >
         <input
@@ -25,7 +36,7 @@
             py-2
             rounded-md
             border border-slate-400
-            dark:text-white dark:bg-violet-500
+            dark:bg-purple-900 dark:text-white
           "
           placeholder="Your Email"
           v-model="form.email"
@@ -43,7 +54,7 @@
             py-2
             rounded-md
             border border-slate-400
-            dark:text-white dark:bg-violet-500
+            dark:bg-purple-900 dark:text-white
           "
           v-model="form.password"
           placeholder="Your Password"
@@ -67,7 +78,10 @@
         Register
       </button>
       <p v-if="errMsg" class="dark:text-white">{{ errMsg }}</p>
-      <div v-on:click="redirectToSignIn" class="text-blue-600 cursor-pointer dark:text-white">
+      <div
+        v-on:click="redirectToSignIn"
+        class="text-blue-600 cursor-pointer dark:text-white"
+      >
         Already have an account? Sign-in!
       </div>
     </div>
@@ -80,9 +94,13 @@
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useFireBase } from "../composables/useFireBase";
+import DarkMode from "../components/ButtonDarkMode.vue";
 
 export default defineComponent({
   name: "RegisterForm",
+  components: {
+    DarkMode,
+  },
   setup() {
     const { register } = useFireBase();
     const form = ref({

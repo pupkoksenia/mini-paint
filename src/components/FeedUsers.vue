@@ -34,7 +34,7 @@
               bg-white
             "
           />
-          <div class="text-black w-full">
+          <div class="text-black w-full dark:text-white">
             {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
 
             <button

@@ -12,20 +12,39 @@
     "
   >
     <div class="p-10 bg-white rounded-xl drop-shadow-lg space-y-5">
-      <h1 class="text-center text-3xl">Mini-paint</h1>
+      <h1 class="text-center text-3xl dark:text-white">Mini-paint</h1>
+      <DarkMode />
       <div class="flex flex-col space-y-2">
-        <label class="text-sm font-light" for="email">Email</label>
+        <label class="text-sm font-light" for="email dark:text-white"
+          >Email</label
+        >
         <input
-          class="w-96 px-3 py-2 rounded-md border border-slate-400"
+          class="
+            w-96
+            px-3
+            py-2
+            rounded-md
+            border border-slate-400
+            dark:text-white dark:bg-violet-500
+          "
           placeholder="Your Email"
           v-model="form.email"
         />
       </div>
       <div class="flex flex-col space-y-2">
-        <label class="text-sm font-light" for="password">Password</label>
+        <label class="text-sm font-light dark:text-white" for="password"
+          >Password</label
+        >
         <input
           type="password"
-          class="w-96 px-3 py-2 rounded-md border border-slate-400"
+          class="
+            w-96
+            px-3
+            py-2
+            rounded-md
+            border border-slate-400
+            dark:text-white dark:bg-violet-500
+          "
           v-model="form.password"
           placeholder="Your Password"
         />
@@ -41,13 +60,14 @@
           hover:bg-blue-500 hover:drop-shadow-md
           duration-300
           ease-in
+          dark:bg-violet-500
         "
         @click="sendInfo"
       >
         Register
       </button>
-      <p v-if="errMsg">{{ errMsg }}</p>
-      <div v-on:click="redirectToSignIn" class="text-blue-600 cursor-pointer">
+      <p v-if="errMsg" class="dark:text-white">{{ errMsg }}</p>
+      <div v-on:click="redirectToSignIn" class="text-blue-600 cursor-pointer dark:text-white">
         Already have an account? Sign-in!
       </div>
     </div>

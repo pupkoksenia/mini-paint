@@ -17,7 +17,7 @@
 
       <div class="inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-4/6 ml-14">
         <span>
-          <p class="text-black font-thin">Background Color:</p>
+          <p class="text-black font-thin dark:text-white">Background Color:</p>
           <input
             type="color"
             v-model="backgroundColor"
@@ -26,7 +26,7 @@
         </span>
 
         <span>
-          <p class="text-black font-thin">Color:</p>
+          <p class="text-black font-thin  dark:text-white">Color:</p>
           <input
             type="color"
             v-model="strokeStyle"
@@ -49,7 +49,7 @@
         </select>
 
         <span
-          ><p class="text-black font-thin">Choose width:</p>
+          ><p class="text-black font-thin dark:text-white">Choose width:</p>
           <input
             type="range"
             v-model="lineWidth"

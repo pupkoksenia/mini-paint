@@ -137,9 +137,10 @@ export const useFireBasePaints: () => FireBasePaints = () => {
             if (paint.nameOfPaint === NameOfPaint && paint.url === url)
               idOfPaint = index;
           }
-        );        getPaints.splice(idOfPaint, 1);
+        );
+        getPaints.splice(idOfPaint, 1);
 
-        let id = 0
+        let id = 0;
         statePaint.dataPaints.forEach(
           (
             paint: {
@@ -151,11 +152,15 @@ export const useFireBasePaints: () => FireBasePaints = () => {
             },
             index: number
           ) => {
-            if (paint.nameOfPaint === NameOfPaint && paint.urlOfPaint === url && state.user.email === paint.userName)
+            if (
+              paint.nameOfPaint === NameOfPaint &&
+              paint.urlOfPaint === url &&
+              state.user.email === paint.userName
+            )
               id = index;
           }
         );
-        statePaint.dataPaints.splice(id,1)
+        statePaint.dataPaints.splice(id, 1);
 
         setDoc(
           doc(db, "users", idUser),

@@ -36,17 +36,56 @@
           class="px-3 py-2 rounded-md border border-slate-400 w-12/12 bg-white"
         />
       </div>
+      <button
+        v-if="$props.nameOfUser === state.user.email"
+        @click="
+          () => {
+            $emit('open', false);
+            deleteButton();
+          }
+        "
+        class="button-paint mt-1"
+      >
+        Delete
+      </button>
+      <button v-else class="hidden"></button>
+      <button @click="saveImageOnComp()" class="button-paint mt-1 ml-1">
+        Save img on computer
+      </button>
     </div>
   </div>
 </template>
 
  <script lang="ts">
 import { defineComponent } from "vue";
+import { useFireBase } from "../composables/useFireBase";
+import { useFireBasePaints } from "../composables/useFireBasePaints";
+
 export default defineComponent({
   name: "ModalWindow",
   props: {
     open: Boolean,
     urlOfpaint: String,
+    nameOfPaint: String,
+    nameOfUser: String,
+  },
+  setup(props) {
+    const { setFilterValue, deleteUserPaint } = useFireBasePaints();
+    const { state } = useFireBase();
+
+    const deleteButton = () => {
+      deleteUserPaint(props.nameOfPaint || "", props.urlOfpaint || "");
+      setFilterValue("");
+    };
+
+    const saveImageOnComp = () => {
+      const createEl = document.createElement("a");
+      createEl.href = props.urlOfpaint || "";
+      createEl.download = props.nameOfPaint || "";
+      createEl.click();
+      createEl.remove();
+    };
+    return { deleteButton, state, saveImageOnComp };
   },
 });
 </script>

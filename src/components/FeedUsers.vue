@@ -16,15 +16,19 @@
         :key="paint.toString"
         class="inline-grid gap-1 grid-cols-1"
       >
-         <ModalWindow
-              :open="isOpen"
-              :urlOfpaint="urlOfpaint"
-              @open="(isOpened: boolean) => setOpen(isOpened)"
-            />
+        <ModalWindow
+          :open="isOpen"
+          :urlOfpaint="urlOfpaint"
+          :nameOfpaint="nameOfPaint"
+          :nameOfUser="nameOfUser"
+          @open="(isOpened: boolean) => setOpen(isOpened)"
+        />
         <div>
           <img
             :src="paint.urlOfPaint"
-            v-on:click="goToPaint(paint.urlOfPaint)"
+            v-on:click="
+              goToPaint(paint.urlOfPaint, paint.nameOfPaint, paint.userName)
+            "
             class="
               px-3
               py-2
@@ -36,21 +40,12 @@
           />
           <div class="text-black w-full dark:text-white">
             {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
-
-            <button
-              v-if="paint.userName === state.user.email"
-              @click="deleteButton(paint.nameOfPaint, paint.urlOfPaint)"
-              class="button-paint mt-1"
-            >
-              Delete
-            </button>
-            <button v-else class="hidden"></button>
           </div>
         </div>
       </div>
     </div>
   </div>
-   <Loader v-bind:isLoading="loadingListener" />
+  <Loader v-bind:isLoading="loadingListener" />
 </template>
 
 <script lang="ts">
@@ -59,7 +54,6 @@ import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "./Loader.vue";
 import ModalWindow from "../components/ModalWindowPaint.vue";
-import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "FeedUsers",
@@ -73,24 +67,26 @@ export default defineComponent({
     const loadingListener = ref();
     const isOpen = ref();
     const urlOfpaint = ref();
-    const router = useRouter();
+    const nameOfPaint = ref("");
+    const nameOfUser = ref("");
     const handleSubmit = () => {
       setFilterValue(form.value.email);
     };
     const handleReset = () => {
       setFilterValue("");
     };
-    const goToPaint = (urlPaint: string) => {
+    const goToPaint = (
+      urlPaint: string,
+      namePaint: string,
+      nameUser: string
+    ) => {
       isOpen.value = true;
       urlOfpaint.value = urlPaint;
+      nameOfPaint.value = namePaint;
+      nameOfUser.value = nameUser;
     };
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened;
-    };
-    const deleteButton = (NameOfPaint: string, url: string) => {
-      deleteUserPaint(NameOfPaint, url);
-      router.push("/sign-in");
-      setFilterValue("");
     };
     onMounted(() => {
       loadingListener.value = true;
@@ -104,11 +100,12 @@ export default defineComponent({
       sortedFeedPaints,
       goToPaint,
       state,
-      deleteButton,
       loadingListener,
       setOpen,
       urlOfpaint,
       isOpen,
+      nameOfPaint,
+      nameOfUser,
     };
   },
   components: { Loader, ModalWindow },

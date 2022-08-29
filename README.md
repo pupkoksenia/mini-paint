@@ -1,6 +1,6 @@
 # mini-paint
 
-## Project setup
+### Project setup
 ```
 npm install
 ```

@@ -26,7 +26,7 @@
         </span>
 
         <span>
-          <p class="text-black font-thin  dark:text-white">Color:</p>
+          <p class="text-black font-thin dark:text-white">Color:</p>
           <input
             type="color"
             v-model="strokeStyle"
@@ -112,7 +112,7 @@ export default defineComponent({
     const strokeType = ref("line");
     const stateOfFigure = ref("stroke");
     const arrayStateOfFigure = ref(["stroke", "fill"]);
-    const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle"]);
+    const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle", "ellipse"]);
     const imgData = ref();
     const NameOfPaint = ref();
     const history = ref();
@@ -239,6 +239,7 @@ export default defineComponent({
       else if (strokeType.value === "rectangle") drawRectangle();
       else if (strokeType.value === "triangle") drawTriangle();
       else if (strokeType.value === "circle") drawCircle();
+      else if(strokeType.value === "ellipse") drawEllipse();
     };
 
     const drawLine = () => {
@@ -372,6 +373,43 @@ export default defineComponent({
 
           if (e.buttons > 0) {
             makeCircle();
+          } else {
+            imgData.value = toGetImageData();
+          }
+        };
+        toHistoryPush();
+      };
+    };
+
+    const drawEllipse = () => {
+      canvas.value.onmousedown = function (e: MouseEvent) {
+        x.value = e.offsetX;
+        y.value = e.offsetY;
+
+        canvas.value.onmousemove = function (e: MouseEvent) {
+          x2.value = e.offsetX;
+          y2.value = e.offsetY;
+
+          const makeEllipse = () => {
+            context.value.clearRect(
+              0,
+              0,
+              canvas.value.width,
+              canvas.value.height
+            );
+            context.value.beginPath();
+            context.value.putImageData(imgData.value, 0, 0);
+            context.value.moveTo(x.value, y.value);
+            context.value.ellipse(x.value, y.value, Math.abs(x2.value-x.value), Math.abs(y2.value-y.value),Math.PI, 0, 2 * Math.PI)
+            context.value.fillStyle = strokeStyleValue.value;
+            stateOfFigure.value === "stroke"
+              ? context.value.stroke()
+              : context.value.fill();
+          };
+          context.value.closePath();
+
+          if (e.buttons > 0) {
+            makeEllipse();
           } else {
             imgData.value = toGetImageData();
           }

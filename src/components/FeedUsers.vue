@@ -58,7 +58,7 @@ import ModalWindow from "../components/ModalWindowPaint.vue";
 export default defineComponent({
   name: "FeedUsers",
   setup() {
-    const { getFeedPaints, sortedFeedPaints, setFilterValue, deleteUserPaint } =
+    const { getFeedPaints, sortedFeedPaints, setFilterValue } =
       useFireBasePaints();
     const { state } = useFireBase();
     const form = ref({

@@ -8,11 +8,13 @@ import {
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { db } from "../main";
 import { readonly, reactive, DeepReadonly } from "vue";
+import router from "@/router";
 
 export interface State {
   user: {
     email: string | null;
     uid: string;
+    isSignIn: boolean;
   };
 }
 
@@ -20,6 +22,7 @@ const state = reactive<State>({
   user: {
     email: "",
     uid: "",
+    isSignIn: false,
   },
 });
 
@@ -27,7 +30,9 @@ export interface FireBase {
   state: DeepReadonly<typeof state>;
   signIn: (email: string, password: string) => Promise<string>;
   register: (email: string, password: string) => Promise<string | undefined>;
-  checkIsRegistred: () => Promise<unknown>;
+  checkIsSignIn: () => Promise<{
+    path: string;
+  }>;
   signOutFirebase: () => void;
 }
 
@@ -59,8 +64,9 @@ export const useFireBase: () => FireBase = () => {
       .then((userCredential) => {
         state.user.email = userCredential.user.email;
         state.user.uid = userCredential.user.uid;
+        state.user.isSignIn = true;
 
-        let id:string
+        let id: string;
 
         getDocs(collection(db, "users"))
           .then((docs) => (id = docs.size.toString()))
@@ -84,22 +90,26 @@ export const useFireBase: () => FireBase = () => {
         }
       });
 
-  const checkIsRegistred = () => {
-    return new Promise((resolve, reject) => {
+  const checkIsSignIn = () =>
+    new Promise((resolve, reject) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           state.user.email = user.email;
           state.user.uid = user.uid;
-          resolve(true);
-        } else reject(false);
+          state.user.isSignIn = true;
+          resolve(state.user.isSignIn);
+        }
       });
+    }).then((result) => {
+      if (result) return { path: "/" };
+      else return { path: "/sign-in" };
     });
-  };
 
   const signOutFirebase = () => {
     signOut(auth).then(() => {
       state.user.email = "";
       state.user.uid = "";
+      state.user.isSignIn = false;
     });
   };
 
@@ -107,7 +117,7 @@ export const useFireBase: () => FireBase = () => {
     state: readonly(state),
     signIn,
     register,
-    checkIsRegistred,
+    checkIsSignIn,
     signOutFirebase,
   };
 };

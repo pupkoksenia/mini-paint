@@ -4,7 +4,7 @@
       <img src="../assets/62414.jpg" class="h-16 mx-4" />
     </div>
     <div
-      class="flex items-center justify-start col-span-3 text-cyan-700 font-bold dark:text-violet-500"
+      class="flex items-center justify-start col-span-3 text-black font-bold dark:text-white"
     >
       Mini-paint
     </div>

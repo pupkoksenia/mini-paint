@@ -90,7 +90,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from "vue";
 import { useFireBasePaints } from "../composables/useFireBasePaints";
-import { savePaints } from "../composables/savePaints";
+import { savePaints } from "../utils/savePaints";
 
 export default defineComponent({
   name: "PaintPart",

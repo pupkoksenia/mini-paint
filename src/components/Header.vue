@@ -38,7 +38,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { useFireBase } from "../composables/useFireBase";
 import { useRouter } from "vue-router";
-import DarkMode from "../components/ButtonDarkMode.vue";
+import DarkMode from "../components/buttons/ButtonDarkMode.vue";
 
 export default defineComponent({
   name: "HeaderPart",

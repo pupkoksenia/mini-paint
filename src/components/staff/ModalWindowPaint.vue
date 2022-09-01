@@ -58,8 +58,8 @@
 
  <script lang="ts">
 import { defineComponent } from "vue";
-import { useFireBase } from "../composables/useFireBase";
-import { useFireBasePaints } from "../composables/useFireBasePaints";
+import { useFireBase } from "../../composables/useFireBase";
+import { useFireBasePaints } from "../../composables/useFireBasePaints";
 
 export default defineComponent({
   name: "ModalWindow",

@@ -75,32 +75,34 @@
         "
         @click="sendInfo"
       >
-        Sign In
+        Register
       </button>
       <p v-if="errMsg" class="dark:text-white">{{ errMsg }}</p>
       <div
-        v-on:click="redirectToRegister"
+        v-on:click="redirectToSignIn"
         class="text-blue-600 cursor-pointer dark:text-white"
       >
-        Don't have an account? Register!
+        Already have an account? Sign-in!
       </div>
     </div>
   </div>
 </template>
 
+
+
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useFireBase } from "../composables/useFireBase";
-import DarkMode from "../components/ButtonDarkMode.vue";
+import DarkMode from "../components/buttons/ButtonDarkMode.vue";
 
 export default defineComponent({
-  name: "SignInForm",
+  name: "RegisterForm",
   components: {
     DarkMode,
   },
   setup() {
-    const { signIn } = useFireBase();
+    const { register } = useFireBase();
     const form = ref({
       email: "",
       password: "",
@@ -108,25 +110,18 @@ export default defineComponent({
     const errMsg = ref();
     const router = useRouter();
     const passwordFieldType = ref("password");
-
     const sendInfo = () => {
-      signIn(form.value.email, form.value.password).then((msg) => {
+      register(form.value.email, form.value.password).then((msg) => {
         if (msg === "ok") {
-          router.push("/");
+          router.push({ path: "/" });
         } else errMsg.value = msg;
       });
     };
 
-    const redirectToRegister = () => {
-      router.push("/register");
+    const redirectToSignIn = () => {
+      router.push("/sign-in");
     };
-    return {
-      form,
-      sendInfo,
-      errMsg,
-      passwordFieldType,
-      redirectToRegister,
-    };
+    return { form, sendInfo, errMsg, passwordFieldType, redirectToSignIn };
   },
 });
 </script>

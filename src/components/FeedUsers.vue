@@ -12,7 +12,7 @@
     </div>
     <div class="flex justify-center pt-6 inline-grid gap-3 grid-cols-2">
       <div
-        v-for="paint in sortedFeedPaints"
+        v-for="paint in paginatedData"
         :key="paint.toString"
         class="inline-grid gap-1 grid-cols-1"
       >
@@ -44,16 +44,29 @@
         </div>
       </div>
     </div>
+
+    <div class = "flex justify-center pt-6 pr-16 gap-3 dark:text-white" >
+      <button @click="backPage">prev</button>
+      <button
+        v-for="item in Math.ceil(sortedFeedPaints.length / perPage)"
+        :key="item"
+        @click="() => goToPage(item)"
+      >
+        {{ item }}
+      </button>
+      <button @click="nextPage">next</button>
+    </div>
+
   </div>
   <Loader v-bind:isLoading="loadingListener" />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+import { defineComponent, ref, onMounted, computed } from "vue";
 import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
-import Loader from "./Loader.vue";
-import ModalWindow from "../components/ModalWindowPaint.vue";
+import Loader from "../components/staff/Loader.vue";
+import ModalWindow from "./staff/ModalWindowPaint.vue";
 
 export default defineComponent({
   name: "FeedUsers",
@@ -69,6 +82,31 @@ export default defineComponent({
     const urlOfpaint = ref();
     const nameOfPaint = ref("");
     const nameOfUser = ref("");
+    const page = ref(1);
+    const perPage = ref(2);
+
+    const paginatedData = computed(() =>
+      sortedFeedPaints.value.slice(
+        (page.value - 1) * perPage.value,
+        page.value * perPage.value
+      )
+    );
+    const nextPage = () => {
+      if (
+        page.value !== Math.ceil(sortedFeedPaints.value.length / perPage.value)
+      ) {
+        page.value += 1;
+      }
+    };
+    const backPage = () => {
+      if (page.value !== 1) {
+        page.value -= 1;
+      }
+    };
+    const goToPage = (numPage: number) => {
+      page.value = numPage;
+    };
+
     const handleSubmit = () => {
       setFilterValue(form.value.email);
     };
@@ -106,6 +144,11 @@ export default defineComponent({
       isOpen,
       nameOfPaint,
       nameOfUser,
+      paginatedData,
+      nextPage,
+      backPage,
+      goToPage,
+      perPage,
     };
   },
   components: { Loader, ModalWindow },

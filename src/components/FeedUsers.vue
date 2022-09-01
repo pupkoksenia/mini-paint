@@ -1,6 +1,6 @@
 <template>
   <div class="pt-6 ml-4">
-    <div class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-1">
+    <div class="flex justify-start inline-grid gap-1 grid-cols-5 grid-rows-2">
       <input
         type="text"
         placeholder="email"
@@ -9,6 +9,34 @@
       />
       <button @click="handleSubmit" class="button-paint">Submit</button>
       <button @click="handleReset" class="button-paint">Reset</button>
+
+      <button
+        class="
+          flex
+          items-center
+          justify-start
+          text-cyan-700
+          font-bold
+          dark:text-violet-500
+          ml-4
+        "
+        @click="setAscedingSort()"
+      >
+        Ascending
+      </button>
+      <button
+        class="
+          flex
+          items-center
+          justify-start
+          text-cyan-700
+          font-bold
+          dark:text-violet-500
+        "
+        @click="setDescedingSort()"
+      >
+        Descending
+      </button>
     </div>
     <div class="flex justify-center pt-6 inline-grid gap-3 grid-cols-2">
       <div
@@ -45,10 +73,10 @@
       </div>
     </div>
 
-    <div class = "flex justify-center pt-6 pr-16 gap-3 dark:text-white" >
+    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
       <button @click="backPage">prev</button>
       <button
-        v-for="item in Math.ceil(sortedFeedPaints.length / perPage)"
+        v-for="item in Math.ceil(feedPaints.length / perPage)"
         :key="item"
         @click="() => goToPage(item)"
       >
@@ -56,7 +84,6 @@
       </button>
       <button @click="nextPage">next</button>
     </div>
-
   </div>
   <Loader v-bind:isLoading="loadingListener" />
 </template>
@@ -67,11 +94,12 @@ import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "../components/staff/Loader.vue";
 import ModalWindow from "./staff/ModalWindowPaint.vue";
+//import { useVueFuse } from 'vue-fuse'
 
 export default defineComponent({
   name: "FeedUsers",
   setup() {
-    const { getFeedPaints, sortedFeedPaints, setFilterValue } =
+    const { getFeedPaints, feedPaints, setFilterValue, setSortingValue } =
       useFireBasePaints();
     const { state } = useFireBase();
     const form = ref({
@@ -84,17 +112,22 @@ export default defineComponent({
     const nameOfUser = ref("");
     const page = ref(1);
     const perPage = ref(2);
+    const setAscedingSort = () => {
+      setSortingValue(0);
+    };
+
+    const setDescedingSort = () => {
+      setSortingValue(1);
+    };
 
     const paginatedData = computed(() =>
-      sortedFeedPaints.value.slice(
+      feedPaints.value.slice(
         (page.value - 1) * perPage.value,
         page.value * perPage.value
       )
     );
     const nextPage = () => {
-      if (
-        page.value !== Math.ceil(sortedFeedPaints.value.length / perPage.value)
-      ) {
+      if (page.value !== Math.ceil(feedPaints.value.length / perPage.value)) {
         page.value += 1;
       }
     };
@@ -113,6 +146,7 @@ export default defineComponent({
     const handleReset = () => {
       setFilterValue("");
     };
+
     const goToPaint = (
       urlPaint: string,
       namePaint: string,
@@ -130,12 +164,14 @@ export default defineComponent({
       loadingListener.value = true;
       getFeedPaints().then(() => (loadingListener.value = false));
       isOpen.value = false;
+      setSortingValue(0);
     });
+
     return {
       handleSubmit,
       form,
       handleReset,
-      sortedFeedPaints,
+      feedPaints,
       goToPaint,
       state,
       loadingListener,
@@ -149,6 +185,8 @@ export default defineComponent({
       backPage,
       goToPage,
       perPage,
+      setAscedingSort,
+      setDescedingSort,
     };
   },
   components: { Loader, ModalWindow },

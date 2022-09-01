@@ -13,20 +13,23 @@ import { useFireBase } from "../composables/useFireBase";
 export interface StatePaint {
   dataPaints: DataPaint[];
   filter: string;
+  sorting: number;
 }
 
 const statePaint = reactive<StatePaint>({
   dataPaints: [],
   filter: "",
+  sorting: 0,
 });
 
 export interface FireBasePaints {
   statePaint: DeepReadonly<typeof statePaint>;
-  sortedFeedPaints: ComputedRef<DataPaint[]>;
+  feedPaints: ComputedRef<DataPaint[]>;
   getFeedPaints: () => Promise<void>;
   setFilterValue: (value: string) => void;
   saveImageOnServer: (NameOfPaint: string, imageURL: string) => void;
   deleteUserPaint: (name: string, url: string) => void;
+  setSortingValue: (value: number) => void
 }
 
 export const useFireBasePaints: () => FireBasePaints = () => {
@@ -73,15 +76,19 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     return statePaint.dataPaints;
   });
 
-  const sortedFeedPaints = computed(() =>
-    filteredItems.value
-      .sort(
+  const feedPaints = computed(() => {
+     const items = filteredItems.value.sort(
         (prev: DataPaint, curr: DataPaint) =>
           new Date(prev.dateInTimestamp.seconds).getTime() -
           new Date(curr.dateInTimestamp.seconds).getTime()
       )
-      .reverse()
-  );
+      if(statePaint.sorting === 0) return items
+      else return items.reverse()
+  });
+
+  const setSortingValue = (value: number) => {
+    statePaint.sorting = value;
+  };
 
   const setFilterValue = (value: string) => {
     statePaint.filter = value;
@@ -174,10 +181,11 @@ export const useFireBasePaints: () => FireBasePaints = () => {
 
   return {
     statePaint: statePaint,
-    sortedFeedPaints,
+    feedPaints,
     setFilterValue,
     getFeedPaints,
     saveImageOnServer,
     deleteUserPaint,
+    setSortingValue
   };
 };

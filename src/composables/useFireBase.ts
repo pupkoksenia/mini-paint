@@ -8,7 +8,6 @@ import {
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { db } from "../main";
 import { readonly, reactive, DeepReadonly } from "vue";
-import router from "@/router";
 
 export interface State {
   user: {

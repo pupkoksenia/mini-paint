@@ -12,13 +12,15 @@ import { useFireBase } from "../composables/useFireBase";
 
 export interface StatePaint {
   dataPaints: DataPaint[];
-  filter: string;
+  filterEmail: string;
+  filterPaint: string;
   sorting: number;
 }
 
 const statePaint = reactive<StatePaint>({
   dataPaints: [],
-  filter: "",
+  filterEmail: "",
+  filterPaint: "",
   sorting: 0,
 });
 
@@ -26,10 +28,11 @@ export interface FireBasePaints {
   statePaint: DeepReadonly<typeof statePaint>;
   feedPaints: ComputedRef<DataPaint[]>;
   getFeedPaints: () => Promise<void>;
-  setFilterValue: (value: string) => void;
+  setFilterValueEmail: (value: string) => void;
   saveImageOnServer: (NameOfPaint: string, imageURL: string) => void;
   deleteUserPaint: (name: string, url: string) => void;
-  setSortingValue: (value: number) => void
+  setSortingValue: (value: number) => void;
+  setFilterValuePaint: (value: string) => void;
 }
 
 export const useFireBasePaints: () => FireBasePaints = () => {
@@ -69,10 +72,16 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     });
 
   const filteredItems = computed(() => {
-    if (statePaint.filter)
+    if (statePaint.filterEmail && statePaint.filterPaint ==="")
       return statePaint.dataPaints.filter(
-        (p: DataPaint) => p.userName === statePaint.filter
+        (p: DataPaint) => p.userName === statePaint.filterEmail
       );
+    else if(statePaint.filterPaint ==="" && statePaint.filterPaint) return statePaint.dataPaints.filter(
+      (p: DataPaint) => p.nameOfPaint === statePaint.filterPaint
+    );
+    else  if(statePaint.filterPaint && statePaint.filterPaint) return statePaint.dataPaints.filter(
+      (p: DataPaint) => p.nameOfPaint === statePaint.filterPaint && p.userName === statePaint.filterEmail
+    );
     return statePaint.dataPaints;
   });
 
@@ -90,8 +99,12 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     statePaint.sorting = value;
   };
 
-  const setFilterValue = (value: string) => {
-    statePaint.filter = value;
+  const setFilterValueEmail = (value: string) => {
+    statePaint.filterEmail = value;
+  };
+
+  const setFilterValuePaint = (value: string) => {
+    statePaint.filterPaint = value;
   };
 
   const saveImageOnServer = (NameOfPaint: string, imageURL: string) => {
@@ -182,10 +195,11 @@ export const useFireBasePaints: () => FireBasePaints = () => {
   return {
     statePaint: statePaint,
     feedPaints,
-    setFilterValue,
+    setFilterValueEmail,
     getFeedPaints,
     saveImageOnServer,
     deleteUserPaint,
-    setSortingValue
+    setSortingValue,
+    setFilterValuePaint
   };
 };

@@ -1,14 +1,24 @@
 <template>
   <div class="pt-6 ml-4">
     <div class="flex justify-start inline-grid gap-1 grid-cols-5 grid-rows-2">
+
       <input
         type="text"
         placeholder="email"
         v-model="form.email"
         class="border-cyan-700 border-2 rounded"
       />
-      <button @click="handleSubmit" class="button-paint">Submit</button>
-      <button @click="handleReset" class="button-paint">Reset</button>
+      <button @click="handleSubmitEmail" class="button-paint">Submit</button>
+      <button @click="handleResetEmail" class="button-paint">Reset</button>
+
+      <input
+        type="text"
+        placeholder="name of paint"
+        v-model="form.namePaint"
+        class="border-cyan-700 border-2 rounded"
+      />
+      <button @click="handleSubmitPaint" class="button-paint">Submit</button>
+      <button @click="handleResetPaint" class="button-paint">Reset</button>
 
       <button
         class="
@@ -94,16 +104,16 @@ import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "../components/staff/Loader.vue";
 import ModalWindow from "./staff/ModalWindowPaint.vue";
-//import { useVueFuse } from 'vue-fuse'
 
 export default defineComponent({
   name: "FeedUsers",
   setup() {
-    const { getFeedPaints, feedPaints, setFilterValue, setSortingValue } =
+    const { getFeedPaints, feedPaints, setFilterValueEmail, setFilterValuePaint,  setSortingValue } =
       useFireBasePaints();
     const { state } = useFireBase();
     const form = ref({
       email: "",
+      namePaint: ""
     });
     const loadingListener = ref();
     const isOpen = ref();
@@ -140,12 +150,21 @@ export default defineComponent({
       page.value = numPage;
     };
 
-    const handleSubmit = () => {
-      setFilterValue(form.value.email);
+
+    const handleSubmitEmail = () => {
+      setFilterValueEmail(form.value.email);
     };
-    const handleReset = () => {
-      setFilterValue("");
+    const handleResetEmail = () => {
+      setFilterValueEmail("");
     };
+
+    const handleSubmitPaint = () => {
+      setFilterValuePaint(form.value.namePaint);
+    }
+
+    const handleResetPaint = () => {
+      setFilterValuePaint("");
+    }
 
     const goToPaint = (
       urlPaint: string,
@@ -168,9 +187,9 @@ export default defineComponent({
     });
 
     return {
-      handleSubmit,
+      handleSubmitEmail,
       form,
-      handleReset,
+      handleResetEmail,
       feedPaints,
       goToPaint,
       state,
@@ -187,6 +206,8 @@ export default defineComponent({
       perPage,
       setAscedingSort,
       setDescedingSort,
+      handleSubmitPaint,
+      handleResetPaint
     };
   },
   components: { Loader, ModalWindow },

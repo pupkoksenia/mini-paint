@@ -70,12 +70,12 @@ export default defineComponent({
     nameOfUser: String,
   },
   setup(props) {
-    const { setFilterValue, deleteUserPaint } = useFireBasePaints();
+    const { setFilterValueEmail, deleteUserPaint } = useFireBasePaints();
     const { state } = useFireBase();
 
     const deleteButton = () => {
       deleteUserPaint(props.nameOfPaint || "", props.urlOfpaint || "");
-      setFilterValue("");
+      setFilterValueEmail("");
     };
 
     const saveImageOnComp = () => {

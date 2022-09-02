@@ -14,6 +14,7 @@ export interface State {
     email: string | null;
     uid: string;
     isSignIn: boolean;
+    role: string;
   };
 }
 
@@ -22,6 +23,7 @@ const state = reactive<State>({
     email: "",
     uid: "",
     isSignIn: false,
+    role: 'user'
   },
 });
 
@@ -43,6 +45,13 @@ export const useFireBase: () => FireBase = () => {
       .then((userCredential) => {
         state.user.email = userCredential.user.email;
         state.user.uid = userCredential.user.uid;
+
+        getDocs(collection(db, "users")).then((docs) => {
+          docs.forEach((doc) => {
+            if(doc.data().name === userCredential.user.email) state.user.role = doc.data().role
+          })
+        })
+        
         return "ok";
       })
       .catch((error) => {

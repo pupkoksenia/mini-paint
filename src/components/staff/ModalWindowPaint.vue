@@ -37,7 +37,7 @@
         />
       </div>
       <button
-        v-if="$props.nameOfUser === state.user.email"
+        v-if="$props.nameOfUser === state.user.email || state.user.role === 'admin' "
         @click="
           () => {
             $emit('open', false);

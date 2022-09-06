@@ -188,6 +188,7 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened;
     };
+
     onMounted(() => {
       loadingListener.value = true;
       getFeedPaints().then(() => (loadingListener.value = false));

@@ -70,7 +70,7 @@ export default defineComponent({
     const { state } = useFireBase();
 
     const deleteButton = () => {
-      deleteUserPaint(props.nameOfPaint || "", props.urlOfpaint || "");
+      deleteUserPaint(props.nameOfPaint as string, props.urlOfpaint as string,props.nameOfUser as string );
       setFilterValueEmail("")
     };
 

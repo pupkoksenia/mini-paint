@@ -30,7 +30,7 @@ export interface FireBasePaints {
   getFeedPaints: () => Promise<void>;
   setFilterValueEmail: (value: string) => void;
   saveImageOnServer: (NameOfPaint: string, imageURL: string) => void;
-  deleteUserPaint: (name: string, url: string) => void;
+  deleteUserPaint: (name: string, url: string, user: string) => void;
   setSortingValue: (value: number) => void;
   setFilterValuePaint: (value: string) => void;
 }
@@ -72,27 +72,31 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     });
 
   const filteredItems = computed(() => {
-    if (statePaint.filterEmail && statePaint.filterPaint ==="")
+    if (statePaint.filterEmail && statePaint.filterPaint === "")
       return statePaint.dataPaints.filter(
         (p: DataPaint) => p.userName === statePaint.filterEmail
       );
-    else if(statePaint.filterEmail ==="" && statePaint.filterPaint) return statePaint.dataPaints.filter(
-      (p: DataPaint) => p.nameOfPaint === statePaint.filterPaint
-    );
-    else  if(statePaint.filterPaint && statePaint.filterPaint) return statePaint.dataPaints.filter(
-      (p: DataPaint) => p.nameOfPaint === statePaint.filterPaint && p.userName === statePaint.filterEmail
-    );
+    else if (statePaint.filterEmail === "" && statePaint.filterPaint)
+      return statePaint.dataPaints.filter(
+        (p: DataPaint) => p.nameOfPaint === statePaint.filterPaint
+      );
+    else if (statePaint.filterPaint && statePaint.filterPaint)
+      return statePaint.dataPaints.filter(
+        (p: DataPaint) =>
+          p.nameOfPaint === statePaint.filterPaint &&
+          p.userName === statePaint.filterEmail
+      );
     return statePaint.dataPaints;
   });
 
   const feedPaints = computed(() => {
-     const items = filteredItems.value.sort(
-        (prev: DataPaint, curr: DataPaint) =>
-          new Date(prev.dateInTimestamp.seconds).getTime() -
-          new Date(curr.dateInTimestamp.seconds).getTime()
-      )
-      if(statePaint.sorting === 0) return items
-      else return items.reverse()
+    const items = filteredItems.value.sort(
+      (prev: DataPaint, curr: DataPaint) =>
+        new Date(prev.dateInTimestamp.seconds).getTime() -
+        new Date(curr.dateInTimestamp.seconds).getTime()
+    );
+    if (statePaint.sorting === 0) return items;
+    else return items.reverse();
   });
 
   const setSortingValue = (value: number) => {
@@ -135,30 +139,29 @@ export const useFireBasePaints: () => FireBasePaints = () => {
       });
   };
 
-  const deleteUserPaint = (NameOfPaint: string, url: string) => {
+  const deleteUserPaint = (NameOfPaint: string, url: string, user: string) => {
     let idUser = "";
-    let getPaints: any = [];
+    let getPaintsOfUser: any = [];
     let idOfPaint: number;
     getDocs(collection(db, "users"))
       .then((docs) => {
         docs.forEach((doc) => {
-          if (doc.data().name === state.user.email) {
+          if (doc.data().name === user) {
             idUser = doc.id;
-            getPaints = doc.data().paints;
+            getPaintsOfUser = doc.data().paints;
           }
         });
       })
       .then(() => {
-        getPaints.forEach(
+        getPaintsOfUser.forEach(
           (
             paint: { date: Timestamp; nameOfPaint: string; url: string },
             index: number
           ) => {
-            if (paint.nameOfPaint === NameOfPaint && paint.url === url)
-              idOfPaint = index;
+            if (paint.url === url) idOfPaint = index;
           }
         );
-        getPaints.splice(idOfPaint, 1);
+        getPaintsOfUser.splice(idOfPaint, 1);
 
         let id = 0;
         statePaint.dataPaints.forEach(
@@ -172,20 +175,20 @@ export const useFireBasePaints: () => FireBasePaints = () => {
             },
             index: number
           ) => {
-            if (
-              paint.nameOfPaint === NameOfPaint &&
-              paint.urlOfPaint === url &&
-              state.user.email === paint.userName
-            )
-              id = index;
+            console.log(index, paint.urlOfPaint === url);
+            if (paint.urlOfPaint === url)  id = index;
           }
         );
+        console.log(statePaint.dataPaints);
+
         statePaint.dataPaints.splice(id, 1);
+
+        console.log(statePaint.dataPaints);
 
         setDoc(
           doc(db, "users", idUser),
           {
-            paints: getPaints,
+            paints: getPaintsOfUser,
           },
           { merge: true }
         );
@@ -200,6 +203,6 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     saveImageOnServer,
     deleteUserPaint,
     setSortingValue,
-    setFilterValuePaint
+    setFilterValuePaint,
   };
 };

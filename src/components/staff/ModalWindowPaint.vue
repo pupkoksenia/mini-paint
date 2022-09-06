@@ -38,12 +38,7 @@
       </div>
       <button
         v-if="$props.nameOfUser === state.user.email || state.user.role === 'admin' "
-        @click="
-          () => {
-            $emit('open', false);
-            deleteButton();
-          }
-        "
+        @click="closeModalWindow"
         class="button-paint mt-1"
       >
         Delete
@@ -69,14 +64,20 @@ export default defineComponent({
     nameOfPaint: String,
     nameOfUser: String,
   },
-  setup(props) {
+  emits: ['open'],
+  setup(props, ctx) {
     const { setFilterValueEmail, deleteUserPaint } = useFireBasePaints();
     const { state } = useFireBase();
 
     const deleteButton = () => {
       deleteUserPaint(props.nameOfPaint || "", props.urlOfpaint || "");
-      setFilterValueEmail("");
+      setFilterValueEmail("")
     };
+
+    const closeModalWindow = () => {
+         ctx.emit('open', false);
+         deleteButton();
+    }
 
     const saveImageOnComp = () => {
       const createEl = document.createElement("a");
@@ -85,7 +86,7 @@ export default defineComponent({
       createEl.click();
       createEl.remove();
     };
-    return { deleteButton, state, saveImageOnComp };
+    return { deleteButton, state, saveImageOnComp, closeModalWindow };
   },
 });
 </script>

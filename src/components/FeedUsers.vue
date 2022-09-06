@@ -1,7 +1,6 @@
 <template>
   <div class="pt-6 ml-4">
     <div class="flex justify-start inline-grid gap-1 grid-cols-5 grid-rows-2">
-
       <input
         type="text"
         placeholder="email"
@@ -86,7 +85,7 @@
     <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
       <button @click="backPage">prev</button>
       <button
-        v-for="item in Math.ceil(feedPaints.length / perPage)"
+        v-for="item in numberPage"
         :key="item"
         @click="() => goToPage(item)"
       >
@@ -108,12 +107,17 @@ import ModalWindow from "./staff/ModalWindowPaint.vue";
 export default defineComponent({
   name: "FeedUsers",
   setup() {
-    const { getFeedPaints, feedPaints, setFilterValueEmail, setFilterValuePaint,  setSortingValue } =
-      useFireBasePaints();
+    const {
+      getFeedPaints,
+      feedPaints,
+      setFilterValueEmail,
+      setFilterValuePaint,
+      setSortingValue,
+    } = useFireBasePaints();
     const { state } = useFireBase();
     const form = ref({
       email: "",
-      namePaint: ""
+      namePaint: "",
     });
     const loadingListener = ref();
     const isOpen = ref();
@@ -150,21 +154,26 @@ export default defineComponent({
       page.value = numPage;
     };
 
+    const numberPage = computed(() => {
+      return Math.ceil(feedPaints.value.length / perPage.value);
+    });
 
     const handleSubmitEmail = () => {
       setFilterValueEmail(form.value.email);
     };
     const handleResetEmail = () => {
+      form.value.email = "";
       setFilterValueEmail("");
     };
 
     const handleSubmitPaint = () => {
       setFilterValuePaint(form.value.namePaint);
-    }
+    };
 
     const handleResetPaint = () => {
+      form.value.namePaint = "";
       setFilterValuePaint("");
-    }
+    };
 
     const goToPaint = (
       urlPaint: string,
@@ -207,7 +216,8 @@ export default defineComponent({
       setAscedingSort,
       setDescedingSort,
       handleSubmitPaint,
-      handleResetPaint
+      handleResetPaint,
+      numberPage,
     };
   },
   components: { Loader, ModalWindow },

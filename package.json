@@ -13,7 +13,6 @@
     "dotenv": "^16.0.1",
     "tailvue": "^0.1.62",
     "vue": "^3.2.37",
-    "vue-fuse": "^4.1.1",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {

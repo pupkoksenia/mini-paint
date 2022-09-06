@@ -39,7 +39,6 @@ import { defineComponent, onMounted, ref } from "vue";
 import { useFireBase } from "../composables/useFireBase";
 import { useRouter } from "vue-router";
 import DarkMode from "../components/buttons/ButtonDarkMode.vue";
-
 export default defineComponent({
   name: "HeaderPart",
   components: {
@@ -56,12 +55,10 @@ export default defineComponent({
     onMounted(()=>{
       stateOfStyle.value = true
     })
-
     const signOutUser = () => {
       signOutFirebase();
       router.push("/sign-in");
     };
-
     return { tabs, state, signOutUser, setStateStyle };
   },
 });

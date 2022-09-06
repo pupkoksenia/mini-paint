@@ -76,7 +76,7 @@ export const useFireBasePaints: () => FireBasePaints = () => {
       return statePaint.dataPaints.filter(
         (p: DataPaint) => p.userName === statePaint.filterEmail
       );
-    else if(statePaint.filterPaint ==="" && statePaint.filterPaint) return statePaint.dataPaints.filter(
+    else if(statePaint.filterEmail ==="" && statePaint.filterPaint) return statePaint.dataPaints.filter(
       (p: DataPaint) => p.nameOfPaint === statePaint.filterPaint
     );
     else  if(statePaint.filterPaint && statePaint.filterPaint) return statePaint.dataPaints.filter(

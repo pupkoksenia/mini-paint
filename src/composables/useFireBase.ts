@@ -23,7 +23,7 @@ const state = reactive<State>({
     email: "",
     uid: "",
     isSignIn: false,
-    role: 'user'
+    role: "user",
   },
 });
 
@@ -48,10 +48,11 @@ export const useFireBase: () => FireBase = () => {
 
         getDocs(collection(db, "users")).then((docs) => {
           docs.forEach((doc) => {
-            if(doc.data().name === userCredential.user.email) state.user.role = doc.data().role
-          })
-        })
-        
+            if (doc.data().name === userCredential.user.email)
+              state.user.role = doc.data().role;
+          });
+        });
+
         return "ok";
       })
       .catch((error) => {
@@ -105,6 +106,12 @@ export const useFireBase: () => FireBase = () => {
           state.user.email = user.email;
           state.user.uid = user.uid;
           state.user.isSignIn = true;
+          getDocs(collection(db, "users")).then((docs) => {
+            docs.forEach((doc) => {
+              if (doc.data().name === user.email)
+                state.user.role = doc.data().role;
+            });
+          });
           resolve(state.user.isSignIn);
         }
       });

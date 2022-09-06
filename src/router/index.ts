@@ -39,7 +39,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some((record) => record.meta.auth);
   const { state } = useFireBase()
-  //if(to.path === "/" && from.path==="/") next({path:"/loader"})
+  console.log(to.path, from.path)
 
   if(requireAuth && state.user.email === "") next({path: "/sign-in"})
   else next();

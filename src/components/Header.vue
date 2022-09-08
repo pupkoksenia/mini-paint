@@ -4,32 +4,65 @@
       <img src="../assets/62414.jpg" class="h-16 mx-4" />
     </div>
     <div
-      class="flex items-center justify-start col-span-3 text-black font-bold dark:text-white"
+      class="
+        flex
+        items-center
+        justify-start
+        col-span-3
+        text-black
+        font-bold
+        dark:text-white
+      "
     >
       Mini-paint
     </div>
 
-    <button
-      class="flex items-center justify-start col-span-1 text-cyan-700 font-bold dark:text-violet-500"
-      v-on:click="$emit('currentTabComponent', tabs[0])"
+    <router-link
+      to="/feed"
+      class="
+        flex
+        items-center
+        justify-start
+        col-span-1
+        text-cyan-700
+        font-bold
+        dark:text-violet-500
+      "
+      v-on:click="$emit('currentTabComponent', 'Feed')"
     >
-      {{ tabs[0] }}
-    </button>
+      Feed
+    </router-link>
 
-    <button
-      class="flex items-center justify-start text-cyan-700 font-bold dark:text-violet-500"
-      v-on:click="$emit('currentTabComponent', tabs[1])"
+    <router-link
+      to="/create-paint"
+      class="
+        flex
+        items-center
+        justify-start
+        text-cyan-700
+        font-bold
+        dark:text-violet-500
+      "
+      v-on:click="$emit('currentTabComponent', 'Paint')"
     >
-      {{ tabs[1] }}
-    </button>
+      Paint
+    </router-link>
 
     <button
       v-on:click="signOutUser"
-      class="flex items-center justify-start col-span-1 text-cyan-700 font-bold dark:text-violet-500"
+      class="
+        flex
+        items-center
+        justify-start
+        col-span-1
+        text-cyan-700
+        font-bold
+        dark:text-violet-500
+      "
     >
       Log Out
     </button>
-    <DarkMode/>
+    <DarkMode />
   </div>
 </template>
 
@@ -45,21 +78,20 @@ export default defineComponent({
     DarkMode,
   },
   setup() {
-    const tabs = ref(["Paint", "Feed"]);
     const { state, signOutFirebase } = useFireBase();
     const router = useRouter();
     const stateOfStyle = ref();
-    const setStateStyle = (currState:boolean) => {
-      stateOfStyle.value = currState
-    }
-    onMounted(()=>{
-      stateOfStyle.value = true
-    })
+    const setStateStyle = (currState: boolean) => {
+      stateOfStyle.value = currState;
+    };
+    onMounted(() => {
+      stateOfStyle.value = true;
+    });
     const signOutUser = () => {
       signOutFirebase();
       router.push("/sign-in");
     };
-    return { tabs, state, signOutUser, setStateStyle };
+    return { state, signOutUser, setStateStyle };
   },
 });
 </script>

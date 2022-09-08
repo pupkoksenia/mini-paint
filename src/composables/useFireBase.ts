@@ -40,19 +40,20 @@ export interface FireBase {
 export const useFireBase: () => FireBase = () => {
   const auth = getAuth();
 
+  const checkStatus = () => 
+    getDocs(collection(db, "users")).then((docs) => {
+      docs.forEach((doc) => {
+        if (doc.data().name === state.user.email)
+          state.user.role = doc.data().role;
+      });
+    });
+
   const signIn = (email: string, password: string) =>
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         state.user.email = userCredential.user.email;
         state.user.uid = userCredential.user.uid;
-
-        getDocs(collection(db, "users")).then((docs) => {
-          docs.forEach((doc) => {
-            if (doc.data().name === userCredential.user.email)
-              state.user.role = doc.data().role;
-          });
-        });
-
+        checkStatus();
         return "ok";
       })
       .catch((error) => {
@@ -85,6 +86,7 @@ export const useFireBase: () => FireBase = () => {
               {
                 name: userCredential.user.email,
                 paints: [],
+                state: 'user'
               },
               { merge: true }
             );
@@ -101,22 +103,18 @@ export const useFireBase: () => FireBase = () => {
 
   const checkIsSignIn = () =>
     new Promise((resolve, reject) => {
+
       onAuthStateChanged(auth, (user) => {
         if (user) {
           state.user.email = user.email;
           state.user.uid = user.uid;
           state.user.isSignIn = true;
-          getDocs(collection(db, "users")).then((docs) => {
-            docs.forEach((doc) => {
-              if (doc.data().name === user.email)
-                state.user.role = doc.data().role;
-            });
-          });
-          resolve(state.user.isSignIn);
-        }
+
+          checkStatus().then(() => resolve(state.user.isSignIn));
+        }else resolve(state.user.isSignIn)
       });
     }).then((result) => {
-      if (result) return { path: "/" };
+        if (result) return { path: "/feed" };
       else return { path: "/sign-in" };
     });
 

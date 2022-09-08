@@ -1,6 +1,6 @@
 <template>
   <div class = "overflow-hidden bg-gradient-to-t from-indigo-500/75 dark:bg-purple-900 to-white dark:to-black w-screen max-h-fit min-h-screen">
-     <HeaderPart @currentTabComponent = "(currTab: string) => setTabComponent(currTab)"/>
+     <HeaderPart  @currentTabComponent = "(currTab: string) => setTabComponent(currTab)"/>
     <component v-bind:is="currentTabComponent"></component>
   </div>
   </template>

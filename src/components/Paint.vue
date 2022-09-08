@@ -112,7 +112,13 @@ export default defineComponent({
     const strokeType = ref("line");
     const stateOfFigure = ref("stroke");
     const arrayStateOfFigure = ref(["stroke", "fill"]);
-    const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle", "ellipse"]);
+    const arrayStrokeType = ref([
+      "line",
+      "rectangle",
+      "triangle",
+      "circle",
+      "ellipse",
+    ]);
     const imgData = ref();
     const NameOfPaint = ref();
     const history = ref();
@@ -179,6 +185,7 @@ export default defineComponent({
 
     const imageOnServer = () => {
       saveImageOnServer(NameOfPaint.value, canvas.value.toDataURL());
+      context.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     };
 
     const imageOnComp = () => {
@@ -239,7 +246,7 @@ export default defineComponent({
       else if (strokeType.value === "rectangle") drawRectangle();
       else if (strokeType.value === "triangle") drawTriangle();
       else if (strokeType.value === "circle") drawCircle();
-      else if(strokeType.value === "ellipse") drawEllipse();
+      else if (strokeType.value === "ellipse") drawEllipse();
     };
 
     const drawLine = () => {
@@ -400,7 +407,15 @@ export default defineComponent({
             context.value.beginPath();
             context.value.putImageData(imgData.value, 0, 0);
             context.value.moveTo(x.value, y.value);
-            context.value.ellipse(x.value, y.value, Math.abs(x2.value-x.value), Math.abs(y2.value-y.value),Math.PI, 0, 2 * Math.PI)
+            context.value.ellipse(
+              x.value,
+              y.value,
+              Math.abs(x2.value - x.value),
+              Math.abs(y2.value - y.value),
+              Math.PI,
+              0,
+              2 * Math.PI
+            );
             context.value.fillStyle = strokeStyleValue.value;
             stateOfFigure.value === "stroke"
               ? context.value.stroke()

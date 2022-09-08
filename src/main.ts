@@ -14,6 +14,12 @@ const { firebaseConfig } = createFirebaseConfig();
 const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
 
-useFireBase()
+router.push('/loader').finally(()=>{
+  useFireBase()
   .checkIsSignIn()
-  .then((path) => router.push(path));
+  .then((path) => {
+    router.push(path)
+  });
+})
+  
+

@@ -175,15 +175,11 @@ export const useFireBasePaints: () => FireBasePaints = () => {
             },
             index: number
           ) => {
-            console.log(index, paint.urlOfPaint === url);
             if (paint.urlOfPaint === url)  id = index;
           }
         );
-        console.log(statePaint.dataPaints);
 
         statePaint.dataPaints.splice(id, 1);
-
-        console.log(statePaint.dataPaints);
 
         setDoc(
           doc(db, "users", idUser),

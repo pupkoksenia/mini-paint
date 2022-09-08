@@ -7,14 +7,27 @@ const routes: Array<RouteRecordRaw> = [
     name: "home",
     component: () => import("../views/HomeView.vue"),
     meta: { auth: true },
+    children: [
+      {
+        path: "/feed",
+        component: () => import("../components/FeedUsers.vue"),
+        meta: { auth: true },
+      },
+      {
+        path: "/create-paint",
+        component: () => import("../components/Paint.vue"),
+        meta: { auth: true },
+      },
+    ]
   },
+
   {
     path: "/loader",
     component: () => import("../views/LoaderPage.vue"),
   },
   {
     path: "/authentification",
-    children:[
+    children: [
       {
         path: "/register",
         component: () => import("../views/RegisterFormPage.vue"),
@@ -23,7 +36,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/sign-in",
         component: () => import("../views/SignInFormPage.vue"),
       },
-    ]
+    ],
   },
   {
     path: "/:pathMatch(.*)*",
@@ -38,10 +51,10 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some((record) => record.meta.auth);
-  const { state } = useFireBase()
+  const { state } = useFireBase();
 
-  if(requireAuth && state.user.email === "") next({path: "/sign-in"})
+  if (requireAuth && state.user.email === "") next({ path: "/sign-in" });
   else next();
-})
+});
 
 export default router;

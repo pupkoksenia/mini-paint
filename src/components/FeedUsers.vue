@@ -1,6 +1,6 @@
 <template>
   <div class="pt-6 ml-4">
-    <div class="flex justify-start inline-grid gap-1 grid-cols-5 grid-rows-2">
+    <div class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-2">
       <input
         type="text"
         placeholder="email"
@@ -58,6 +58,8 @@
           :urlOfpaint="urlOfpaint"
           :nameOfpaint="nameOfPaint"
           :nameOfUser="nameOfUser"
+          :filterEmail="form.email"
+          :filterNameOfPaint="form.namePaint"
           @open="(isOpened: boolean) => setOpen(isOpened)"
         />
         <div>
@@ -72,7 +74,6 @@
               rounded-md
               border border-slate-400
               w-11/12
-              bg-white
             "
           />
           <div class="text-black w-full dark:text-white">
@@ -134,11 +135,13 @@ export default defineComponent({
       setSortingValue(1);
     };
 
-    const paginatedData = computed(() =>
-      feedPaints.value.slice(
+    const paginatedData = computed(() =>{
+       return feedPaints.value.slice(
         (page.value - 1) * perPage.value,
         page.value * perPage.value
       )
+    }
+     
     );
     const nextPage = () => {
       if (page.value !== Math.ceil(feedPaints.value.length / perPage.value)) {

@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import Loader from "../components/staff/Loader.vue";
+import Loader from "./staff/Loader.vue";
 
 export default defineComponent({
   name: "FeedUsers",

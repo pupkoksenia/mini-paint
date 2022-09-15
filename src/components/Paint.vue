@@ -94,7 +94,7 @@ import { savePaints } from "../utils/savePaints";
 
 export default defineComponent({
   name: "PaintPart",
-  setup() {
+  setup(props, cntx) {
     const { saveImageOnServer } = useFireBasePaints();
     const { saveImageOnComp } = savePaints();
 

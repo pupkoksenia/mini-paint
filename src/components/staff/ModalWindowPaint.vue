@@ -11,7 +11,7 @@
       bg-indigo-200 bg-opacity-30
     "
   >
-    <div class="max-w-2xl p-6 m-20 bg-white rounded-md shadow-xl">
+    <div class="max-w-2xl p-6 m-20 bg-white rounded-md shadow-xl bg-white dark:bg-purple-900">
       <div class="flex items-center justify-between">
         <h3 class="text-2xl">Paint</h3>
         <svg
@@ -63,20 +63,22 @@ export default defineComponent({
     urlOfpaint: String,
     nameOfPaint: String,
     nameOfUser: String,
+    filterEmail: String,
+    filterNameOfPaint:String
   },
   emits: ['open'],
   setup(props, ctx) {
-    const { setFilterValueEmail, deleteUserPaint } = useFireBasePaints();
+    const { setFilterValueEmail, deleteUserPaint, setFilterValuePaint } = useFireBasePaints();
     const { state } = useFireBase();
 
     const deleteButton = () => {
       deleteUserPaint(props.nameOfPaint as string, props.urlOfpaint as string,props.nameOfUser as string );
-      setFilterValueEmail("")
+      setFilterValueEmail(props.filterEmail || "")
+      setFilterValuePaint(props.filterNameOfPaint || "")
     };
 
     const closeModalWindow = () => {
          ctx.emit('open', false);
-         deleteButton();
     }
 
     const saveImageOnComp = () => {

@@ -92,7 +92,7 @@
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useFireBase } from "../composables/useFireBase";
-import DarkMode from "../components/buttons/ButtonDarkMode.vue";
+import DarkMode from "./buttons/ButtonDarkMode.vue";
 
 export default defineComponent({
   name: "SignInForm",

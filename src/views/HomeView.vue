@@ -1,32 +1,71 @@
-<template>
-  <div class = "overflow-hidden bg-gradient-to-t from-indigo-500/75 dark:bg-purple-900 to-white dark:to-black w-screen max-h-fit min-h-screen">
-     <HeaderPart  @currentTabComponent = "(currTab: string) => setTabComponent(currTab)"/>
-    <component v-bind:is="currentTabComponent"></component>
+  <template>
+  <div
+    class="
+      bg-gradient-to-t
+      from-indigo-500/75
+      dark:bg-purple-900
+      to-white
+      dark:to-black
+      w-screen
+      max-h-fit
+      min-h-screen
+    "
+  >
+    <HeaderPart />
+    <div class="grid grid-cols-10 h-6">
+      <button
+        class="
+          flex
+          items-center
+          justify-center
+          col-span-2
+          text-cyan-700
+          font-bold
+          dark:text-violet-500
+        "
+      >
+        <router-link to="/feed"> Feed </router-link>
+      </button>
+
+      <button
+        class="
+          flex
+          items-center
+          justify-start
+          col-span-2
+          text-cyan-700
+          font-bold
+          dark:text-violet-500
+        "
+      >
+        <router-link to="/create-paint"> Paint </router-link>
+      </button>
+      <button
+        class="
+          flex
+          items-center
+          justify-start
+          col-span-2
+          text-cyan-700
+          font-bold
+          dark:text-violet-500
+        "
+      >
+        <router-link to="/set-roles"> Set roles </router-link>
+      </button>
+    </div>
+    <router-view />
   </div>
-  </template>
+</template>
   
   <script lang="ts">
-  import { defineComponent, ref, onMounted } from "vue";
-  import HeaderPart from '../components/Header.vue'
-  import FeedUsers from "../components/FeedUsers.vue";
-  import PaintPart from "../components/Paint.vue";
-  export default defineComponent({
-    name: "HomeView",
-    components: {
-      HeaderPart,
-      FeedUsers,
-      PaintPart,
-    },
-    setup() {
-      const currentTabComponent = ref()
-      onMounted(() => {
-        currentTabComponent.value = "FeedUsers"
-      });
-      const setTabComponent = (currTab: string) => {
-        if( currTab === "Feed") currentTabComponent.value = "FeedUsers"
-        else currentTabComponent.value = "PaintPart"
-      }
-      return {currentTabComponent, setTabComponent}
-    }
-  });
-  </script>
+import { defineComponent } from "vue";
+import HeaderPart from "../components/staff/Header.vue";
+
+export default defineComponent({
+  name: "HomeView",
+  components: {
+    HeaderPart,
+  },
+});
+</script>

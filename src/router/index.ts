@@ -18,29 +18,37 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../components/Paint.vue"),
         meta: { auth: true },
       },
+      {
+        path: "/set-roles",
+        component: () => import("../components/RolesPage.vue"),
+        meta: { auth: true, role: true },
+        //meta: { auth: true }
+      },
+
     ]
   },
 
   {
     path: "/loader",
-    component: () => import("../views/LoaderPage.vue"),
+    component: () => import("../components/LoaderPage.vue"),
   },
   {
     path: "/authentification",
+    //component: ()=> import('../views/AuthView.vue'),
     children: [
       {
         path: "/register",
-        component: () => import("../views/RegisterFormPage.vue"),
+        component: () => import("../components/RegisterFormPage.vue"),
       },
       {
         path: "/sign-in",
-        component: () => import("../views/SignInFormPage.vue"),
+        component: () => import("../components/SignInFormPage.vue"),
       },
     ],
   },
   {
     path: "/:pathMatch(.*)*",
-    component: () => import("../views/NotFoundPage.vue"),
+    component: () => import("../components/NotFoundPage.vue"),
   },
 ];
 
@@ -51,9 +59,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some((record) => record.meta.auth);
+  const requireRole = to.matched.some((record)=> record.meta.role)
   const { state } = useFireBase();
 
   if (requireAuth && state.user.email === "") next({ path: "/sign-in" });
+  if(requireRole && state.user.role === "user") next({path: '/feed'})
   else next();
 });
 

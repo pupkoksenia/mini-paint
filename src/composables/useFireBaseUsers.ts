@@ -76,34 +76,34 @@ export const useFireBaseUsers: () => FireBaseUsers = () => {
         stateUsers.dataUsers.forEach((user) => {
           if (user.email === userName) user.role = changedUserRole;
         });
-      })
-    }
+      });
+  };
 
-    const filteredItems = computed(() => {
-      if (stateUsers.filterEmailVal && stateUsers.filterRoleVal === "")
-        return stateUsers.dataUsers.filter(
-          (user: DataUser) => user.email === stateUsers.filterEmailVal
-        );
-      else if (stateUsers.filterEmailVal === "" && stateUsers.filterRoleVal)
-        return stateUsers.dataUsers.filter(
-          (user: DataUser) => user.role === stateUsers.filterRoleVal
-        );
-      else if (stateUsers.filterEmailVal && stateUsers.filterRoleVal)
-        return stateUsers.dataUsers.filter(
-          (user: DataUser) =>
-            user.email === stateUsers.filterEmailVal &&
-            user.role === stateUsers.filterRoleVal
-        );
-      return stateUsers.dataUsers;
-    });
+  const filteredItems = computed(() => {
+    if (stateUsers.filterEmailVal && stateUsers.filterRoleVal === "")
+      return stateUsers.dataUsers.filter(
+        (user: DataUser) => user.email === stateUsers.filterEmailVal
+      );
+    else if (stateUsers.filterEmailVal === "" && stateUsers.filterRoleVal)
+      return stateUsers.dataUsers.filter(
+        (user: DataUser) => user.role === stateUsers.filterRoleVal
+      );
+    else if (stateUsers.filterEmailVal && stateUsers.filterRoleVal)
+      return stateUsers.dataUsers.filter(
+        (user: DataUser) =>
+          user.email === stateUsers.filterEmailVal &&
+          user.role === stateUsers.filterRoleVal
+      );
+    return stateUsers.dataUsers;
+  });
 
-    const setFilterValueEmail = (value: string) => {
-      stateUsers.filterEmailVal = value;
-    };
+  const setFilterValueEmail = (value: string) => {
+    stateUsers.filterEmailVal = value;
+  };
 
-    const setFilterValueRole = (value: string) => {
-      stateUsers.filterRoleVal = value;
-    };
+  const setFilterValueRole = (value: string) => {
+    stateUsers.filterRoleVal = value;
+  };
 
   return {
     stateUsers: stateUsers,
@@ -113,5 +113,4 @@ export const useFireBaseUsers: () => FireBaseUsers = () => {
     setFilterValueEmail,
     setFilterValueRole,
   };
-}
-  
+};

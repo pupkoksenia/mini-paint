@@ -24,8 +24,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: { auth: true, role: true },
         //meta: { auth: true }
       },
-
-    ]
+    ],
   },
 
   {
@@ -59,11 +58,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some((record) => record.meta.auth);
-  const requireRole = to.matched.some((record)=> record.meta.role)
+  const requireRole = to.matched.some((record) => record.meta.role);
   const { state } = useFireBase();
 
   if (requireAuth && state.user.email === "") next({ path: "/sign-in" });
-  if(requireRole && state.user.role === "user") next({path: '/feed'})
+  if (requireRole && state.user.role === "user") next({ path: "/feed" });
   else next();
 });
 

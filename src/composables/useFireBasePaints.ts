@@ -175,7 +175,7 @@ export const useFireBasePaints: () => FireBasePaints = () => {
             },
             index: number
           ) => {
-            if (paint.urlOfPaint === url)  id = index;
+            if (paint.urlOfPaint === url) id = index;
           }
         );
 

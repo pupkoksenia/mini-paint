@@ -1,6 +1,18 @@
 <template>
-  <div class="pt-6 ml-4 flex justify-center inline-grid gap-1 grid-cols-1 grid-rows-3">
-    <div class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-2 h-14">
+  <div
+    class="
+      pt-6
+      ml-4
+      flex
+      justify-center
+      inline-grid
+      gap-1
+      grid-cols-1 grid-rows-3
+    "
+  >
+    <div
+      class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-2 h-14"
+    >
       <input
         type="text"
         placeholder="email"
@@ -24,7 +36,9 @@
       class="
         flex
         justify-center
-        inline-grid gap-1 grid-cols-3 
+        inline-grid
+        gap-1
+        grid-cols-3
         bg-white
         dark:bg-purple-900
         rounded-xl
@@ -58,14 +72,14 @@
 
     <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
       <button @click="backPage">prev</button>
-    <button
-      v-for="item in numberPage"
-      :key="item"
-      @click="() => goToPage(item)"
-    >
-      {{ item }}
-    </button>
-    <button @click="nextPage">next</button>
+      <button
+        v-for="item in numberPage"
+        :key="item"
+        @click="() => goToPage(item)"
+      >
+        {{ item }}
+      </button>
+      <button @click="nextPage">next</button>
     </div>
   </div>
 </template>

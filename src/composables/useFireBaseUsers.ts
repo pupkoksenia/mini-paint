@@ -1,6 +1,6 @@
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { db } from "../main";
-import { reactive, DeepReadonly, computed, ComputedRef, Ref, ref } from "vue";
+import { reactive, DeepReadonly, computed, ComputedRef } from "vue";
 import { DataUser, StateUsers } from "@/types";
 
 const stateUsers = reactive<StateUsers>({

@@ -94,7 +94,7 @@ export const useFireBase: () => FireBase = () => {
       });
 
   const checkIsSignIn = () =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           state.user.email = user.email;

@@ -1,15 +1,5 @@
 <template>
-  <div
-    class="
-      pt-6
-      ml-4
-      flex
-      justify-center
-      inline-grid
-      gap-1
-      grid-cols-1 grid-rows-3
-    "
-  >
+  <div class="view-role-page">
     <div
       class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-2 h-14"
     >
@@ -32,20 +22,7 @@
       <button @click="handleResetRole" class="button-paint">Reset</button>
     </div>
 
-    <div
-      class="
-        flex
-        justify-center
-        inline-grid
-        gap-1
-        grid-cols-3
-        bg-white
-        dark:bg-purple-900
-        rounded-xl
-        drop-shadow-lg
-        p-10
-      "
-    >
+    <div class="roles">
       <Loader :isLoading="loadingListener" />
       <div
         v-for="user in paginatedData"

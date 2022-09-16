@@ -20,28 +20,13 @@
       <button @click="handleResetPaint" class="button-paint">Reset</button>
 
       <button
-        class="
-          flex
-          items-center
-          justify-start
-          text-cyan-700
-          font-bold
-          dark:text-violet-500
-          ml-4
-        "
+        class="button-asceding-desceding ml-4"
         @click="setSortingValue('asc')"
       >
         Ascending
       </button>
       <button
-        class="
-          flex
-          items-center
-          justify-start
-          text-cyan-700
-          font-bold
-          dark:text-violet-500
-        "
+        class="button-asceding-desceding"
         @click="setSortingValue('desc')"
       >
         Descending

@@ -1,15 +1,7 @@
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { db } from "../main";
 import { reactive, DeepReadonly, computed, ComputedRef, Ref, ref } from "vue";
-import { DataUser } from "@/types";
-
-export interface StateUsers {
-  dataUsers: DataUser[];
-  filterEmailVal: string;
-  filterRoleVal: string;
-  page: number;
-  perPage: number;
-}
+import { DataUser, StateUsers } from "@/types";
 
 const stateUsers = reactive<StateUsers>({
   dataUsers: [],

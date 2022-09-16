@@ -8,15 +8,7 @@ import {
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { db } from "../main";
 import { readonly, reactive, DeepReadonly } from "vue";
-
-export interface State {
-  user: {
-    email: string | null;
-    uid: string;
-    isSignIn: boolean;
-    role: string;
-  };
-}
+import { State } from "../types/index";
 
 const state = reactive<State>({
   user: {
@@ -40,7 +32,7 @@ export interface FireBase {
 export const useFireBase: () => FireBase = () => {
   const auth = getAuth();
 
-  const checkStatus = () => 
+  const checkStatus = () =>
     getDocs(collection(db, "users")).then((docs) => {
       docs.forEach((doc) => {
         if (doc.data().name === state.user.email)
@@ -86,7 +78,7 @@ export const useFireBase: () => FireBase = () => {
               {
                 name: userCredential.user.email,
                 paints: [],
-                state: 'user'
+                state: "user",
               },
               { merge: true }
             );
@@ -103,7 +95,6 @@ export const useFireBase: () => FireBase = () => {
 
   const checkIsSignIn = () =>
     new Promise((resolve, reject) => {
-
       onAuthStateChanged(auth, (user) => {
         if (user) {
           state.user.email = user.email;
@@ -111,10 +102,10 @@ export const useFireBase: () => FireBase = () => {
           state.user.isSignIn = true;
 
           checkStatus().then(() => resolve(state.user.isSignIn));
-        }else resolve(state.user.isSignIn)
+        } else resolve(state.user.isSignIn);
       });
     }).then((result) => {
-        if (result) return { path: "/feed" };
+      if (result) return { path: "/feed" };
       else return { path: "/sign-in" };
     });
 

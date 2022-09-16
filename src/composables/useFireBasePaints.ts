@@ -7,17 +7,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../main";
 import { reactive, DeepReadonly, computed, ComputedRef } from "vue";
-import { DataPaint } from "../types";
 import { useFireBase } from "../composables/useFireBase";
-
-export interface StatePaint {
-  dataPaints: DataPaint[];
-  filterEmail: string;
-  filterPaint: string;
-  sorting: string;
-  page: number;
-  perPage: number;
-}
+import { StatePaint, DataPaint } from "../types/index";
 
 const statePaint = reactive<StatePaint>({
   dataPaints: [],

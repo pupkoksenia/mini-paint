@@ -22,7 +22,6 @@ const routes: Array<RouteRecordRaw> = [
         path: "/set-roles",
         component: () => import("../components/RolesPage.vue"),
         meta: { auth: true, role: true },
-        //meta: { auth: true }
       },
     ],
   },
@@ -33,7 +32,6 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/authentification",
-    //component: ()=> import('../views/AuthView.vue'),
     children: [
       {
         path: "/register",

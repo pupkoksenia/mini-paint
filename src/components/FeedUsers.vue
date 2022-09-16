@@ -29,7 +29,7 @@
           dark:text-violet-500
           ml-4
         "
-        @click="setAscedingSort()"
+        @click="setSortingValue('asc')"
       >
         Ascending
       </button>
@@ -42,7 +42,7 @@
           font-bold
           dark:text-violet-500
         "
-        @click="setDescedingSort()"
+        @click="setSortingValue('desc')"
       >
         Descending
       </button>
@@ -65,16 +65,10 @@
         <div>
           <img
             :src="paint.urlOfPaint"
-            v-on:click="
+            @click="
               goToPaint(paint.urlOfPaint, paint.nameOfPaint, paint.userName)
             "
-            class="
-              px-3
-              py-2
-              rounded-md
-              border border-slate-400
-              w-11/12
-            "
+            class="px-3 py-2 rounded-md border border-slate-400 w-11/12"
           />
           <div class="text-black w-full dark:text-white">
             {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
@@ -85,17 +79,13 @@
 
     <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
       <button @click="backPage">prev</button>
-      <button
-        v-for="item in numberPage"
-        :key="item"
-        @click="() => goToPage(item)"
-      >
+      <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
         {{ item }}
       </button>
       <button @click="nextPage">next</button>
     </div>
   </div>
-  <Loader v-bind:isLoading="loadingListener" />
+  <Loader :isLoading="loadingListener" />
 </template>
 
 <script lang="ts">
@@ -114,6 +104,11 @@ export default defineComponent({
       setFilterValueEmail,
       setFilterValuePaint,
       setSortingValue,
+      nextPage,
+      backPage,
+      goToPage,
+      statePaint,
+      numberPage,
     } = useFireBasePaints();
     const { state } = useFireBase();
     const form = ref({
@@ -125,40 +120,12 @@ export default defineComponent({
     const urlOfpaint = ref();
     const nameOfPaint = ref("");
     const nameOfUser = ref("");
-    const page = ref(1);
-    const perPage = ref(2);
-    const setAscedingSort = () => {
-      setSortingValue(0);
-    };
 
-    const setDescedingSort = () => {
-      setSortingValue(1);
-    };
-
-    const paginatedData = computed(() =>{
-       return feedPaints.value.slice(
-        (page.value - 1) * perPage.value,
-        page.value * perPage.value
-      )
-    }
-     
-    );
-    const nextPage = () => {
-      if (page.value !== Math.ceil(feedPaints.value.length / perPage.value)) {
-        page.value += 1;
-      }
-    };
-    const backPage = () => {
-      if (page.value !== 1) {
-        page.value -= 1;
-      }
-    };
-    const goToPage = (numPage: number) => {
-      page.value = numPage;
-    };
-
-    const numberPage = computed(() => {
-      return Math.ceil(feedPaints.value.length / perPage.value);
+    const paginatedData = computed(() => {
+      return feedPaints.value.slice(
+        (statePaint.page - 1) * statePaint.perPage,
+        statePaint.page * statePaint.perPage
+      );
     });
 
     const handleSubmitEmail = () => {
@@ -196,7 +163,7 @@ export default defineComponent({
       loadingListener.value = true;
       getFeedPaints().then(() => (loadingListener.value = false));
       isOpen.value = false;
-      setSortingValue(0);
+      setSortingValue("asc");
     });
 
     return {
@@ -216,9 +183,7 @@ export default defineComponent({
       nextPage,
       backPage,
       goToPage,
-      perPage,
-      setAscedingSort,
-      setDescedingSort,
+      setSortingValue,
       handleSubmitPaint,
       handleResetPaint,
       numberPage,

@@ -14,14 +14,18 @@ export interface StatePaint {
   dataPaints: DataPaint[];
   filterEmail: string;
   filterPaint: string;
-  sorting: number;
+  sorting: string;
+  page: number;
+  perPage: number;
 }
 
 const statePaint = reactive<StatePaint>({
   dataPaints: [],
   filterEmail: "",
   filterPaint: "",
-  sorting: 0,
+  sorting: "asc",
+  page: 1,
+  perPage: 2,
 });
 
 export interface FireBasePaints {
@@ -29,14 +33,39 @@ export interface FireBasePaints {
   feedPaints: ComputedRef<DataPaint[]>;
   getFeedPaints: () => Promise<void>;
   setFilterValueEmail: (value: string) => void;
-  saveImageOnServer: (NameOfPaint: string, imageURL: string) => void;
+  uploadOnServer: (NameOfPaint: string, imageURL: string) => void;
   deleteUserPaint: (name: string, url: string, user: string) => void;
-  setSortingValue: (value: number) => void;
+  setSortingValue: (value: string) => void;
   setFilterValuePaint: (value: string) => void;
+  nextPage: () => void;
+  backPage: () => void;
+  goToPage: (numPage: number) => void;
+  numberPage: ComputedRef<number>;
 }
 
 export const useFireBasePaints: () => FireBasePaints = () => {
   const { state } = useFireBase();
+
+  const nextPage = () => {
+    if (
+      statePaint.page !==
+      Math.ceil(feedPaints.value.length / statePaint.perPage)
+    ) {
+      statePaint.page += 1;
+    }
+  };
+  const backPage = () => {
+    if (statePaint.page !== 1) {
+      statePaint.page -= 1;
+    }
+  };
+  const goToPage = (numPage: number) => {
+    statePaint.page = numPage;
+  };
+
+  const numberPage = computed(() => {
+    return Math.ceil(feedPaints.value.length / statePaint.perPage);
+  });
 
   const getFeedPaints = () =>
     getDocs(collection(db, "users")).then((docs) => {
@@ -95,11 +124,11 @@ export const useFireBasePaints: () => FireBasePaints = () => {
         new Date(prev.dateInTimestamp.seconds).getTime() -
         new Date(curr.dateInTimestamp.seconds).getTime()
     );
-    if (statePaint.sorting === 0) return items;
+    if (statePaint.sorting === "asc") return items;
     else return items.reverse();
   });
 
-  const setSortingValue = (value: number) => {
+  const setSortingValue = (value: string) => {
     statePaint.sorting = value;
   };
 
@@ -111,7 +140,7 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     statePaint.filterPaint = value;
   };
 
-  const saveImageOnServer = (NameOfPaint: string, imageURL: string) => {
+  const uploadOnServer = (NameOfPaint: string, imageURL: string) => {
     let id = "";
     let getPaints: any = [];
     getDocs(collection(db, "users"))
@@ -196,9 +225,13 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     feedPaints,
     setFilterValueEmail,
     getFeedPaints,
-    saveImageOnServer,
+    uploadOnServer,
     deleteUserPaint,
     setSortingValue,
     setFilterValuePaint,
+    nextPage,
+    backPage,
+    goToPage,
+    numberPage,
   };
 };

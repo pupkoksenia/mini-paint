@@ -1,5 +1,5 @@
 export interface savePaint {
-  saveImageOnComp: (
+  uploadOnDesctop: (
     createEl: any,
     canvas: HTMLCanvasElement,
     NameOfPaint: string
@@ -7,7 +7,7 @@ export interface savePaint {
 }
 
 export const savePaints: () => savePaint = () => {
-  const saveImageOnComp = (
+  const uploadOnDesctop = (
     createEl: any,
     canvas: HTMLCanvasElement,
     NameOfPaint: string
@@ -19,6 +19,6 @@ export const savePaints: () => savePaint = () => {
   };
 
   return {
-    saveImageOnComp,
+    uploadOnDesctop,
   };
 };

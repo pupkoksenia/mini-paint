@@ -60,7 +60,7 @@
 
         <select
           v-model="strokeType"
-          v-on:click="chooseStrokeType"
+          @click="chooseStrokeType"
           class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
         >
           <option
@@ -74,10 +74,10 @@
         </select>
         <button @click="clearStrokes" class="button-paint">clearStrokes</button>
 
-        <button @click="imageOnServer" class="button-paint">
+        <button @click="uploadImgServer" class="button-paint">
           Save image on server
         </button>
-        <button @click="imageOnComp" class="button-paint">
+        <button @click="uploadImgDesctop" class="button-paint">
           Save image on computer
         </button>
         <button @click="unDo" class="button-paint">unDo</button>
@@ -91,12 +91,14 @@
 import { defineComponent, ref, onMounted, computed } from "vue";
 import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { savePaints } from "../utils/savePaints";
+import { arrayStrokeType } from "../types/index";
+import { arrayStateOfFigure } from "../types/index";
 
 export default defineComponent({
   name: "PaintPart",
-  setup(props, cntx) {
-    const { saveImageOnServer } = useFireBasePaints();
-    const { saveImageOnComp } = savePaints();
+  setup() {
+    const { uploadOnServer } = useFireBasePaints();
+    const { uploadOnDesctop } = savePaints();
 
     const canvas = ref();
     const context = ref();
@@ -111,14 +113,6 @@ export default defineComponent({
     const lineWidth = ref(5);
     const strokeType = ref("line");
     const stateOfFigure = ref("stroke");
-    const arrayStateOfFigure = ref(["stroke", "fill"]);
-    const arrayStrokeType = ref([
-      "line",
-      "rectangle",
-      "triangle",
-      "circle",
-      "ellipse",
-    ]);
     const imgData = ref();
     const NameOfPaint = ref();
     const history = ref();
@@ -183,14 +177,15 @@ export default defineComponent({
       context.value.lineWidth = lineWidth.value;
     };
 
-    const imageOnServer = () => {
-      saveImageOnServer(NameOfPaint.value, canvas.value.toDataURL());
+    const uploadImgServer = () => {
+      uploadOnServer(NameOfPaint.value, canvas.value.toDataURL());
       context.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     };
 
-    const imageOnComp = () => {
+    const uploadImgDesctop = () => {
       const createEl = document.createElement("a");
-      saveImageOnComp(createEl, canvas.value, NameOfPaint.value);
+      uploadOnDesctop(createEl, canvas.value, NameOfPaint.value);
+      context.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     };
 
     const toHistoryPush = () => {
@@ -447,9 +442,8 @@ export default defineComponent({
       arrayStateOfFigure,
       clearStrokes,
       NameOfPaint,
-      saveImageOnServer,
-      imageOnServer,
-      imageOnComp,
+      uploadImgServer,
+      uploadImgDesctop,
       unDo,
       reDo,
     };

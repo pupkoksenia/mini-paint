@@ -46,6 +46,7 @@
         p-10
       "
     >
+      <Loader :isLoading="loadingListener" />
       <div
         v-for="user in paginatedData"
         :key="user.email"
@@ -72,11 +73,7 @@
 
     <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
       <button @click="backPage">prev</button>
-      <button
-        v-for="item in numberPage"
-        :key="item"
-        @click="() => goToPage(item)"
-      >
+      <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
         {{ item }}
       </button>
       <button @click="nextPage">next</button>
@@ -89,9 +86,11 @@
   <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
 import { useFireBaseUsers } from "../composables/useFireBaseUsers";
+import Loader from "../components/staff/Loader.vue";
 
 export default defineComponent({
   name: "RolesPage",
+  components: { Loader },
   setup() {
     const {
       getListOfUsers,
@@ -99,39 +98,24 @@ export default defineComponent({
       setFilterValueEmail,
       setFilterValueRole,
       filteredItems,
+      nextPage,
+      backPage,
+      goToPage,
+      stateUsers,
+      numberPage,
     } = useFireBaseUsers();
 
     const form = ref({
       email: "",
       role: "",
     });
-    const page = ref(1);
-    const perPage = ref(3);
+    const loadingListener = ref();
 
     const paginatedData = computed(() => {
       return filteredItems.value.slice(
-        (page.value - 1) * perPage.value,
-        page.value * perPage.value
+        (stateUsers.page - 1) * stateUsers.perPage,
+        stateUsers.page * stateUsers.perPage
       );
-    });
-    const nextPage = () => {
-      if (
-        page.value !== Math.ceil(filteredItems.value.length / perPage.value)
-      ) {
-        page.value += 1;
-      }
-    };
-    const backPage = () => {
-      if (page.value !== 1) {
-        page.value -= 1;
-      }
-    };
-    const goToPage = (numPage: number) => {
-      page.value = numPage;
-    };
-
-    const numberPage = computed(() => {
-      return Math.ceil(filteredItems.value.length / perPage.value);
     });
 
     const handleSubmitEmail = () => {
@@ -151,7 +135,8 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      getListOfUsers();
+      loadingListener.value = true;
+      getListOfUsers().then(() => (loadingListener.value = false));
     });
 
     const changeRole = (nameOfUser: string, userRole: string) => {
@@ -169,8 +154,8 @@ export default defineComponent({
       nextPage,
       backPage,
       goToPage,
-      perPage,
       numberPage,
+      loadingListener,
     };
   },
 });

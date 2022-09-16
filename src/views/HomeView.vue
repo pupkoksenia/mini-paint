@@ -13,44 +13,14 @@
   >
     <HeaderPart />
     <div class="grid grid-cols-10 h-6">
-      <button
-        class="
-          flex
-          items-center
-          justify-center
-          col-span-2
-          text-cyan-700
-          font-bold
-          dark:text-violet-500
-        "
-      >
+      <button class="button-home-page">
         <router-link to="/feed"> Feed </router-link>
       </button>
 
-      <button
-        class="
-          flex
-          items-center
-          justify-start
-          col-span-2
-          text-cyan-700
-          font-bold
-          dark:text-violet-500
-        "
-      >
+      <button class="button-home-page">
         <router-link to="/create-paint"> Paint </router-link>
       </button>
-      <button
-        class="
-          flex
-          items-center
-          justify-start
-          col-span-2
-          text-cyan-700
-          font-bold
-          dark:text-violet-500
-        "
-      >
+      <button v-if="flagRole === 'admin'" class="button-home-page">
         <router-link to="/set-roles"> Set roles </router-link>
       </button>
     </div>
@@ -59,13 +29,20 @@
 </template>
   
   <script lang="ts">
-import { defineComponent } from "vue";
+import { useFireBase } from "@/composables/useFireBase";
+import { computed, defineComponent } from "vue";
 import HeaderPart from "../components/staff/Header.vue";
 
 export default defineComponent({
   name: "HomeView",
   components: {
     HeaderPart,
+  },
+  setup() {
+    const { state } = useFireBase();
+    const flagRole = computed(() => state.user.role);
+
+    return { flagRole };
   },
 });
 </script>

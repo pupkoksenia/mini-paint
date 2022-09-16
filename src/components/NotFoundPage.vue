@@ -1,39 +1,9 @@
 <template>
-  <div
-    class="
-      bg-gradient-to-t
-      from-indigo-500/75
-      to-white
-      relative
-      overflow-hidden
-      h-screen
-    "
-  >
+  <div class="view-not-frond-page">
     <div class="inset-0 bg-black opacity-25 absolute"></div>
-    <div
-      class="
-        container
-        mx-auto
-        px-6
-        md:px-12
-        relative
-        z-10
-        flex
-        items-center
-        py-32
-        xl:py-40
-      "
-    >
+    <div class="container-not-found-page">
       <div class="w-full font-mono flex flex-col items-center relative z-10">
-        <h1
-          class="
-            font-extrabold
-            text-5xl text-center text-white
-            leading-tight
-            mt-4
-          "
-          @click="goHome"
-        >
+        <h1 class="button-go-home-not-found-page" @click="goHome">
           We are all alone here
         </h1>
         <button class="button-paint my-16" @click="goHome">Go Home</button>
@@ -56,8 +26,8 @@ export default defineComponent({
     const router = useRouter();
     const { state } = useFireBase();
     const goHome = () => {
-        if(state.user.email !== "")  router.push("/");
-        else router.push("/sign-in");
+      if (state.user.email !== "") router.push("/");
+      else router.push("/sign-in");
     };
     return { goHome };
   },

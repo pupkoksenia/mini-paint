@@ -1,22 +1,22 @@
 import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { db } from "../main";
-import { reactive, DeepReadonly, computed, ComputedRef } from "vue";
-
-export interface DataUser {
-  email: string;
-  role: string;
-}
+import { reactive, DeepReadonly, computed, ComputedRef, Ref, ref } from "vue";
+import { DataUser } from "@/types";
 
 export interface StateUsers {
   dataUsers: DataUser[];
   filterEmailVal: string;
   filterRoleVal: string;
+  page: number;
+  perPage: number;
 }
 
 const stateUsers = reactive<StateUsers>({
   dataUsers: [],
   filterEmailVal: "",
   filterRoleVal: "",
+  page: 1,
+  perPage: 3,
 });
 
 export interface FireBaseUsers {
@@ -26,6 +26,10 @@ export interface FireBaseUsers {
   filteredItems: ComputedRef<DataUser[]>;
   setFilterValueEmail: (value: string) => void;
   setFilterValueRole: (value: string) => void;
+  nextPage: () => void;
+  backPage: () => void;
+  goToPage: (numPage: number) => void;
+  numberPage: ComputedRef<number>;
 }
 
 export const useFireBaseUsers: () => FireBaseUsers = () => {
@@ -105,6 +109,27 @@ export const useFireBaseUsers: () => FireBaseUsers = () => {
     stateUsers.filterRoleVal = value;
   };
 
+  const nextPage = () => {
+    if (
+      stateUsers.page !==
+      Math.ceil(filteredItems.value.length / stateUsers.perPage)
+    ) {
+      stateUsers.page += 1;
+    }
+  };
+  const backPage = () => {
+    if (stateUsers.page !== 1) {
+      stateUsers.page -= 1;
+    }
+  };
+  const goToPage = (numPage: number) => {
+    stateUsers.page = numPage;
+  };
+
+  const numberPage = computed(() => {
+    return Math.ceil(filteredItems.value.length / stateUsers.perPage);
+  });
+
   return {
     stateUsers: stateUsers,
     getListOfUsers,
@@ -112,5 +137,9 @@ export const useFireBaseUsers: () => FireBaseUsers = () => {
     filteredItems,
     setFilterValueEmail,
     setFilterValueRole,
+    nextPage,
+    backPage,
+    goToPage,
+    numberPage,
   };
 };

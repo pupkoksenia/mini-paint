@@ -1,6 +1,6 @@
 <template>
   <div
-    v-show="$props.open"
+    v-show="open"
     class="
       h-screen
       fixed
@@ -11,7 +11,18 @@
       bg-indigo-200 bg-opacity-30
     "
   >
-    <div class="max-w-2xl p-6 m-20 bg-white rounded-md shadow-xl bg-white dark:bg-purple-900">
+    <div
+      class="
+        max-w-2xl
+        p-6
+        m-20
+        bg-white
+        rounded-md
+        shadow-xl
+        bg-white
+        dark:bg-purple-900
+      "
+    >
       <div class="flex items-center justify-between">
         <h3 class="text-2xl">Paint</h3>
         <svg
@@ -32,12 +43,12 @@
       </div>
       <div class="mt-4">
         <img
-          :src="$props.urlOfpaint"
+          :src="urlOfpaint"
           class="px-3 py-2 rounded-md border border-slate-400 w-12/12 bg-white"
         />
       </div>
       <button
-        v-if="$props.nameOfUser === state.user.email || state.user.role === 'admin' "
+        v-if="nameOfUser === state.user.email || state.user.role === 'admin'"
         @click="closeModalWindow"
         class="button-paint mt-1"
       >
@@ -64,22 +75,27 @@ export default defineComponent({
     nameOfPaint: String,
     nameOfUser: String,
     filterEmail: String,
-    filterNameOfPaint:String
+    filterNameOfPaint: String,
   },
-  emits: ['open'],
+  emits: ["open"],
   setup(props, ctx) {
-    const { setFilterValueEmail, deleteUserPaint, setFilterValuePaint } = useFireBasePaints();
+    const { setFilterValueEmail, deleteUserPaint, setFilterValuePaint } =
+      useFireBasePaints();
     const { state } = useFireBase();
 
     const deleteButton = () => {
-      deleteUserPaint(props.nameOfPaint as string, props.urlOfpaint as string,props.nameOfUser as string );
-      setFilterValueEmail(props.filterEmail || "")
-      setFilterValuePaint(props.filterNameOfPaint || "")
+      deleteUserPaint(
+        props.nameOfPaint as string,
+        props.urlOfpaint as string,
+        props.nameOfUser as string
+      );
+      setFilterValueEmail(props.filterEmail || "");
+      setFilterValuePaint(props.filterNameOfPaint || "");
     };
 
     const closeModalWindow = () => {
-         ctx.emit('open', false);
-    }
+      ctx.emit("open", false);
+    };
 
     const saveImageOnComp = () => {
       const createEl = document.createElement("a");

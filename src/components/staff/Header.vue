@@ -1,8 +1,6 @@
 <template>
   <div class="grid grid-cols-8 w-screen h-16">
-
-    <div class="col-span-1 justify-items-end">
-    </div>
+    <div class="col-span-1 justify-items-end"></div>
     <div
       class="
         flex
@@ -32,11 +30,13 @@
       Log Out
     </button>
     <DarkMode />
-    <ModalWindowUserVue  :open="isOpen" @open="(isOpened: boolean) => setOpen(isOpened)"/>
+    <ModalWindow
+      :open="isOpen"
+      @open="(isOpened: boolean) => setOpen(isOpened)"
+    />
     <div class="col-span-1 flex items-center justify-items-center">
-      <img src="../../assets/man.png" class="h-8 mx-4" @click="openUser"/>
+      <img src="../../assets/man.png" class="h-8 mx-4" @click="openUser" />
     </div>
-
   </div>
 </template>
 
@@ -46,13 +46,13 @@ import { defineComponent, onMounted, ref } from "vue";
 import { useFireBase } from "../../composables/useFireBase";
 import { useRouter } from "vue-router";
 import DarkMode from "../buttons/ButtonDarkMode.vue";
-import ModalWindowUserVue from "./ModalWindowUser.vue";
+import ModalWindow from "./ModalWindow.vue";
 
 export default defineComponent({
   name: "HeaderPart",
   components: {
     DarkMode,
-    ModalWindowUserVue
+    ModalWindow,
   },
   setup() {
     const { state, signOutFirebase } = useFireBase();
@@ -63,10 +63,9 @@ export default defineComponent({
       isOpen.value = isOpened;
     };
 
-    const openUser=()=> {
-      isOpen.value = true
-    }
-
+    const openUser = () => {
+      isOpen.value = true;
+    };
 
     const setStateStyle = (currState: boolean) => {
       stateOfStyle.value = currState;

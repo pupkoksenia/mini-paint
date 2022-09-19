@@ -78,7 +78,7 @@ import { defineComponent, ref, onMounted, computed } from "vue";
 import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "../components/staff/Loader.vue";
-import ModalWindow from "./staff/ModalWindowPaint.vue";
+import ModalWindow from "./staff/ModalWindow.vue";
 
 export default defineComponent({
   name: "FeedUsers",

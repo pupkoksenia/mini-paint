@@ -1,19 +1,17 @@
 <template>
   <div
     v-show="$props.open"
-    class="
-      h-screen
-      fixed
-      inset-0
-      flex
-      items-center
-      justify-center
-      bg-indigo-200 bg-opacity-30
-    "
+    class="h-screen fixed inset-0 flex items-start justify-end"
   >
-    <div class="max-w-2xl p-6 m-20 bg-white rounded-md shadow-xl">
+    <div class="p-6 m-20 bg-white rounded-md dark:bg-purple-900">
       <div class="flex items-center justify-between">
-        <h3 class="text-2xl">Paint</h3>
+        <div class="grid-cols-1 grid-rows-2">
+          <div class="text-sm dark:text-white">
+            Name: {{ state.user.email }}
+          </div>
+          <div class="text-sm dark:text-white">Role: {{ state.user.role }}</div>
+        </div>
+
         <svg
           @click="$emit('open', false)"
           xmlns="http://www.w3.org/2000/svg"
@@ -30,27 +28,28 @@
           />
         </svg>
       </div>
-      <div class="mt-4">
-        <img
-          :src="$props.urlOfpaint"
-          class="px-3 py-2 rounded-md border border-slate-400 w-12/12 bg-white"
-        />
-      </div>
     </div>
   </div>
 </template>
 
- <script lang="ts">
+<script lang="ts">
 import { defineComponent } from "vue";
+import { useFireBase } from "../../composables/useFireBase";
+
 export default defineComponent({
   name: "ModalWindow",
   props: {
     open: Boolean,
-    urlOfpaint: String,
+  },
+  emits: ["open"],
+  setup(props, ctx) {
+    const { state } = useFireBase();
+
+    const closeModalWindow = () => {
+      ctx.emit("open", false);
+    };
+
+    return { state, closeModalWindow };
   },
 });
 </script>
-
-
-
-

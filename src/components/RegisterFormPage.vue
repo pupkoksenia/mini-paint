@@ -1,32 +1,14 @@
 <template>
-  <div
-    class="
-      w-screen
-      h-screen
-      flex
-      justify-center
-      items-center
-      bg-gradient-to-t
-      from-indigo-500/75
-      to-white
-    "
-  >
-    <div class="p-10 bg-white rounded-xl drop-shadow-lg space-y-5">
+  <div class="view-sign-in-register">
+    <div class="view-form">
       <h1 class="text-center text-3xl dark:text-white">Mini-paint</h1>
       <DarkMode />
       <div class="flex flex-col space-y-2">
-        <label class="text-sm font-light" for="email dark:text-white"
+        <label class="text-sm font-light dark:text-white" for="email"
           >Email</label
         >
         <input
-          class="
-            w-96
-            px-3
-            py-2
-            rounded-md
-            border border-slate-400
-            dark:text-white dark:bg-violet-500
-          "
+          class="email-form"
           placeholder="Your Email"
           v-model="form.email"
         />
@@ -37,37 +19,17 @@
         >
         <input
           type="password"
-          class="
-            w-96
-            px-3
-            py-2
-            rounded-md
-            border border-slate-400
-            dark:text-white dark:bg-violet-500
-          "
+          class="password-form"
           v-model="form.password"
           placeholder="Your Password"
         />
       </div>
-      <button
-        class="
-          w-full
-          px-10
-          py-2
-          bg-blue-600
-          text-white
-          rounded-md
-          hover:bg-blue-500 hover:drop-shadow-md
-          duration-300
-          ease-in
-          dark:bg-violet-500
-        "
-        @click="sendInfo"
-      >
-        Register
-      </button>
+      <button class="button-send-info" @click="sendInfo">Register</button>
       <p v-if="errMsg" class="dark:text-white">{{ errMsg }}</p>
-      <div v-on:click="redirectToSignIn" class="text-blue-600 cursor-pointer dark:text-white">
+      <div
+        v-on:click="redirectToSignIn"
+        class="text-blue-600 cursor-pointer dark:text-white"
+      >
         Already have an account? Sign-in!
       </div>
     </div>
@@ -80,9 +42,13 @@
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useFireBase } from "../composables/useFireBase";
+import DarkMode from "./buttons/ButtonDarkMode.vue";
 
 export default defineComponent({
   name: "RegisterForm",
+  components: {
+    DarkMode,
+  },
   setup() {
     const { register } = useFireBase();
     const form = ref({

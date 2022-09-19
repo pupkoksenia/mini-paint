@@ -26,7 +26,7 @@
         </span>
 
         <span>
-          <p class="text-black font-thin  dark:text-white">Color:</p>
+          <p class="text-black font-thin dark:text-white">Color:</p>
           <input
             type="color"
             v-model="strokeStyle"
@@ -60,7 +60,7 @@
 
         <select
           v-model="strokeType"
-          v-on:click="chooseStrokeType"
+          @click="chooseStrokeType"
           class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
         >
           <option
@@ -74,10 +74,10 @@
         </select>
         <button @click="clearStrokes" class="button-paint">clearStrokes</button>
 
-        <button @click="imageOnServer" class="button-paint">
+        <button @click="uploadImgServer" class="button-paint">
           Save image on server
         </button>
-        <button @click="imageOnComp" class="button-paint">
+        <button @click="uploadImgDesctop" class="button-paint">
           Save image on computer
         </button>
         <button @click="unDo" class="button-paint">unDo</button>
@@ -90,13 +90,15 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from "vue";
 import { useFireBasePaints } from "../composables/useFireBasePaints";
-import { savePaints } from "../composables/savePaints";
+import { savePaints } from "../utils/savePaints";
+import { arrayStrokeType } from "../types/index";
+import { arrayStateOfFigure } from "../types/index";
 
 export default defineComponent({
   name: "PaintPart",
   setup() {
-    const { saveImageOnServer } = useFireBasePaints();
-    const { saveImageOnComp } = savePaints();
+    const { uploadOnServer } = useFireBasePaints();
+    const { uploadOnDesctop } = savePaints();
 
     const canvas = ref();
     const context = ref();
@@ -111,8 +113,6 @@ export default defineComponent({
     const lineWidth = ref(5);
     const strokeType = ref("line");
     const stateOfFigure = ref("stroke");
-    const arrayStateOfFigure = ref(["stroke", "fill"]);
-    const arrayStrokeType = ref(["line", "rectangle", "triangle", "circle"]);
     const imgData = ref();
     const NameOfPaint = ref();
     const history = ref();
@@ -177,13 +177,15 @@ export default defineComponent({
       context.value.lineWidth = lineWidth.value;
     };
 
-    const imageOnServer = () => {
-      saveImageOnServer(NameOfPaint.value, canvas.value.toDataURL());
+    const uploadImgServer = () => {
+      uploadOnServer(NameOfPaint.value, canvas.value.toDataURL());
+      context.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     };
 
-    const imageOnComp = () => {
+    const uploadImgDesctop = () => {
       const createEl = document.createElement("a");
-      saveImageOnComp(createEl, canvas.value, NameOfPaint.value);
+      uploadOnDesctop(createEl, canvas.value, NameOfPaint.value);
+      context.value.clearRect(0, 0, canvas.value.width, canvas.value.height);
     };
 
     const toHistoryPush = () => {
@@ -239,6 +241,7 @@ export default defineComponent({
       else if (strokeType.value === "rectangle") drawRectangle();
       else if (strokeType.value === "triangle") drawTriangle();
       else if (strokeType.value === "circle") drawCircle();
+      else if (strokeType.value === "ellipse") drawEllipse();
     };
 
     const drawLine = () => {
@@ -380,6 +383,51 @@ export default defineComponent({
       };
     };
 
+    const drawEllipse = () => {
+      canvas.value.onmousedown = function (e: MouseEvent) {
+        x.value = e.offsetX;
+        y.value = e.offsetY;
+
+        canvas.value.onmousemove = function (e: MouseEvent) {
+          x2.value = e.offsetX;
+          y2.value = e.offsetY;
+
+          const makeEllipse = () => {
+            context.value.clearRect(
+              0,
+              0,
+              canvas.value.width,
+              canvas.value.height
+            );
+            context.value.beginPath();
+            context.value.putImageData(imgData.value, 0, 0);
+            context.value.moveTo(x.value, y.value);
+            context.value.ellipse(
+              x.value,
+              y.value,
+              Math.abs(x2.value - x.value),
+              Math.abs(y2.value - y.value),
+              Math.PI,
+              0,
+              2 * Math.PI
+            );
+            context.value.fillStyle = strokeStyleValue.value;
+            stateOfFigure.value === "stroke"
+              ? context.value.stroke()
+              : context.value.fill();
+          };
+          context.value.closePath();
+
+          if (e.buttons > 0) {
+            makeEllipse();
+          } else {
+            imgData.value = toGetImageData();
+          }
+        };
+        toHistoryPush();
+      };
+    };
+
     return {
       canvas,
       backgroundColor,
@@ -394,9 +442,8 @@ export default defineComponent({
       arrayStateOfFigure,
       clearStrokes,
       NameOfPaint,
-      saveImageOnServer,
-      imageOnServer,
-      imageOnComp,
+      uploadImgServer,
+      uploadImgDesctop,
       unDo,
       reDo,
     };

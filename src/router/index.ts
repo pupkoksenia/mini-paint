@@ -4,20 +4,48 @@ import { useFireBase } from "../composables/useFireBase";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
+    name: "home",
     component: () => import("../views/HomeView.vue"),
     meta: { auth: true },
+    children: [
+      {
+        path: "/feed",
+        component: () => import("../components/FeedUsers.vue"),
+        meta: { auth: true },
+      },
+      {
+        path: "/create-paint",
+        component: () => import("../components/Paint.vue"),
+        meta: { auth: true },
+      },
+      {
+        path: "/set-roles",
+        component: () => import("../components/RolesPage.vue"),
+        meta: { auth: true, role: ["admin"] },
+      },
+    ],
+  },
+
+  {
+    path: "/loader",
+    component: () => import("../components/LoaderPage.vue"),
   },
   {
-    path: "/register",
-    component: () => import("../components/RegisterForm.vue"),
-  },
-  {
-    path: "/sign-in",
-    component: () => import("../components/SignInForm.vue"),
+    path: "/authentification",
+    children: [
+      {
+        path: "/register",
+        component: () => import("../components/RegisterFormPage.vue"),
+      },
+      {
+        path: "/sign-in",
+        component: () => import("../components/SignInFormPage.vue"),
+      },
+    ],
   },
   {
     path: "/:pathMatch(.*)*",
-    component: () => import("../components/NotFound.vue"),
+    component: () => import("../components/NotFoundPage.vue"),
   },
 ];
 
@@ -27,17 +55,13 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const { checkIsRegistred } = useFireBase();
   const requireAuth = to.matched.some((record) => record.meta.auth);
-  checkIsRegistred()
-    .then(() => {
-      if (!requireAuth) next({ path: "/" });
-      next();
-    })
-    .catch(() => {
-      if (requireAuth) next({ path: "/sign-in" });
-      else next();
-    });
+  const requireRole = to.matched.some((record) => record.meta.role);
+  const { state } = useFireBase();
+
+  if (requireAuth && state.user.email === "") next({ path: "/sign-in" });
+  if (requireRole && state.user.role === "user") next({ path: "/feed" });
+  else next();
 });
 
 export default router;

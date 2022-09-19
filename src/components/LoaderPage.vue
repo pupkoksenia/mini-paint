@@ -10,7 +10,7 @@
       justify-items-center
     "
   >
-    <Loader v-bind:isLoading="loadingListener" />
+    <Loader :isLoading="loadingListener" />
   </div>
 </template>
 

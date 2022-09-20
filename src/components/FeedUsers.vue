@@ -40,13 +40,36 @@
       >
         <ModalWindow
           :open="isOpen"
-          :urlOfpaint="urlOfpaint"
-          :nameOfpaint="nameOfPaint"
-          :nameOfUser="nameOfUser"
-          :filterEmail="form.email"
-          :filterNameOfPaint="form.namePaint"
           @open="(isOpened: boolean) => setOpen(isOpened)"
-        />
+        >
+          <div class="mt-4">
+            <img
+              :src="urlOfpaint"
+              class="
+                px-3
+                py-2
+                rounded-md
+                border border-slate-400
+                w-12/12
+                bg-white
+              "
+            />
+          </div>
+          <button
+            v-if="
+              nameOfUser === state.user.email || state.user.role === 'admin'
+            "
+            @click="closeModalWindow"
+            class="button-paint mt-1"
+          >
+            Delete
+          </button>
+          <button v-else class="hidden"></button>
+          <button @click="saveImageOnComp()" class="button-paint mt-1 ml-1">
+            Save img on computer
+          </button>
+        </ModalWindow>
+
         <div>
           <img
             :src="paint.urlOfPaint"
@@ -82,7 +105,8 @@ import ModalWindow from "./staff/ModalWindow.vue";
 
 export default defineComponent({
   name: "FeedUsers",
-  setup() {
+  emits: ["open"],
+  setup(props, ctx) {
     const {
       getFeedPaints,
       feedPaints,
@@ -94,6 +118,7 @@ export default defineComponent({
       goToPage,
       statePaint,
       numberPage,
+      deleteUserPaint,
     } = useFireBasePaints();
     const { state } = useFireBase();
     const form = ref({
@@ -151,6 +176,23 @@ export default defineComponent({
       setSortingValue("asc");
     });
 
+    const deleteButton = () => {
+      deleteUserPaint(nameOfPaint.value, urlOfpaint.value, nameOfUser.value);
+      setFilterValueEmail(form.value.email || "");
+      setFilterValuePaint(form.value.namePaint || "");
+    };
+
+    const closeModalWindow = () => {
+      ctx.emit("open", false);
+    };
+    const saveImageOnComp = () => {
+      const createEl = document.createElement("a");
+      createEl.href = urlOfpaint.value || "";
+      createEl.download = nameOfPaint.value || "";
+      createEl.click();
+      createEl.remove();
+    };
+
     return {
       handleSubmitEmail,
       form,
@@ -172,6 +214,9 @@ export default defineComponent({
       handleSubmitPaint,
       handleResetPaint,
       numberPage,
+      deleteButton,
+      closeModalWindow,
+      saveImageOnComp,
     };
   },
   components: { Loader, ModalWindow },

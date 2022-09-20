@@ -33,7 +33,12 @@
     <ModalWindow
       :open="isOpen"
       @open="(isOpened: boolean) => setOpen(isOpened)"
-    />
+    >
+      <div class="grid-cols-1 grid-rows-2">
+        <div class="text-sm dark:text-white">Name: {{ state.user.email }}</div>
+        <div class="text-sm dark:text-white">Role: {{ state.user.role }}</div>
+      </div>
+    </ModalWindow>
     <div class="col-span-1 flex items-center justify-items-center">
       <img src="../../assets/man.png" class="h-8 mx-4" @click="openUser" />
     </div>

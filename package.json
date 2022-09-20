@@ -6,7 +6,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "precommit": "lint-staged"
   },
   "dependencies": {
     "@vueuse/core": "^9.1.1",

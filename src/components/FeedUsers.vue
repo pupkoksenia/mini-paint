@@ -39,8 +39,8 @@
         class="inline-grid gap-1 grid-cols-1"
       >
         <ModalWindow
-          :isOpenModalWindow="isOpen"
-          @isOpenModalWindow="(isOpened: boolean) => setOpen(isOpened)"
+          :open="isOpen"
+          @open="(isOpened: boolean) => setOpen(isOpened)"
         >
           <div class="mt-4">
             <img

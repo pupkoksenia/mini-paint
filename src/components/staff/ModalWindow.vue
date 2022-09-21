@@ -1,10 +1,32 @@
 <template>
-  <Teleport to="bodyApp">
-    <div v-show="isOpenModalWindow" class="modal-window-template">
-      <div class="modal-window-body">
-        <div class="modal-window-flex-items">
+  <Teleport to="body">
+    <div
+      v-show="open"
+      class="
+        h-screen
+        fixed
+        inset-0
+        flex
+        items-center
+        justify-center
+        bg-indigo-200 bg-opacity-30
+      "
+    >
+      <div
+        class="
+          max-w-2xl
+          p-6
+          m-20
+          bg-white
+          rounded-md
+          shadow-xl
+          bg-white
+          dark:bg-purple-900
+        "
+      >
+        <div class="flex items-center justify-between">
           <svg
-            @click="$emit('isOpenModalWindow', false)"
+            @click="$emit('open', false)"
             xmlns="http://www.w3.org/2000/svg"
             class="w-8 h-8 text-cyan-700 cursor-pointer"
             fill="none"
@@ -31,8 +53,8 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "ModalWindow",
   props: {
-    isOpenModalWindow: Boolean,
+    open: Boolean,
   },
-  emits: ["isOpenModalWindow"],
+  emits: ["open"],
 });
 </script>

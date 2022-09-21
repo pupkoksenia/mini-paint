@@ -238,74 +238,82 @@ export default defineComponent({
 
     const chooseStrokeType = () => {
       imgData.value = toGetImageData();
-      if (strokeType.value === "line")
-        drawLine(
-          canvas,
-          x,
-          y,
-          dx,
-          dy,
-          context,
-          imgData,
-          toGetImageData,
-          toHistoryPush
-        );
-      else if (strokeType.value === "rectangle")
-        drawRectangle(
-          canvas,
-          x,
-          y,
-          x2,
-          y2,
-          context,
-          imgData,
-          toGetImageData,
-          toHistoryPush,
-          strokeStyleValue,
-          stateOfFigure
-        );
-      else if (strokeType.value === "triangle")
-        drawTriangle(
-          canvas,
-          x,
-          y,
-          x2,
-          y2,
-          context,
-          imgData,
-          toGetImageData,
-          toHistoryPush,
-          strokeStyleValue,
-          stateOfFigure
-        );
-      else if (strokeType.value === "circle")
-        drawCircle(
-          canvas,
-          x,
-          y,
-          x2,
-          y2,
-          context,
-          imgData,
-          toGetImageData,
-          toHistoryPush,
-          strokeStyleValue,
-          stateOfFigure
-        );
-      else if (strokeType.value === "ellipse")
-        drawEllipse(
-          canvas,
-          x,
-          y,
-          x2,
-          y2,
-          context,
-          imgData,
-          toGetImageData,
-          toHistoryPush,
-          strokeStyleValue,
-          stateOfFigure
-        );
+
+      switch (strokeType.value) {
+        case "line":
+          drawLine(
+            canvas,
+            x,
+            y,
+            dx,
+            dy,
+            context,
+            imgData,
+            toGetImageData,
+            toHistoryPush
+          );
+          break;
+        case "rectangle":
+          drawRectangle(
+            canvas,
+            x,
+            y,
+            x2,
+            y2,
+            context,
+            imgData,
+            toGetImageData,
+            toHistoryPush,
+            strokeStyleValue,
+            stateOfFigure
+          );
+          break;
+        case "triangle":
+          drawTriangle(
+            canvas,
+            x,
+            y,
+            x2,
+            y2,
+            context,
+            imgData,
+            toGetImageData,
+            toHistoryPush,
+            strokeStyleValue,
+            stateOfFigure
+          );
+          break;
+        case "circle":
+          drawCircle(
+            canvas,
+            x,
+            y,
+            x2,
+            y2,
+            context,
+            imgData,
+            toGetImageData,
+            toHistoryPush,
+            strokeStyleValue,
+            stateOfFigure
+          );
+          break;
+        case "ellipse":
+          drawEllipse(
+            canvas,
+            x,
+            y,
+            x2,
+            y2,
+            context,
+            imgData,
+            toGetImageData,
+            toHistoryPush,
+            strokeStyleValue,
+            stateOfFigure
+          );
+          break;
+      }
     };
 
     return {

@@ -42,4 +42,13 @@
     .roles {
         @apply flex justify-center inline-grid gap-1 grid-cols-3 bg-white dark:bg-purple-900 rounded-xl drop-shadow-lg p-10;
     }
+    .modal-window-template {
+        @apply h-screen fixed inset-0 flex items-center justify-center bg-indigo-200 bg-opacity-30;
+    }
+    .modal-window {
+        @apply max-w-2xl p-6 m-20 bg-white rounded-md shadow-xl bg-white dark:bg-purple-900;
+    }
+    .modal-window-flex-items {
+        @apply flex items-center justify-between;
+    }
 }

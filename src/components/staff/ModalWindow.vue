@@ -1,32 +1,10 @@
 <template>
   <Teleport to="body">
-    <div
-      v-show="open"
-      class="
-        h-screen
-        fixed
-        inset-0
-        flex
-        items-center
-        justify-center
-        bg-indigo-200 bg-opacity-30
-      "
-    >
-      <div
-        class="
-          max-w-2xl
-          p-6
-          m-20
-          bg-white
-          rounded-md
-          shadow-xl
-          bg-white
-          dark:bg-purple-900
-        "
-      >
-        <div class="flex items-center justify-between">
+    <div v-show="isOpenModalWindow" class="modal-window-template">
+      <div class="modal-window">
+        <div class="modal-window-flex-items">
           <svg
-            @click="$emit('open', false)"
+            @click="$emit('isOpenModalWindow', false)"
             xmlns="http://www.w3.org/2000/svg"
             class="w-8 h-8 text-cyan-700 cursor-pointer"
             fill="none"
@@ -53,8 +31,8 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "ModalWindow",
   props: {
-    open: Boolean,
+    isOpenModalWindow: Boolean,
   },
-  emits: ["open"],
+  emits: ["isOpenModalWindow"],
 });
 </script>

@@ -30,17 +30,10 @@
       Log Out
     </button>
     <DarkMode />
-
-    <ModalWindow
+    <ModalWindowUserVue
       :open="isOpen"
       @open="(isOpened: boolean) => setOpen(isOpened)"
-    >
-      <div class="grid-cols-1 grid-rows-2">
-        <div class="text-sm dark:text-white">Name: {{ state.user.email }}</div>
-        <div class="text-sm dark:text-white">Role: {{ state.user.role }}</div>
-      </div>
-    </ModalWindow>
-
+    />
     <div class="col-span-1 flex items-center justify-items-center">
       <img src="../../assets/man.png" class="h-8 mx-4" @click="openUser" />
     </div>
@@ -53,13 +46,12 @@ import { defineComponent, onMounted, ref } from "vue";
 import { useFireBase } from "../../composables/useFireBase";
 import { useRouter } from "vue-router";
 import DarkMode from "../buttons/ButtonDarkMode.vue";
-import ModalWindow from "./ModalWindow.vue";
-
+import ModalWindowUserVue from "./ModalWindowUser.vue";
 export default defineComponent({
   name: "HeaderPart",
   components: {
     DarkMode,
-    ModalWindow,
+    ModalWindowUserVue,
   },
   setup() {
     const { state, signOutFirebase } = useFireBase();
@@ -69,11 +61,9 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened;
     };
-
     const openUser = () => {
       isOpen.value = true;
     };
-
     const setStateStyle = (currState: boolean) => {
       stateOfStyle.value = currState;
     };

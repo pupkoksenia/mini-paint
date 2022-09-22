@@ -1,6 +1,10 @@
 <template>
   <Teleport to="body">
-    <div v-show="isOpenModalWindow" class="modal-window-template">
+    <div
+      v-show="isOpenModalWindow"
+      class="modal-window-template"
+      @click="$emit('isOpenModalWindow', false)"
+    >
       <div class="modal-window">
         <div class="modal-window-flex-items">
           <svg

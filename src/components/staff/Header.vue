@@ -47,6 +47,7 @@ import { useFireBase } from "../../composables/useFireBase";
 import { useRouter } from "vue-router";
 import DarkMode from "../buttons/ButtonDarkMode.vue";
 import ModalWindowUserVue from "./ModalWindowUser.vue";
+
 export default defineComponent({
   name: "HeaderPart",
   components: {
@@ -64,6 +65,7 @@ export default defineComponent({
     const openUser = () => {
       isOpen.value = true;
     };
+
     const setStateStyle = (currState: boolean) => {
       stateOfStyle.value = currState;
     };

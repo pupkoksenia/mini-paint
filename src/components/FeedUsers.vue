@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-6 ml-4">
+  <div class="pt-1 ml-4">
     <div class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-2">
       <input
         type="text"

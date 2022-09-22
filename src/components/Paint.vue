@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-6 ml-4 w-screen h-screen">
+  <div class="pt-6 ml-4">
     <input
       type="text"
       placeholder="Name of paint"

@@ -46,10 +46,10 @@
         <table class="mdc-data-table__table" aria-label="paints">
           <tbody class="mdc-data-table__content">
             <tr class="mdc-data-table__row">
-              <div
+              <td
+                class="mdc-data-table__cell"
                 v-for="paint in paginatedData"
                 :key="paint.toString"
-                class="inline-grid gap-1 grid-cols-1"
               >
                 <div>
                   <img
@@ -68,20 +68,99 @@
                     {{ paint.userName }}
                   </div>
                 </div>
-              </div>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
+      <div class="mdc-data-table__pagination">
+        <div class="mdc-data-table__pagination-trailing">
+          <div class="mdc-data-table__pagination-rows-per-page">
+            <div class="mdc-data-table__pagination-rows-per-page-label">
+              Rows per page
+            </div>
+            <div
+              class="
+                mdc-select__menu
+                mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth
+              "
+              role="listbox"
+            >
+              <ul class="mdc-list">
+                <li
+                  class="mdc-list-item mdc-list-item--selected"
+                  aria-selected="true"
+                  role="option"
+                  data-value="10"
+                >
+                  <span class="mdc-list-item__text">2</span>
+                </li>
+                <li class="mdc-list-item" role="option" data-value="25">
+                  <span class="mdc-list-item__text">4</span>
+                </li>
+                <li class="mdc-list-item" role="option" data-value="100">
+                  <span class="mdc-list-item__text">6</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
-      <button @click="backPage">prev</button>
-      <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
-        {{ item }}
-      </button>
-      <button @click="nextPage">next</button>
+        <div class="mdc-data-table__pagination-navigation">
+          <div class="mdc-data-table__pagination-total">1‑10 of 100</div>
+          <button
+            class="
+              mdc-icon-button
+              material-icons
+              mdc-data-table__pagination-button
+            "
+            data-first-page="true"
+            disabled
+          >
+            <div class="mdc-button__icon">first_page</div>
+          </button>
+          <button
+            class="
+              mdc-icon-button
+              material-icons
+              mdc-data-table__pagination-button
+            "
+            data-prev-page="true"
+            disabled
+          >
+            <div class="mdc-button__icon">chevron_left</div>
+          </button>
+          <button
+            class="
+              mdc-icon-button
+              material-icons
+              mdc-data-table__pagination-button
+            "
+            data-next-page="true"
+          >
+            <div class="mdc-button__icon">chevron_right</div>
+          </button>
+          <button
+            class="
+              mdc-icon-button
+              material-icons
+              mdc-data-table__pagination-button
+            "
+            data-last-page="true"
+          >
+            <div class="mdc-button__icon">last_page</div>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
+    <button @click="backPage">prev</button>
+    <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
+      {{ item }}
+    </button>
+    <button @click="nextPage">next</button>
   </div>
   <Loader :isLoading="loadingListener" />
 </template>
@@ -192,7 +271,9 @@ export default defineComponent({
 </script>
 
 <style>
+@use "@material/icon-button";
 @use "@material/data-table/data-table";
+@include icon-button.core-styles;
 @include data-table.core-styles;
 @include data-table.theme-baseline;
 </style>

@@ -69,7 +69,6 @@
             Save img on computer
           </button>
         </ModalWindow>
-
         <div>
           <img
             :src="paint.urlOfPaint"
@@ -102,11 +101,9 @@ import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "../components/staff/Loader.vue";
 import ModalWindow from "./staff/ModalWindow.vue";
-
 export default defineComponent({
   name: "FeedUsers",
-  emits: ["open"],
-  setup(props, ctx) {
+  setup() {
     const {
       getFeedPaints,
       feedPaints,
@@ -118,7 +115,6 @@ export default defineComponent({
       goToPage,
       statePaint,
       numberPage,
-      deleteUserPaint,
     } = useFireBasePaints();
     const { state } = useFireBase();
     const form = ref({
@@ -130,14 +126,12 @@ export default defineComponent({
     const urlOfpaint = ref();
     const nameOfPaint = ref("");
     const nameOfUser = ref("");
-
     const paginatedData = computed(() => {
       return feedPaints.value.slice(
         (statePaint.page - 1) * statePaint.perPage,
         statePaint.page * statePaint.perPage
       );
     });
-
     const handleSubmitEmail = () => {
       setFilterValueEmail(form.value.email);
     };
@@ -145,16 +139,13 @@ export default defineComponent({
       form.value.email = "";
       setFilterValueEmail("");
     };
-
     const handleSubmitPaint = () => {
       setFilterValuePaint(form.value.namePaint);
     };
-
     const handleResetPaint = () => {
       form.value.namePaint = "";
       setFilterValuePaint("");
     };
-
     const goToPaint = (
       urlPaint: string,
       namePaint: string,
@@ -168,31 +159,12 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened;
     };
-
     onMounted(() => {
       loadingListener.value = true;
       getFeedPaints().then(() => (loadingListener.value = false));
       isOpen.value = false;
       setSortingValue("asc");
     });
-
-    const deleteButton = () => {
-      deleteUserPaint(nameOfPaint.value, urlOfpaint.value, nameOfUser.value);
-      setFilterValueEmail(form.value.email || "");
-      setFilterValuePaint(form.value.namePaint || "");
-    };
-
-    const closeModalWindow = () => {
-      ctx.emit("open", false);
-    };
-    const saveImageOnComp = () => {
-      const createEl = document.createElement("a");
-      createEl.href = urlOfpaint.value || "";
-      createEl.download = nameOfPaint.value || "";
-      createEl.click();
-      createEl.remove();
-    };
-
     return {
       handleSubmitEmail,
       form,
@@ -214,9 +186,6 @@ export default defineComponent({
       handleSubmitPaint,
       handleResetPaint,
       numberPage,
-      deleteButton,
-      closeModalWindow,
-      saveImageOnComp,
     };
   },
   components: { Loader, ModalWindow },

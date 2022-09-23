@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$props.isLoading === true" class="lds-dual-ring"></div>
+  <div v-if="isLoading === true" class="lds-dual-ring"></div>
   <div v-else class="hidden"></div>
 </template>
 

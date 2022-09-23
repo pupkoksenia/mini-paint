@@ -1,8 +1,6 @@
 <template>
   <div class="grid grid-cols-8 w-screen h-16">
-
-    <div class="col-span-1 justify-items-end">
-    </div>
+    <div class="col-span-1 justify-items-end"></div>
     <div
       class="
         flex
@@ -32,11 +30,13 @@
       Log Out
     </button>
     <DarkMode />
-    <ModalWindowUserVue  :open="isOpen" @open="(isOpened: boolean) => setOpen(isOpened)"/>
+    <ModalWindowUserVue
+      :open="isOpen"
+      @open="(isOpened: boolean) => setOpen(isOpened)"
+    />
     <div class="col-span-1 flex items-center justify-items-center">
-      <img src="../../assets/man.png" class="h-8 mx-4" @click="openUser"/>
+      <img src="../../assets/man.png" class="h-8 mx-4" @click="openUser" />
     </div>
-
   </div>
 </template>
 
@@ -52,7 +52,7 @@ export default defineComponent({
   name: "HeaderPart",
   components: {
     DarkMode,
-    ModalWindowUserVue
+    ModalWindowUserVue,
   },
   setup() {
     const { state, signOutFirebase } = useFireBase();
@@ -62,11 +62,9 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened;
     };
-
-    const openUser=()=> {
-      isOpen.value = true
-    }
-
+    const openUser = () => {
+      isOpen.value = true;
+    };
 
     const setStateStyle = (currState: boolean) => {
       stateOfStyle.value = currState;

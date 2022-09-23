@@ -42,32 +42,36 @@
           :isOpenModalWindow="isOpen"
           @isOpenModalWindow="(isOpened: boolean) => setOpen(isOpened)"
         >
-          <div class="mt-4">
-            <img
-              :src="urlOfpaint"
-              class="
-                px-3
-                py-2
-                rounded-md
-                border border-slate-400
-                w-12/12
-                bg-white
+          <template v-slot:body>
+            <div class="mt-4">
+              <img
+                :src="urlOfpaint"
+                class="
+                  px-3
+                  py-2
+                  rounded-md
+                  border border-slate-400
+                  w-12/12
+                  bg-white
+                "
+              />
+            </div>
+          </template>
+          <template v-slot:footer>
+            <button
+              v-if="
+                nameOfUser === state.user.email || state.user.role === 'admin'
               "
-            />
-          </div>
-          <button
-            v-if="
-              nameOfUser === state.user.email || state.user.role === 'admin'
-            "
-            @click="closeModalWindow"
-            class="button-paint mt-1"
-          >
-            Delete
-          </button>
-          <button v-else class="hidden"></button>
-          <button @click="saveImageOnComp()" class="button-paint mt-1 ml-1">
-            Save img on computer
-          </button>
+              @click="closeModalWindow"
+              class="button-paint mt-1"
+            >
+              Delete
+            </button>
+            <button v-else class="hidden"></button>
+            <button @click="saveImageOnComp()" class="button-paint mt-1 ml-1">
+              Save img on computer
+            </button>
+          </template>
         </ModalWindow>
         <div>
           <img
@@ -101,9 +105,10 @@ import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "../components/staff/Loader.vue";
 import ModalWindow from "./staff/ModalWindow.vue";
+
 export default defineComponent({
   name: "FeedUsers",
-  setup() {
+  setup(props, ctx) {
     const {
       getFeedPaints,
       feedPaints,
@@ -159,6 +164,16 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened;
     };
+    const closeModalWindow = () => {
+      ctx.emit("open", false);
+    };
+    const saveImageOnComp = () => {
+      const createEl = document.createElement("a");
+      createEl.href = urlOfpaint.value || "";
+      createEl.download = nameOfPaint.value || "";
+      createEl.click();
+      createEl.remove();
+    };
     onMounted(() => {
       loadingListener.value = true;
       getFeedPaints().then(() => (loadingListener.value = false));
@@ -186,6 +201,8 @@ export default defineComponent({
       handleSubmitPaint,
       handleResetPaint,
       numberPage,
+      closeModalWindow,
+      saveImageOnComp,
     };
   },
   components: { Loader, ModalWindow },

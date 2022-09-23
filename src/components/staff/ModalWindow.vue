@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <Teleport to="#app-body">
     <div
       v-show="isOpenModalWindow"
       class="modal-window-template"
@@ -23,7 +23,13 @@
             />
           </svg>
         </div>
-        <slot />
+        <div>
+          <slot name="body"></slot>
+        </div>
+
+        <div>
+          <slot name="footer"></slot>
+        </div>
       </div>
     </div>
   </Teleport>

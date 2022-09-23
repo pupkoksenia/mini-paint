@@ -35,10 +35,14 @@
       :isOpenModalWindow="isOpen"
       @isOpenModalWindow="(isOpened: boolean) => setOpen(isOpened)"
     >
-      <div class="grid-cols-1 grid-rows-2">
-        <div class="text-sm dark:text-white">Name: {{ state.user.email }}</div>
-        <div class="text-sm dark:text-white">Role: {{ state.user.role }}</div>
-      </div>
+      <template v-slot:body>
+        <div class="grid-cols-1 grid-rows-2">
+          <div class="text-sm dark:text-white">
+            Name: {{ state.user.email }}
+          </div>
+          <div class="text-sm dark:text-white">Role: {{ state.user.role }}</div>
+        </div>
+      </template>
     </ModalWindow>
 
     <div class="col-span-1 flex items-center justify-items-center">

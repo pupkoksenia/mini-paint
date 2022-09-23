@@ -32,33 +32,46 @@
         Descending
       </button>
     </div>
-    <div class="flex justify-center pt-6 inline-grid gap-3 grid-cols-2">
-      <div
-        v-for="paint in paginatedData"
-        :key="paint.toString"
-        class="inline-grid gap-1 grid-cols-1"
-      >
-        <ModalWindow
-          :open="isOpen"
-          :urlOfpaint="urlOfpaint"
-          :nameOfpaint="nameOfPaint"
-          :nameOfUser="nameOfUser"
-          :filterEmail="form.email"
-          :filterNameOfPaint="form.namePaint"
-          @open="(isOpened: boolean) => setOpen(isOpened)"
-        />
-        <div>
-          <img
-            :src="paint.urlOfPaint"
-            @click="
-              goToPaint(paint.urlOfPaint, paint.nameOfPaint, paint.userName)
-            "
-            class="px-3 py-2 rounded-md border border-slate-400 w-11/12"
-          />
-          <div class="text-black w-full dark:text-white">
-            {{ paint.nameOfPaint }} {{ paint.date }} {{ paint.userName }}
-          </div>
-        </div>
+    <ModalWindow
+      :open="isOpen"
+      :urlOfpaint="urlOfpaint"
+      :nameOfpaint="nameOfPaint"
+      :nameOfUser="nameOfUser"
+      :filterEmail="form.email"
+      :filterNameOfPaint="form.namePaint"
+      @open="(isOpened: boolean) => setOpen(isOpened)"
+    />
+    <div class="mdc-data-table">
+      <div class="mdc-data-table__table-container">
+        <table class="mdc-data-table__table" aria-label="paints">
+          <tbody class="mdc-data-table__content">
+            <tr class="mdc-data-table__row">
+              <div
+                v-for="paint in paginatedData"
+                :key="paint.toString"
+                class="inline-grid gap-1 grid-cols-1"
+              >
+                <div>
+                  <img
+                    :src="paint.urlOfPaint"
+                    @click="
+                      goToPaint(
+                        paint.urlOfPaint,
+                        paint.nameOfPaint,
+                        paint.userName
+                      )
+                    "
+                    class="px-3 py-2 rounded-md border border-slate-400 w-11/12"
+                  />
+                  <div class="text-black w-full dark:text-white">
+                    {{ paint.nameOfPaint }} {{ paint.date }}
+                    {{ paint.userName }}
+                  </div>
+                </div>
+              </div>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -177,3 +190,9 @@ export default defineComponent({
   components: { Loader, ModalWindow },
 });
 </script>
+
+<style>
+@use "@material/data-table/data-table";
+@include data-table.core-styles;
+@include data-table.theme-baseline;
+</style>

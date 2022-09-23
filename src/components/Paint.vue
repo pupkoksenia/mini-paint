@@ -9,8 +9,6 @@
     <div class="grid gap-1 grid-cols-2 grid-rows-1 mt-3">
       <canvas
         id="canvas"
-        width="800"
-        height="500"
         :style="{ 'background-color': backgroundColor }"
         class="border-cyan-700 border-2 rounded mt-3"
       />
@@ -450,3 +448,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+#canvas {
+  width: 100%;
+  height: 100%;
+}
+</style>

@@ -49,6 +49,18 @@
     </div>
 
     <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
+      <v-select class="text-black">
+        <option
+          v-for="perPage in arrayPerPageUsers"
+          :key="perPage"
+          @click="setPerPage(perPage)"
+        >
+          {{ perPage }}
+        </option>
+      </v-select>
+    </div>
+
+    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
       <button @click="backPage">prev</button>
       <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
         {{ item }}
@@ -64,6 +76,7 @@
 import { computed, defineComponent, onMounted, ref } from "vue";
 import { useFireBaseUsers } from "../composables/useFireBaseUsers";
 import Loader from "../components/staff/Loader.vue";
+import { arrayPerPageUsers } from "../types/index";
 
 export default defineComponent({
   name: "RolesPage",
@@ -80,6 +93,7 @@ export default defineComponent({
       goToPage,
       stateUsers,
       numberPage,
+      setPerPage,
     } = useFireBaseUsers();
 
     const form = ref({
@@ -133,6 +147,8 @@ export default defineComponent({
       goToPage,
       numberPage,
       loadingListener,
+      arrayPerPageUsers,
+      setPerPage,
     };
   },
 });

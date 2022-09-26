@@ -32,10 +32,15 @@ export interface FireBasePaints {
   backPage: () => void;
   goToPage: (numPage: number) => void;
   numberPage: ComputedRef<number>;
+  setPerPage: (page: number) => void;
 }
 
 export const useFireBasePaints: () => FireBasePaints = () => {
   const { state } = useFireBase();
+
+  const setPerPage = (page: number) => {
+    statePaint.perPage = page;
+  };
 
   const nextPage = () => {
     if (
@@ -224,5 +229,6 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     backPage,
     goToPage,
     numberPage,
+    setPerPage,
   };
 };

@@ -22,6 +22,7 @@ export interface FireBaseUsers {
   backPage: () => void;
   goToPage: (numPage: number) => void;
   numberPage: ComputedRef<number>;
+  setPerPage: (page: number) => void;
 }
 
 export const useFireBaseUsers: () => FireBaseUsers = () => {
@@ -43,6 +44,11 @@ export const useFireBaseUsers: () => FireBaseUsers = () => {
         }
       });
     });
+
+  const setPerPage = (page: number) => {
+    console.log(page);
+    stateUsers.perPage = page;
+  };
 
   const changeRoleOfUser = (userName: string, userRole: string) => {
     let idOfUser: string;
@@ -133,5 +139,6 @@ export const useFireBaseUsers: () => FireBaseUsers = () => {
     backPage,
     goToPage,
     numberPage,
+    setPerPage,
   };
 };

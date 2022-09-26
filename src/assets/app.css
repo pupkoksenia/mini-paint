@@ -37,7 +37,7 @@
         @apply flex items-center justify-start text-cyan-700 font-bold dark:text-violet-500;
     }
     .view-role-page {
-        @apply pt-6 ml-4 flex justify-center inline-grid gap-1 grid-cols-1 grid-rows-3;
+        @apply pt-6 ml-4 flex justify-center inline-grid gap-1 grid-cols-1;
     }
     .roles {
         @apply flex justify-center inline-grid gap-1 grid-cols-3 bg-white dark:bg-purple-900 rounded-xl drop-shadow-lg p-10;

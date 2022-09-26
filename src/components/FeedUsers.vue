@@ -62,16 +62,64 @@
       </div>
     </div>
 
-    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
-      <v-select class="text-black">
-        <option
-          v-for="perPage in arrayPerPagePaints"
-          :key="perPage"
-          @click="setPerPage(perPage)"
+    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-black">
+      <div>
+        <button
+          class="
+            text-white
+            bg-blue-700
+            hover:bg-blue-800
+            focus:ring-4 focus:ring-blue-300
+            rounded-lg
+            text-sm
+            px-1
+            py-1
+            text-center
+            inline-flex
+          "
+          data-dropdown-toggle="dropdown"
+          @click="setShowPagination(!showPagination)"
         >
-          {{ perPage }}
-        </option>
-      </v-select>
+          Choose amount of pictures
+          <svg
+            class="w-4 h-4 ml-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        <div
+          v-show="showPagination"
+          class="
+            bg-white
+            text-base
+            list-none
+            divide-y divide-gray-100
+            rounded
+            shadow
+          "
+          id="dropdown"
+        >
+          <ul class="py-1 text-center" aria-labelledby="dropdown">
+            <li
+              v-for="perPage in arrayPerPagePaints"
+              :key="perPage"
+              @click="setPerPage(perPage)"
+            >
+              {{ perPage }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <button @click="backPage">prev</button>
       <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
         {{ item }}
@@ -116,6 +164,10 @@ export default defineComponent({
     const urlOfpaint = ref();
     const nameOfPaint = ref("");
     const nameOfUser = ref("");
+    const showPagination = ref(false);
+    const setShowPagination = (isShowPagination: boolean) => {
+      showPagination.value = isShowPagination;
+    };
     const paginatedData = computed(() => {
       return feedPaints.value.slice(
         (statePaint.page - 1) * statePaint.perPage,
@@ -178,6 +230,8 @@ export default defineComponent({
       numberPage,
       setPerPage,
       arrayPerPagePaints,
+      showPagination,
+      setShowPagination,
     };
   },
   components: { Loader, ModalWindow },

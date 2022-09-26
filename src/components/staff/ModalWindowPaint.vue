@@ -61,12 +61,11 @@
     </div>
   </div>
 </template>
-
- <script lang="ts">
+  
+   <script lang="ts">
 import { defineComponent } from "vue";
 import { useFireBase } from "../../composables/useFireBase";
 import { useFireBasePaints } from "../../composables/useFireBasePaints";
-
 export default defineComponent({
   name: "ModalWindow",
   props: {
@@ -82,7 +81,6 @@ export default defineComponent({
     const { setFilterValueEmail, deleteUserPaint, setFilterValuePaint } =
       useFireBasePaints();
     const { state } = useFireBase();
-
     const deleteButton = () => {
       deleteUserPaint(
         props.nameOfPaint as string,
@@ -92,11 +90,9 @@ export default defineComponent({
       setFilterValueEmail(props.filterEmail || "");
       setFilterValuePaint(props.filterNameOfPaint || "");
     };
-
     const closeModalWindow = () => {
       ctx.emit("open", false);
     };
-
     const saveImageOnComp = () => {
       const createEl = document.createElement("a");
       createEl.href = props.urlOfpaint || "";
@@ -108,7 +104,3 @@ export default defineComponent({
   },
 });
 </script>
-
-
-
-

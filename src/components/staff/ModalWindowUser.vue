@@ -31,11 +31,10 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
+  
+  <script lang="ts">
 import { defineComponent } from "vue";
 import { useFireBase } from "../../composables/useFireBase";
-
 export default defineComponent({
   name: "ModalWindow",
   props: {
@@ -44,11 +43,9 @@ export default defineComponent({
   emits: ["open"],
   setup(props, ctx) {
     const { state } = useFireBase();
-
     const closeModalWindow = () => {
       ctx.emit("open", false);
     };
-
     return { state, closeModalWindow };
   },
 });

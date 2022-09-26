@@ -10,12 +10,12 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: "/feed",
-        component: () => import("../components/FeedUsers.vue"),
+        component: () => import("../components/GalleryPage.vue"),
         meta: { auth: true },
       },
       {
         path: "/create-paint",
-        component: () => import("../components/Paint.vue"),
+        component: () => import("../components/CreatePaintPage.vue"),
         meta: { auth: true },
       },
       {

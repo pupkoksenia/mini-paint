@@ -34,7 +34,7 @@
         @apply font-extrabold text-5xl text-center text-white leading-tight mt-4;
     }
     .button-asceding-desceding {
-        @apply flex items-center justify-start text-cyan-700 font-bold dark:text-violet-500;
+        @apply flex items-center justify-start text-center text-cyan-700 font-bold dark:text-violet-500;
     }
     .view-role-page {
         @apply pt-6 ml-4 flex justify-center inline-grid gap-1 grid-cols-1 grid-rows-3;

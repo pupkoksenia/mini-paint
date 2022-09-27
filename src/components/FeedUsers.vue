@@ -65,18 +65,7 @@
     <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-black">
       <div>
         <button
-          class="
-            text-white
-            bg-blue-700
-            hover:bg-blue-800
-            focus:ring-4 focus:ring-blue-300
-            rounded-lg
-            text-sm
-            px-1
-            py-1
-            text-center
-            inline-flex
-          "
+          class="per-page-body"
           data-dropdown-toggle="dropdown"
           @click="setShowPagination(!showPagination)"
         >
@@ -96,18 +85,7 @@
             ></path>
           </svg>
         </button>
-        <div
-          v-show="showPagination"
-          class="
-            bg-white
-            text-base
-            list-none
-            divide-y divide-gray-100
-            rounded
-            shadow
-          "
-          id="dropdown"
-        >
+        <div v-show="showPagination" class="per-page" id="dropdown">
           <ul class="py-1 text-center" aria-labelledby="dropdown">
             <li
               v-for="perPage in arrayPerPagePaints"

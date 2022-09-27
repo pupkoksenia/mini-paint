@@ -31,7 +31,6 @@
     </div>
   </div>
 </template>
-    
     <script lang="ts">
 import { defineComponent } from "vue";
 import { useFireBase } from "../../composables/useFireBase";

@@ -37,13 +37,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run lint"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
-      "npm run lint"
+      "eslint --fix",
+      "git add"
     ]
   },
   "description": "## Project setup ``` npm install ```",

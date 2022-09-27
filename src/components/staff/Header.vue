@@ -34,7 +34,6 @@
       :open="isOpen"
       @open="(isOpened: boolean) => setOpen(isOpened)"
     />
-
     <div class="col-span-1 flex items-center justify-items-center">
       <img src="../../assets/man.png" class="h-8 mx-4" @click="openUser" />
     </div>
@@ -63,7 +62,6 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened;
     };
-
     const openUser = () => {
       isOpen.value = true;
     };

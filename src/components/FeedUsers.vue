@@ -47,7 +47,6 @@
           :filterNameOfPaint="form.namePaint"
           @open="(isOpened: boolean) => setOpen(isOpened)"
         />
-
         <div>
           <img
             :src="paint.urlOfPaint"
@@ -80,11 +79,9 @@ import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "../components/staff/Loader.vue";
 import ModalWindow from "./staff/ModalWindowPaint.vue";
-
 export default defineComponent({
   name: "FeedUsers",
-  emits: ["open"],
-  setup(props, ctx) {
+  setup() {
     const {
       getFeedPaints,
       feedPaints,
@@ -96,7 +93,6 @@ export default defineComponent({
       goToPage,
       statePaint,
       numberPage,
-      deleteUserPaint,
     } = useFireBasePaints();
     const { state } = useFireBase();
     const form = ref({
@@ -108,14 +104,12 @@ export default defineComponent({
     const urlOfpaint = ref();
     const nameOfPaint = ref("");
     const nameOfUser = ref("");
-
     const paginatedData = computed(() => {
       return feedPaints.value.slice(
         (statePaint.page - 1) * statePaint.perPage,
         statePaint.page * statePaint.perPage
       );
     });
-
     const handleSubmitEmail = () => {
       setFilterValueEmail(form.value.email);
     };
@@ -123,16 +117,13 @@ export default defineComponent({
       form.value.email = "";
       setFilterValueEmail("");
     };
-
     const handleSubmitPaint = () => {
       setFilterValuePaint(form.value.namePaint);
     };
-
     const handleResetPaint = () => {
       form.value.namePaint = "";
       setFilterValuePaint("");
     };
-
     const goToPaint = (
       urlPaint: string,
       namePaint: string,
@@ -146,14 +137,12 @@ export default defineComponent({
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened;
     };
-
     onMounted(() => {
       loadingListener.value = true;
       getFeedPaints().then(() => (loadingListener.value = false));
       isOpen.value = false;
       setSortingValue("asc");
     });
-
     return {
       handleSubmitEmail,
       form,

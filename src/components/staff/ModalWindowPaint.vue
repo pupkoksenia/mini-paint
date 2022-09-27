@@ -61,8 +61,8 @@
     </div>
   </div>
 </template>
-    
-     <script lang="ts">
+  
+   <script lang="ts">
 import { defineComponent } from "vue";
 import { useFireBase } from "../../composables/useFireBase";
 import { useFireBasePaints } from "../../composables/useFireBasePaints";
@@ -104,4 +104,3 @@ export default defineComponent({
   },
 });
 </script>
-  

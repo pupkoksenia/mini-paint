@@ -15,7 +15,7 @@
         class="border-cyan-700 border-2 rounded mt-3"
       />
 
-      <div class="inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-4/6 ml-14">
+      <div class="inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-3/6 ml-14">
         <span>
           <p class="text-black font-thin dark:text-white">Background Color:</p>
           <input
@@ -36,13 +36,13 @@
 
         <select
           v-model="stateOfFigure"
-          class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+          class="bg-white font-thin text-black py-0.5 px-0.5 h-3/5 rounded"
         >
           <option
             v-for="n in arrayStateOfFigure"
             :key="'option-' + n"
             :value="n"
-            class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+            class="bg-white font-thin text-black py-0.5 px-0.5 h-3/5 rounded"
           >
             {{ n }}
           </option>
@@ -61,27 +61,29 @@
         <select
           v-model="strokeType"
           @click="chooseStrokeType"
-          class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+          class="bg-white font-thin text-black py-0.5 px-0.5 h-3/5 rounded"
         >
           <option
             v-for="n in arrayStrokeType"
             :key="'option-' + n"
             :value="n"
-            class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
+            class="bg-white font-thin text-black py-0.5 px-0.5 h-3/5 rounded"
           >
             {{ n }}
           </option>
         </select>
-        <button @click="clearStrokes" class="button-paint">clearStrokes</button>
+        <button @click="clearStrokes" class="button-paint h-3/5">
+          clearStrokes
+        </button>
 
-        <button @click="uploadImgServer" class="button-paint">
+        <button @click="uploadImgServer" class="button-paint h-3/5">
           Save image on server
         </button>
-        <button @click="uploadImgDesctop" class="button-paint">
+        <button @click="uploadImgDesctop" class="button-paint h-3/5">
           Save image on computer
         </button>
-        <button @click="unDo" class="button-paint">unDo</button>
-        <button @click="reDo" class="button-paint">reDo</button>
+        <button @click="unDo" class="button-paint h-3/5">unDo</button>
+        <button @click="reDo" class="button-paint h-3/5">reDo</button>
       </div>
     </div>
   </div>

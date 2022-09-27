@@ -102,7 +102,6 @@ import { drawEllipse } from "../utils/drawEllipse";
 export default defineComponent({
   name: "PaintPart",
   setup() {
-    console.log("fff");
     const { uploadOnServer } = useFireBasePaints();
     const { uploadOnDesctop } = savePaints();
     const canvas: Ref<HTMLCanvasElement> = ref(

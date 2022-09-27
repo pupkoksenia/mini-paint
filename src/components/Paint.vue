@@ -4,7 +4,7 @@
       type="text"
       placeholder="Name of paint"
       v-model="NameOfPaint"
-      class="border-cyan-700 border-2 rounded"
+      class="input-canvas-paint-page"
     />
     <div class="grid gap-1 grid-cols-2 grid-rows-1 mt-3">
       <canvas
@@ -12,16 +12,16 @@
         width="800"
         height="500"
         :style="{ 'background-color': backgroundColor }"
-        class="border-cyan-700 border-2 rounded mt-3"
+        class="input-canvas-paint-page mt-3"
       />
 
-      <div class="inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-3/6 ml-14">
+      <div class="paint-page-body">
         <span>
           <p class="text-paint-page">Background Color:</p>
           <input
             type="color"
             v-model="backgroundColor"
-            class="py-0.1 px-0.1 rounded"
+            class="span-paint-page-body"
           />
         </span>
 
@@ -30,7 +30,7 @@
           <input
             type="color"
             v-model="strokeStyle"
-            class="py-0.1 px-0.1 rounded"
+            class="span-paint-page-body"
           />
         </span>
 
@@ -69,20 +69,14 @@
             {{ n }}
           </option>
         </select>
-        <button @click="clearStrokes" class="button-paint h-3/5 w-3/5">
+        <button @click="clearStrokes" class="clear-button-paint-page">
           clear
         </button>
 
-        <button
-          @click="uploadImgServer"
-          class="button-paint h-3/5 w-3/5 text-sm my-1"
-        >
+        <button @click="uploadImgServer" class="upload-button-paint-page">
           save image on server
         </button>
-        <button
-          @click="uploadImgDesctop"
-          class="button-paint h-3/5 w-3/5 text-sm my-1"
-        >
+        <button @click="uploadImgDesctop" class="upload-button-paint-page">
           save image on computer
         </button>
         <button @click="unDo" class="button-paint h-3/5 w-3/5">unDo</button>

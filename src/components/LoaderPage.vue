@@ -19,7 +19,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import Loader from "./staff/Loader.vue";
 
 export default defineComponent({
-  name: "FeedUsers",
+  name: "LoaderPage",
   setup() {
     const loadingListener = ref();
     onMounted(() => {

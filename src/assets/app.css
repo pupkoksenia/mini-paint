@@ -42,4 +42,7 @@
     .roles {
         @apply flex justify-center inline-grid gap-1 grid-cols-3 bg-white dark:bg-purple-900 rounded-xl drop-shadow-lg p-10;
     }
+    .home-view-body {
+        @apply bg-gradient-to-t from-indigo-500/75 dark:bg-purple-900 to-white dark:to-black w-screen max-h-fit min-h-screen;
+    }
 }

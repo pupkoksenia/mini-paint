@@ -17,7 +17,7 @@
 
       <div class="inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-3/6 ml-14">
         <span>
-          <p class="text-black font-thin dark:text-white">Background Color:</p>
+          <p class="text-paint-page">Background Color:</p>
           <input
             type="color"
             v-model="backgroundColor"
@@ -26,7 +26,7 @@
         </span>
 
         <span>
-          <p class="text-black font-thin dark:text-white">Color:</p>
+          <p class="text-paint-page">Color:</p>
           <input
             type="color"
             v-model="strokeStyle"
@@ -34,22 +34,19 @@
           />
         </span>
 
-        <select
-          v-model="stateOfFigure"
-          class="bg-white font-thin text-black py-0.5 px-0.5 h-3/5 rounded"
-        >
+        <select v-model="stateOfFigure" class="select-paint-page">
           <option
             v-for="n in arrayStateOfFigure"
             :key="'option-' + n"
             :value="n"
-            class="bg-white font-thin text-black py-0.5 px-0.5 h-3/5 rounded"
+            class="select-paint-page"
           >
             {{ n }}
           </option>
         </select>
 
         <span
-          ><p class="text-black font-thin dark:text-white">Choose width:</p>
+          ><p class="text-paint-page">Choose width:</p>
           <input
             type="range"
             v-model="lineWidth"
@@ -61,29 +58,35 @@
         <select
           v-model="strokeType"
           @click="chooseStrokeType"
-          class="bg-white font-thin text-black py-0.5 px-0.5 h-3/5 rounded"
+          class="select-paint-page"
         >
           <option
             v-for="n in arrayStrokeType"
             :key="'option-' + n"
             :value="n"
-            class="bg-white font-thin text-black py-0.5 px-0.5 h-3/5 rounded"
+            class="select-paint-page"
           >
             {{ n }}
           </option>
         </select>
-        <button @click="clearStrokes" class="button-paint h-3/5">
-          clearStrokes
+        <button @click="clearStrokes" class="button-paint h-3/5 w-3/5">
+          clear
         </button>
 
-        <button @click="uploadImgServer" class="button-paint h-3/5">
-          Save image on server
+        <button
+          @click="uploadImgServer"
+          class="button-paint h-3/5 w-3/5 text-sm my-1"
+        >
+          save image on server
         </button>
-        <button @click="uploadImgDesctop" class="button-paint h-3/5">
-          Save image on computer
+        <button
+          @click="uploadImgDesctop"
+          class="button-paint h-3/5 w-3/5 text-sm my-1"
+        >
+          save image on computer
         </button>
-        <button @click="unDo" class="button-paint h-3/5">unDo</button>
-        <button @click="reDo" class="button-paint h-3/5">reDo</button>
+        <button @click="unDo" class="button-paint h-3/5 w-3/5">unDo</button>
+        <button @click="reDo" class="button-paint h-3/5 w-3/5">reDo</button>
       </div>
     </div>
   </div>

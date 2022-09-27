@@ -97,6 +97,7 @@ import { arrayStateOfFigure } from "../types/index";
 export default defineComponent({
   name: "PaintPart",
   setup() {
+    console.log("jjjj");
     const { uploadOnServer } = useFireBasePaints();
     const { uploadOnDesctop } = savePaints();
 

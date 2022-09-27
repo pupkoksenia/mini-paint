@@ -4,19 +4,7 @@
       <div class="max-w-lg mx-auto">
         <div>
           <button
-            class="
-              text-white
-              bg-blue-700
-              hover:bg-blue-800
-              focus:ring-4 focus:ring-blue-300
-              rounded-lg
-              text-sm
-              px-4
-              py-2.5
-              text-center
-              inline-flex
-              items-center
-            "
+            class="drop-down-body"
             data-dropdown-toggle="dropdown"
             @click="setShow(!show)"
           >
@@ -36,18 +24,7 @@
               ></path>
             </svg>
           </button>
-          <div
-            v-show="show"
-            class="
-              bg-white
-              text-base
-              list-none
-              divide-y divide-gray-100
-              rounded
-              shadow
-            "
-            id="dropdown"
-          >
+          <div v-show="show" class="drop-down" id="dropdown">
             <ul class="py-1" aria-labelledby="dropdown">
               <li @click="setTypeOfFilter('email')">Filter by email</li>
               <li @click="setTypeOfFilter('paint')">Filter by paint</li>
@@ -56,26 +33,26 @@
         </div>
       </div>
 
-      <div v-show="typeOfFilter === 'email'" class="col-span-3">
+      <div v-show="typeOfFilter === 'email'" class="col-span-3 ml-2">
         <input
           type="text"
           placeholder="email"
           v-model="form.email"
-          class="border-cyan-700 border-2 rounded"
+          class="border-cyan-700 border-2 rounded pl-2"
         />
-        <button @click="handleSubmitEmail" class="button-paint">Submit</button>
-        <button @click="handleResetEmail" class="button-paint">Reset</button>
+        <button @click="handleSubmitEmail" class="filter-button">Submit</button>
+        <button @click="handleResetEmail" class="filter-button">Reset</button>
       </div>
 
-      <div v-show="typeOfFilter === 'paint'" class="col-span-3">
+      <div v-show="typeOfFilter === 'paint'" class="col-span-3 ml-2">
         <input
           type="text"
           placeholder="name of paint"
           v-model="form.namePaint"
-          class="border-cyan-700 border-2 rounded"
+          class="border-cyan-700 border-2 rounded pl-2"
         />
-        <button @click="handleSubmitPaint" class="button-paint">Submit</button>
-        <button @click="handleResetPaint" class="button-paint">Reset</button>
+        <button @click="handleSubmitPaint" class="filter-button">Submit</button>
+        <button @click="handleResetPaint" class="filter-button">Reset</button>
       </div>
 
       <button

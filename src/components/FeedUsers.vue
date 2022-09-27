@@ -80,7 +80,7 @@ import { useFireBasePaints } from "../composables/useFireBasePaints";
 import { useFireBase } from "../composables/useFireBase";
 import Loader from "../components/staff/Loader.vue";
 import ModalWindow from "./staff/ModalWindowPaint.vue";
-console.log("hhhhh");
+
 export default defineComponent({
   name: "FeedUsers",
   emits: ["open"],

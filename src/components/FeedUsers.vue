@@ -55,25 +55,11 @@
         <button @click="handleResetPaint" class="filter-button">Reset</button>
       </div>
 
-      <button
-        class="button-asceding-desceding ml-4"
-        @click="setSortingValue('asc')"
-      >
-        Ascending
-      </button>
-      <button
-        class="button-asceding-desceding"
-        @click="setSortingValue('desc')"
-      >
-        Descending
-      </button>
+      <button class="button-asceding-desceding ml-4" @click="setSortingValue('asc')">Ascending</button>
+      <button class="button-asceding-desceding" @click="setSortingValue('desc')">Descending</button>
     </div>
     <div class="flex justify-center pt-6 inline-grid gap-3 grid-cols-2">
-      <div
-        v-for="paint in paginatedData"
-        :key="paint.toString"
-        class="inline-grid gap-1 grid-cols-1"
-      >
+      <div v-for="paint in paginatedData" :key="paint.toString" class="inline-grid gap-1 grid-cols-1">
         <ModalWindow
           :open="isOpen"
           :urlOfpaint="urlOfpaint"
@@ -81,14 +67,12 @@
           :nameOfUser="nameOfUser"
           :filterEmail="form.email"
           :filterNameOfPaint="form.namePaint"
-          @open="(isOpened: boolean) => setOpen(isOpened)"
+          @open="(isOpened) => setOpen(isOpened)"
         />
         <div>
           <img
             :src="paint.urlOfPaint"
-            @click="
-              goToPaint(paint.urlOfPaint, paint.nameOfPaint, paint.userName)
-            "
+            @click="goToPaint(paint.urlOfPaint, paint.nameOfPaint, paint.userName)"
             class="px-3 py-2 rounded-md border border-slate-400 w-11/12"
           />
           <div class="text-black w-full dark:text-white">
@@ -110,13 +94,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from "vue";
-import { useFireBasePaints } from "../composables/useFireBasePaints";
-import { useFireBase } from "../composables/useFireBase";
-import Loader from "../components/staff/Loader.vue";
-import ModalWindow from "./staff/ModalWindowPaint.vue";
+import { defineComponent, ref, onMounted, computed } from 'vue'
+import { useFireBasePaints } from '../composables/useFireBasePaints'
+import { useFireBase } from '../composables/useFireBase'
+import Loader from '../components/staff/Loader.vue'
+import ModalWindow from './staff/ModalWindowPaint.vue'
 export default defineComponent({
-  name: "FeedUsers",
+  name: 'FeedUsers',
   setup() {
     const {
       getFeedPaints,
@@ -129,8 +113,8 @@ export default defineComponent({
       goToPage,
       statePaint,
       numberPage,
-    } = useFireBasePaints();
-    const { state } = useFireBase();
+    } = useFireBasePaints()
+    const { state } = useFireBase()
     const form = ref({
       email: "",
       namePaint: "",
@@ -157,8 +141,8 @@ export default defineComponent({
       typeOfFilter.value = type;
     };
     const handleSubmitEmail = () => {
-      setFilterValueEmail(form.value.email);
-    };
+      setFilterValueEmail(form.value.email)
+    }
     const handleResetEmail = () => {
       form.value.email = "";
       setFilterValueEmail("");
@@ -166,8 +150,8 @@ export default defineComponent({
       setShow(false);
     };
     const handleSubmitPaint = () => {
-      setFilterValuePaint(form.value.namePaint);
-    };
+      setFilterValuePaint(form.value.namePaint)
+    }
     const handleResetPaint = () => {
       form.value.namePaint = "";
       setFilterValuePaint("");
@@ -185,14 +169,14 @@ export default defineComponent({
       nameOfUser.value = nameUser;
     };
     const setOpen = (isOpened: boolean) => {
-      isOpen.value = isOpened;
-    };
+      isOpen.value = isOpened
+    }
     onMounted(() => {
-      loadingListener.value = true;
-      getFeedPaints().then(() => (loadingListener.value = false));
-      isOpen.value = false;
-      setSortingValue("asc");
-    });
+      loadingListener.value = true
+      getFeedPaints().then(() => (loadingListener.value = false))
+      isOpen.value = false
+      setSortingValue('asc')
+    })
     return {
       handleSubmitEmail,
       form,
@@ -221,5 +205,5 @@ export default defineComponent({
     };
   },
   components: { Loader, ModalWindow },
-});
+})
 </script>

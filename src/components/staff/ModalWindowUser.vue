@@ -1,14 +1,9 @@
 <template>
-  <div
-    v-show="$props.open"
-    class="h-screen fixed inset-0 flex items-start justify-end"
-  >
+  <div v-show="$props.open" class="h-screen fixed inset-0 flex items-start justify-end">
     <div class="p-6 m-20 bg-white rounded-md dark:bg-purple-900">
       <div class="flex items-center justify-between">
         <div class="grid-cols-1 grid-rows-2">
-          <div class="text-sm dark:text-white">
-            Name: {{ state.user.email }}
-          </div>
+          <div class="text-sm dark:text-white">Name: {{ state.user.email }}</div>
           <div class="text-sm dark:text-white">Role: {{ state.user.role }}</div>
         </div>
 
@@ -31,22 +26,21 @@
     </div>
   </div>
 </template>
-  
-  <script lang="ts">
-import { defineComponent } from "vue";
-import { useFireBase } from "../../composables/useFireBase";
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { useFireBase } from '../../composables/useFireBase'
 export default defineComponent({
-  name: "ModalWindow",
+  name: 'ModalWindow',
   props: {
     open: Boolean,
   },
-  emits: ["open"],
+  emits: ['open'],
   setup(props, ctx) {
-    const { state } = useFireBase();
+    const { state } = useFireBase()
     const closeModalWindow = () => {
-      ctx.emit("open", false);
-    };
-    return { state, closeModalWindow };
+      ctx.emit('open', false)
+    }
+    return { state, closeModalWindow }
   },
-});
+})
 </script>

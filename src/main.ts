@@ -1,25 +1,23 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { createFirebaseConfig } from "./composables/createFirebaseConfig";
-import { useFireBase } from "../src/composables/useFireBase";
-import "./assets/app.css";
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import { initializeApp } from 'firebase/app'
+import { getFirestore } from 'firebase/firestore'
+import { createFirebaseConfig } from './composables/createFirebaseConfig'
+import { useFireBase } from '../src/composables/useFireBase'
+import './assets/app.css'
 
-const app = createApp(App).use(router).mount("#app");
+const app = createApp(App).use(router).mount('#app')
 
-const { firebaseConfig } = createFirebaseConfig();
+const { firebaseConfig } = createFirebaseConfig()
 
-const firebaseApp = initializeApp(firebaseConfig);
-export const db = getFirestore(firebaseApp);
+const firebaseApp = initializeApp(firebaseConfig)
+export const db = getFirestore(firebaseApp)
 
-router.push('/loader').finally(()=>{
+router.push('/loader').finally(() => {
   useFireBase()
-  .checkIsSignIn()
-  .then((path) => {
-    router.push(path)
-  });
+    .checkIsSignIn()
+    .then((path) => {
+      router.push(path)
+    })
 })
-  
-

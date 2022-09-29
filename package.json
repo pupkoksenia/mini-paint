@@ -7,7 +7,6 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "lint:script": "eslint --ext .ts,vue --ignore-path .gitignore .",
-    "prepare": "husky install"
   },
   "dependencies": {
     "@vueuse/core": "^9.1.1",
@@ -54,8 +53,5 @@
       "*.{html,css,less,scss,md}": [
       "prettier --write"]
   },
-  "description": "## Project setup ``` npm install ```",
-  "main": ".eslintrc.js",
-  "author": "",
-  "license": "ISC"
+  "main": ".eslintrc.js"
 }

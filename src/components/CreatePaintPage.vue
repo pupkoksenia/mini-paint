@@ -75,7 +75,7 @@ import { drawCircle } from '../utils/drawCircle'
 import { drawEllipse } from '../utils/drawEllipse'
 
 export default defineComponent({
-  name: 'PaintPart',
+  name: 'CreatePaintPage',
   setup() {
     const { uploadOnServer } = useFireBasePaints()
     const { uploadOnDesctop } = savePaints()

@@ -1,11 +1,9 @@
 <template>
-  <div
-    class="bg-gradient-to-t from-indigo-500/75 dark:bg-purple-900 to-white dark:to-black w-screen max-h-fit min-h-screen"
-  >
+  <div class="home-view-template">
     <HeaderPart />
     <div class="grid grid-cols-10 h-6">
-      <button class="button-home-page">
-        <router-link to="/feed"> Feed </router-link>
+      <button class="button-home-page pr-1">
+        <router-link to="/gallery"> Gallery </router-link>
       </button>
 
       <button class="button-home-page">

@@ -56,10 +56,10 @@
 import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useFireBasePaints } from '../composables/useFireBasePaints'
 import { useFireBase } from '../composables/useFireBase'
-import Loader from '../components/staff/Loader.vue'
+import Loader from './staff/Loader.vue'
 import ModalWindow from './staff/ModalWindowPaint.vue'
 export default defineComponent({
-  name: 'FeedUsers',
+  name: 'GalleryPage',
   setup() {
     const {
       getFeedPaints,

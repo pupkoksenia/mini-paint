@@ -49,9 +49,23 @@
   "lint-staged": {
     "*.{js,vue,ts,jsx,tsx}": [
       "prettier --write",
-      "eslint --fix"],
-      "*.{html,css,less,scss,md}": [
-      "prettier --write"]
+      "eslint --fix"
+    ],
+    "*.{html,css,less,scss,md}": [
+      "prettier --write"
+    ]
   },
-  "main": ".eslintrc.js"
+  "description": "## Project setup ``` npm install ```",
+  "main": ".eslintrc.js",
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pupkoksenia/mini-paint.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/pupkoksenia/mini-paint/issues"
+  },
+  "homepage": "https://github.com/pupkoksenia/mini-paint#readme"
 }

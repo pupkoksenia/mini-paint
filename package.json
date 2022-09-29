@@ -59,14 +59,5 @@
   "description": "## Project setup ``` npm install ```",
   "main": ".eslintrc.js",
   "author": "",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pupkoksenia/mini-paint.git"
-  },
-  "keywords": [],
-  "bugs": {
-    "url": "https://github.com/pupkoksenia/mini-paint/issues"
-  },
-  "homepage": "https://github.com/pupkoksenia/mini-paint#readme"
+  "license": "ISC"
 }

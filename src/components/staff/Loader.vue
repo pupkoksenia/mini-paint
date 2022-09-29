@@ -4,17 +4,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "LoaderElement",
+  name: 'LoaderElement',
   props: {
     isLoading: Boolean,
   },
   setup(props) {
-    return props.isLoading;
+    return props.isLoading
   },
-});
+})
 </script>
 
 <style>
@@ -25,7 +25,7 @@ export default defineComponent({
   height: 100hv;
 }
 .lds-dual-ring:after {
-  content: " ";
+  content: '';
   display: block;
   width: 64px;
   height: 64px;

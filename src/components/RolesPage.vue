@@ -1,50 +1,24 @@
 <template>
   <div class="view-role-page">
-    <div
-      class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-2 h-14"
-    >
-      <input
-        type="text"
-        placeholder="email"
-        v-model="form.email"
-        class="border-cyan-700 border-2 rounded"
-      />
+    <div class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-2 h-14">
+      <input type="text" placeholder="email" v-model="form.email" class="border-cyan-700 border-2 rounded" />
       <button @click="handleSubmitEmail" class="button-paint">Submit</button>
       <button @click="handleResetEmail" class="button-paint">Reset</button>
 
-      <input
-        type="text"
-        placeholder="role"
-        v-model="form.role"
-        class="border-cyan-700 border-2 rounded"
-      />
+      <input type="text" placeholder="role" v-model="form.role" class="border-cyan-700 border-2 rounded" />
       <button @click="handleSubmitRole" class="button-paint">Submit</button>
       <button @click="handleResetRole" class="button-paint">Reset</button>
     </div>
 
     <div class="roles">
       <Loader :isLoading="loadingListener" />
-      <div
-        v-for="user in paginatedData"
-        :key="user.email"
-        class="text-black dark:text-white"
-      >
+      <div v-for="user in paginatedData" :key="user.email" class="text-black dark:text-white">
         Name:{{ user.email }}
         <div class="text-black dark:text-white">Role:{{ user.role }}</div>
-        <button
-          v-if="user.role === 'user'"
-          @click="changeRole(user.email, user.role)"
-          class="button-paint"
-        >
+        <button v-if="user.role === 'user'" @click="changeRole(user.email, user.role)" class="button-paint">
           Set admin roles
         </button>
-        <button
-          v-else
-          @click="changeRole(user.email, user.role)"
-          class="button-paint"
-        >
-          Set user roles
-        </button>
+        <button v-else @click="changeRole(user.email, user.role)" class="button-paint">Set user roles</button>
       </div>
     </div>
 
@@ -99,7 +73,7 @@
     </div>
   </div>
 </template>
-  
+ 
   
   
   <script lang="ts">
@@ -109,7 +83,7 @@ import Loader from "../components/staff/Loader.vue";
 import { arrayPerPageUsers } from "../types/index";
 
 export default defineComponent({
-  name: "RolesPage",
+  name: 'RolesPage',
   components: { Loader },
   setup() {
     const {
@@ -137,36 +111,33 @@ export default defineComponent({
     };
 
     const paginatedData = computed(() => {
-      return filteredItems.value.slice(
-        (stateUsers.page - 1) * stateUsers.perPage,
-        stateUsers.page * stateUsers.perPage
-      );
-    });
+      return filteredItems.value.slice((stateUsers.page - 1) * stateUsers.perPage, stateUsers.page * stateUsers.perPage)
+    })
 
     const handleSubmitEmail = () => {
-      setFilterValueEmail(form.value.email);
-    };
+      setFilterValueEmail(form.value.email)
+    }
     const handleResetEmail = () => {
-      form.value.email = "";
-      setFilterValueEmail("");
-    };
+      form.value.email = ''
+      setFilterValueEmail('')
+    }
 
     const handleSubmitRole = () => {
-      setFilterValueRole(form.value.role);
-    };
+      setFilterValueRole(form.value.role)
+    }
     const handleResetRole = () => {
-      form.value.role = "";
-      setFilterValueRole("");
-    };
+      form.value.role = ''
+      setFilterValueRole('')
+    }
 
     onMounted(() => {
-      loadingListener.value = true;
-      getListOfUsers().then(() => (loadingListener.value = false));
-    });
+      loadingListener.value = true
+      getListOfUsers().then(() => (loadingListener.value = false))
+    })
 
     const changeRole = (nameOfUser: string, userRole: string) => {
-      changeRoleOfUser(nameOfUser, userRole);
-    };
+      changeRoleOfUser(nameOfUser, userRole)
+    }
     return {
       filteredItems,
       changeRole,
@@ -187,6 +158,5 @@ export default defineComponent({
       setShowPagination,
     };
   },
-});
+})
 </script>
-  

@@ -1,51 +1,45 @@
-import { Timestamp } from "firebase/firestore";
+import { Timestamp } from 'firebase/firestore'
 
 export interface DataPaint {
-  nameOfPaint: string;
-  date: string;
-  dateInTimestamp: Timestamp;
-  userName: string;
-  urlOfPaint: string;
+  nameOfPaint: string
+  date: string
+  dateInTimestamp: Timestamp
+  userName: string
+  urlOfPaint: string
 }
 
 export interface StatePaint {
-  dataPaints: DataPaint[];
-  filterEmail: string;
-  filterPaint: string;
-  sorting: string;
-  page: number;
-  perPage: number;
+  dataPaints: DataPaint[]
+  filterEmail: string
+  filterPaint: string
+  sorting: string
+  page: number
+  perPage: number
 }
 
 export interface DataUser {
-  email: string;
-  role: string;
+  email: string
+  role: string
 }
 
 export interface StateUsers {
-  dataUsers: DataUser[];
-  filterEmailVal: string;
-  filterRoleVal: string;
-  page: number;
-  perPage: number;
+  dataUsers: DataUser[]
+  filterEmailVal: string
+  filterRoleVal: string
+  page: number
+  perPage: number
 }
 
 export interface State {
   user: {
-    email: string | null;
-    uid: string;
-    isSignIn: boolean;
-    role: string;
-  };
+    email: string | null
+    uid: string
+    isSignIn: boolean
+    role: string
+  }
 }
 
-export const arrayStrokeType = [
-  "line",
-  "rectangle",
-  "triangle",
-  "circle",
-  "ellipse",
-];
+export const arrayStrokeType = ['line', 'rectangle', 'triangle', 'circle', 'ellipse']
 
 export const arrayPerPagePaints = [2, 4, 6];
 export const arrayPerPageUsers = [3, 6, 9];

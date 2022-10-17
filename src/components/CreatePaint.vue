@@ -1,62 +1,48 @@
 <template>
   <div class="pt-6 ml-4 w-screen h-screen">
-    <input type="text" placeholder="Name of paint" v-model="NameOfPaint" class="border-cyan-700 border-2 rounded" />
+    <input type="text" placeholder="Name of paint" v-model="NameOfPaint" class="input-canvas-paint-page" />
     <div class="grid gap-1 grid-cols-2 grid-rows-1 mt-3">
       <canvas
         id="canvas"
         width="800"
         height="500"
         :style="{ 'background-color': backgroundColor }"
-        class="border-cyan-700 border-2 rounded mt-3"
+        class="input-canvas-paint-page mt-3"
       />
 
-      <div class="inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-4/6 ml-14">
+      <div class="paint-page-body">
         <span>
-          <p class="text-black font-thin dark:text-white">Background Color:</p>
-          <input type="color" v-model="backgroundColor" class="py-0.1 px-0.1 rounded" />
+          <p class="text-paint-page">Background Color:</p>
+          <input type="color" v-model="backgroundColor" class="span-paint-page-body" />
         </span>
 
         <span>
-          <p class="text-black font-thin dark:text-white">Color:</p>
-          <input type="color" v-model="strokeStyle" class="py-0.1 px-0.1 rounded" />
+          <p class="text-paint-page">Color:</p>
+          <input type="color" v-model="strokeStyle" class="span-paint-page-body" />
         </span>
 
-        <select v-model="stateOfFigure" class="bg-white font-thin text-black py-0.5 px-0.5 rounded">
-          <option
-            v-for="n in arrayStateOfFigure"
-            :key="'option-' + n"
-            :value="n"
-            class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
-          >
+        <select v-model="stateOfFigure" class="select-paint-page">
+          <option v-for="n in arrayStateOfFigure" :key="'option-' + n" :value="n" class="select-paint-page">
             {{ n }}
           </option>
         </select>
 
         <span
-          ><p class="text-black font-thin dark:text-white">Choose width:</p>
+          ><p class="text-paint-page">Choose width:</p>
           <input type="range" v-model="lineWidth" min="1" max="25" @change="chooseLineWidth"
         /></span>
 
-        <select
-          v-model="strokeType"
-          @click="chooseStrokeType"
-          class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
-        >
-          <option
-            v-for="n in arrayStrokeType"
-            :key="'option-' + n"
-            :value="n"
-            class="bg-white font-thin text-black py-0.5 px-0.5 rounded"
-          >
+        <select v-model="strokeType" @click="chooseStrokeType" class="select-paint-page">
+          <option v-for="n in arrayStrokeType" :key="'option-' + n" :value="n" class="select-paint-page">
             {{ n }}
           </option>
         </select>
-        <button @click="clearStrokes" class="button-paint">clearStrokes</button>
+        <button @click="clearStrokes" class="clear-button-paint-page">clear</button>
 
-        <button @click="uploadImgServer" class="button-paint">Save image on server</button>
-        <button @click="uploadImgDesctop" class="button-paint">Save image on computer</button>
-        <button @click="unDo" class="button-paint">unDo</button>
-        <button @click="reDo" class="button-paint">reDo</button>
+        <button @click="uploadImgServer" class="upload-button-paint-page">save image on server</button>
+        <button @click="uploadImgDesctop" class="upload-button-paint-page">save image on computer</button>
+        <button @click="unDo" class="button-paint h-3/5 w-3/5">unDo</button>
+        <button @click="reDo" class="button-paint h-3/5 w-3/5">reDo</button>
       </div>
     </div>
   </div>

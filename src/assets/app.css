@@ -4,7 +4,7 @@
 
 @layer components {
     .button-paint {
-        @apply bg-cyan-700 font-thin text-white py-0.5 px-0.5 rounded dark:bg-violet-500;
+        @apply font-thin text-white py-0.5 px-0.5 rounded bg-blue-700 w-2/4;
     }
     .button-home-page {
         @apply flex items-center justify-start col-span-2 text-cyan-700 font-bold dark:text-violet-500;
@@ -63,4 +63,5 @@
     .span-paint-page-body {
         @apply py-0.1 px-0.1 rounded;
     }
+
 }

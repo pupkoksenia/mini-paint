@@ -32,7 +32,6 @@
           </div>
         </div>
       </div>
-
       <div v-show="typeOfFilter === 'email'" class="col-span-3 ml-2">
         <input
           type="text"
@@ -54,21 +53,29 @@
         <button @click="handleSubmitPaint" class="filter-button">Submit</button>
         <button @click="handleResetPaint" class="filter-button">Reset</button>
       </div>
-
       <button class="button-asceding-desceding ml-4" @click="setSortingValue('asc')">Ascending</button>
       <button class="button-asceding-desceding" @click="setSortingValue('desc')">Descending</button>
     </div>
     <div class="flex justify-center pt-6 inline-grid gap-3 grid-cols-2">
       <div v-for="paint in paginatedData" :key="paint.toString" class="inline-grid gap-1 grid-cols-1">
-        <ModalWindow
-          :open="isOpen"
-          :urlOfpaint="urlOfpaint"
-          :nameOfpaint="nameOfPaint"
-          :nameOfUser="nameOfUser"
-          :filterEmail="form.email"
-          :filterNameOfPaint="form.namePaint"
-          @open="(isOpened) => setOpen(isOpened)"
-        />
+        <ModalWindow :isOpenModalWindow="isOpen" @isOpenModalWindow="(isOpened) => setOpen(isOpened)">
+          <template #body>
+            <div class="mt-4">
+              <img :src="urlOfpaint" class="px-3 py-2 rounded-md border border-slate-400 w-12/12 bg-white" />
+            </div>
+          </template>
+          <template #footer>
+            <button
+              v-if="nameOfUser === state.user.email || state.user.role === 'admin'"
+              @click="closeModalWindow"
+              class="button-paint mt-1"
+            >
+              Delete
+            </button>
+            <button v-else class="hidden"></button>
+            <button @click="saveImageOnComp()" class="button-paint mt-1 ml-1">Save img on computer</button>
+          </template>
+        </ModalWindow>
         <div>
           <img
             :src="paint.urlOfPaint"
@@ -80,17 +87,17 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
-      <button @click="backPage">prev</button>
-      <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
-        {{ item }}
-      </button>
-      <button @click="nextPage">next</button>
+      <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
+        <button @click="backPage">prev</button>
+        <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
+          {{ item }}
+        </button>
+        <button @click="nextPage">next</button>
+      </div>
     </div>
+    <Loader :isLoading="loadingListener" />
   </div>
-  <Loader :isLoading="loadingListener" />
 </template>
 
 <script lang="ts">
@@ -98,10 +105,10 @@ import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useFireBasePaints } from '../composables/useFireBasePaints'
 import { useFireBase } from '../composables/useFireBase'
 import Loader from '../components/staff/Loader.vue'
-import ModalWindow from './staff/ModalWindowPaint.vue'
+import ModalWindow from './staff/ModalWindow.vue'
 export default defineComponent({
   name: 'FeedUsers',
-  setup() {
+  setup(props, ctx) {
     const {
       getFeedPaints,
       feedPaints,
@@ -170,6 +177,16 @@ export default defineComponent({
     };
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened
+    }
+    const closeModalWindow = () => {
+      ctx.emit('open', false)
+    }
+    const saveImageOnComp = () => {
+      const createEl = document.createElement('a')
+      createEl.href = urlOfpaint.value || ''
+      createEl.download = nameOfPaint.value || ''
+      createEl.click()
+      createEl.remove()
     }
     onMounted(() => {
       loadingListener.value = true

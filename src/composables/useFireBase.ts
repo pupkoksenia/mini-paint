@@ -104,7 +104,7 @@ export const useFireBase: () => FireBase = () => {
         } else resolve(state.user.isSignIn)
       })
     }).then((result) => {
-      if (result) return { path: '/feed' }
+      if (result) return { path: '/gallery' }
       else return { path: '/sign-in' }
     })
 

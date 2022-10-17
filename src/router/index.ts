@@ -9,13 +9,13 @@ const routes: Array<RouteRecordRaw> = [
     meta: { auth: true },
     children: [
       {
-        path: '/feed',
-        component: () => import('../components/FeedUsers.vue'),
+        path: '/gallery',
+        component: () => import('../components/GalleryPage.vue'),
         meta: { auth: true },
       },
       {
         path: '/create-paint',
-        component: () => import('../components/Paint.vue'),
+        component: () => import('../components/CreatePaintPage.vue'),
         meta: { auth: true },
       },
       {
@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   const { state } = useFireBase()
 
   if (requireAuth && state.user.email === '') next({ path: '/sign-in' })
-  if (requireRole && state.user.role === 'user') next({ path: '/feed' })
+  if (requireRole && state.user.role === 'user') next({ path: '/gallery' })
   else next()
 })
 

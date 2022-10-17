@@ -42,4 +42,26 @@
     .roles {
         @apply flex justify-center inline-grid gap-1 grid-cols-3 bg-white dark:bg-purple-900 rounded-xl drop-shadow-lg p-10;
     }
+    .text-paint-page {
+        @apply text-black font-thin dark:text-white;
+    }
+    .select-paint-page {
+        @apply bg-white font-thin text-black py-0.5 px-0.5 h-3/5 w-3/5 rounded;
+    }
+    .clear-button-paint-page {
+        @apply button-paint h-3/5 w-3/5;
+    }
+    .upload-button-paint-page {
+        @apply button-paint h-3/5 w-3/5 text-sm my-1;
+    }
+    .input-canvas-paint-page {
+        @apply border-cyan-700 border-2 rounded;
+    }
+    .paint-page-body {
+        @apply inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-3/6 ml-14;
+    }
+    .span-paint-page-body {
+        @apply py-0.1 px-0.1 rounded;
+    }
+
 }

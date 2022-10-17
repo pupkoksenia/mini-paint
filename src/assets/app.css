@@ -4,7 +4,7 @@
 
 @layer components {
     .button-paint {
-        @apply bg-blue-700 font-thin text-white py-0.5 px-0.5 rounded dark:bg-violet-500;
+        @apply font-thin text-white py-0.5 px-0.5 rounded bg-blue-700 w-2/4;
     }
     .button-home-page {
         @apply flex items-center justify-start col-span-2 text-cyan-700 font-bold dark:text-violet-500;
@@ -37,15 +37,30 @@
         @apply flex items-center justify-start text-cyan-700 font-bold dark:text-violet-500;
     }
     .view-role-page {
-        @apply pt-6 ml-4 flex justify-center inline-grid gap-1 grid-cols-1;
+        @apply pt-6 ml-4 flex justify-center inline-grid gap-1 grid-cols-1 grid-rows-3;
     }
     .roles {
         @apply flex justify-center inline-grid gap-1 grid-cols-3 bg-white dark:bg-purple-900 rounded-xl drop-shadow-lg p-10;
     }
-    .per-page-body {
-        @apply text-white bg-blue-700 dark:bg-violet-500 hover:bg-blue-800 dark:bg-violet-500 focus:ring-2 focus:ring-blue-300 dark:bg-violet-500 rounded-lg text-sm px-1 py-1 text-center inline-flex;
+    .text-paint-page {
+        @apply text-black font-thin dark:text-white;
     }
-    .per-page {
-        @apply bg-white text-base list-none divide-y divide-gray-100 rounded shadow;
+    .select-paint-page {
+        @apply bg-white font-thin text-black py-0.5 px-0.5 h-3/5 w-3/5 rounded;
+    }
+    .clear-button-paint-page {
+        @apply button-paint h-3/5 w-3/5;
+    }
+    .upload-button-paint-page {
+        @apply button-paint h-3/5 w-3/5 text-sm my-1;
+    }
+    .input-canvas-paint-page {
+        @apply border-cyan-700 border-2 rounded;
+    }
+    .paint-page-body {
+        @apply inline-grid gap-2 grid-cols-2 mt-3 h-4/6 w-3/6 ml-14;
+    }
+    .span-paint-page-body {
+        @apply py-0.1 px-0.1 rounded;
     }
 }

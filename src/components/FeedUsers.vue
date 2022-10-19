@@ -1,18 +1,58 @@
 <template>
-  <div class="pt-1 ml-4">
-    <div class="flex justify-start inline-grid gap-1 grid-cols-3 grid-rows-2">
-      <input type="text" placeholder="email" v-model="form.email" class="border-cyan-700 border-2 rounded" />
-      <button @click="handleSubmitEmail" class="button-paint">Submit</button>
-      <button @click="handleResetEmail" class="button-paint">Reset</button>
+  <div class="pt-6 ml-4">
+    <div class="flex justify-start inline-grid gap-1 grid-cols-4">
+      <div class="max-w-lg mx-auto">
+        <div>
+          <button
+            class="drop-down-body"
+            data-dropdown-toggle="dropdown"
+            @click="setShow(!show)"
+          >
+            Set filter value
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </button>
+          <div v-show="show" class="drop-down" id="dropdown">
+            <ul class="py-1" aria-labelledby="dropdown">
+              <li @click="setTypeOfFilter('email')">Filter by email</li>
+              <li @click="setTypeOfFilter('paint')">Filter by paint</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div v-show="typeOfFilter === 'email'" class="col-span-3 ml-2">
+        <input
+          type="text"
+          placeholder="email"
+          v-model="form.email"
+          class="border-cyan-700 border-2 rounded pl-2"
+        />
+        <button @click="handleSubmitEmail" class="filter-button">Submit</button>
+        <button @click="handleResetEmail" class="filter-button">Reset</button>
+      </div>
 
-      <input
-        type="text"
-        placeholder="name of paint"
-        v-model="form.namePaint"
-        class="border-cyan-700 border-2 rounded"
-      />
-      <button @click="handleSubmitPaint" class="button-paint">Submit</button>
-      <button @click="handleResetPaint" class="button-paint">Reset</button>
+      <div v-show="typeOfFilter === 'paint'" class="col-span-3 ml-2">
+        <input
+          type="text"
+          placeholder="name of paint"
+          v-model="form.namePaint"
+          class="border-cyan-700 border-2 rounded pl-2"
+        />
+        <button @click="handleSubmitPaint" class="filter-button">Submit</button>
+        <button @click="handleResetPaint" class="filter-button">Reset</button>
+      </div>
       <button class="button-asceding-desceding ml-4" @click="setSortingValue('asc')">Ascending</button>
       <button class="button-asceding-desceding" @click="setSortingValue('desc')">Descending</button>
     </div>
@@ -122,6 +162,11 @@ export default defineComponent({
       email: "",
       namePaint: "",
     });
+    const typeOfFilter = ref("");
+    const show = ref(false);
+    const setShow = (isShow: boolean) => {
+      show.value = isShow;
+    };
     const loadingListener = ref();
     const isOpen = ref();
     const urlOfpaint = ref();
@@ -132,28 +177,43 @@ export default defineComponent({
       showPagination.value = isShowPagination;
     };
     const paginatedData = computed(() => {
-      return feedPaints.value.slice((statePaint.page - 1) * statePaint.perPage, statePaint.page * statePaint.perPage)
-    })
+      return feedPaints.value.slice(
+        (statePaint.page - 1) * statePaint.perPage,
+        statePaint.page * statePaint.perPage
+      );
+    });
+    const setTypeOfFilter = (type: string) => {
+      console.log(type);
+      typeOfFilter.value = type;
+    };
     const handleSubmitEmail = () => {
       setFilterValueEmail(form.value.email)
     }
     const handleResetEmail = () => {
-      form.value.email = ''
-      setFilterValueEmail('')
-    }
+      form.value.email = "";
+      setFilterValueEmail("");
+      setTypeOfFilter("");
+      setShow(false);
+    };
     const handleSubmitPaint = () => {
       setFilterValuePaint(form.value.namePaint)
     }
     const handleResetPaint = () => {
-      form.value.namePaint = ''
-      setFilterValuePaint('')
-    }
-    const goToPaint = (urlPaint: string, namePaint: string, nameUser: string) => {
-      isOpen.value = true
-      urlOfpaint.value = urlPaint
-      nameOfPaint.value = namePaint
-      nameOfUser.value = nameUser
-    }
+      form.value.namePaint = "";
+      setFilterValuePaint("");
+      setTypeOfFilter("");
+      setShow(false);
+    };
+    const goToPaint = (
+      urlPaint: string,
+      namePaint: string,
+      nameUser: string
+    ) => {
+      isOpen.value = true;
+      urlOfpaint.value = urlPaint;
+      nameOfPaint.value = namePaint;
+      nameOfUser.value = nameUser;
+    };
     const setOpen = (isOpened: boolean) => {
       isOpen.value = isOpened
     }
@@ -194,6 +254,10 @@ export default defineComponent({
       handleSubmitPaint,
       handleResetPaint,
       numberPage,
+      setTypeOfFilter,
+      typeOfFilter,
+      show,
+      setShow,
       setPerPage,
       arrayPerPagePaints,
       showPagination,

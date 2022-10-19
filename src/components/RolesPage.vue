@@ -22,20 +22,65 @@
       </div>
     </div>
 
-    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
-      <button @click="backPage">prev</button>
-      <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
-        {{ item }}
-      </button>
-      <button @click="nextPage">next</button>
+    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-black">
+      <div>
+        <button
+          class="per-page-body"
+          data-dropdown-toggle="dropdown"
+          @click="setShowPagination(!showPagination)"
+        >
+          Choose amount of pictures
+          <svg
+            class="w-4 h-4 ml-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+        <div v-show="showPagination" class="per-page" id="dropdown">
+          <ul class="py-1 text-center" aria-labelledby="dropdown">
+            <li
+              v-for="perPage in arrayPerPageUsers"
+              :key="perPage"
+              @click="setPerPage(perPage)"
+            >
+              {{ perPage }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <button @click="backPage" class="pr-2">prev</button>
+        <button
+          v-for="item in numberPage"
+          :key="item"
+          @click="goToPage(item)"
+          class="pr-2"
+        >
+          {{ item }}
+        </button>
+        <button @click="nextPage" class="pr-2">next</button>
+      </div>
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
-import { useFireBaseUsers } from '../composables/useFireBaseUsers'
-import Loader from '../components/staff/Loader.vue'
+ 
+  
+  
+  <script lang="ts">
+import { computed, defineComponent, onMounted, ref } from "vue";
+import { useFireBaseUsers } from "../composables/useFireBaseUsers";
+import Loader from "../components/staff/Loader.vue";
+import { arrayPerPageUsers } from "../types/index";
 
 export default defineComponent({
   name: 'RolesPage',
@@ -52,13 +97,18 @@ export default defineComponent({
       goToPage,
       stateUsers,
       numberPage,
-    } = useFireBaseUsers()
+      setPerPage,
+    } = useFireBaseUsers();
 
     const form = ref({
-      email: '',
-      role: '',
-    })
-    const loadingListener = ref()
+      email: "",
+      role: "",
+    });
+    const loadingListener = ref();
+    const showPagination = ref(false);
+    const setShowPagination = (isShowPagination: boolean) => {
+      showPagination.value = isShowPagination;
+    };
 
     const paginatedData = computed(() => {
       return filteredItems.value.slice((stateUsers.page - 1) * stateUsers.perPage, stateUsers.page * stateUsers.perPage)
@@ -102,7 +152,11 @@ export default defineComponent({
       goToPage,
       numberPage,
       loadingListener,
-    }
+      arrayPerPageUsers,
+      setPerPage,
+      showPagination,
+      setShowPagination,
+    };
   },
 })
 </script>

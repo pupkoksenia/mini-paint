@@ -41,4 +41,7 @@ export interface State {
 
 export const arrayStrokeType = ['line', 'rectangle', 'triangle', 'circle', 'ellipse']
 
-export const arrayStateOfFigure = ['stroke', 'fill']
+export const arrayPerPagePaints = [2, 4, 6];
+export const arrayPerPageUsers = [3, 6, 9];
+
+export const arrayStateOfFigure = ["stroke", "fill"];

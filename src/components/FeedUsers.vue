@@ -47,25 +47,60 @@
           </div>
         </div>
       </div>
-
-      <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-white">
-        <button @click="backPage">prev</button>
-        <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
-          {{ item }}
+    <div class="flex justify-center pt-6 pr-16 gap-3 dark:text-black">
+      <div>
+        <button
+          class="per-page-body"
+          data-dropdown-toggle="dropdown"
+          @click="setShowPagination(!showPagination)"
+        >
+          Choose amount of pictures
+          <svg
+            class="w-4 h-4 ml-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
         </button>
-        <button @click="nextPage">next</button>
+        <div v-show="showPagination" class="per-page" id="dropdown">
+          <ul class="py-1 text-center" aria-labelledby="dropdown">
+            <li
+              v-for="perPage in arrayPerPagePaints"
+              :key="perPage"
+              @click="setPerPage(perPage)"
+            >
+              {{ perPage }}
+            </li>
+          </ul>
+        </div>
       </div>
+
+      <button @click="backPage">prev</button>
+      <button v-for="item in numberPage" :key="item" @click="goToPage(item)">
+        {{ item }}
+      </button>
+      <button @click="nextPage">next</button>
     </div>
     <Loader :isLoading="loadingListener" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue'
-import { useFireBasePaints } from '../composables/useFireBasePaints'
-import { useFireBase } from '../composables/useFireBase'
-import Loader from '../components/staff/Loader.vue'
-import ModalWindow from './staff/ModalWindow.vue'
+import { defineComponent, ref, onMounted, computed } from "vue";
+import { useFireBasePaints } from "../composables/useFireBasePaints";
+import { useFireBase } from "../composables/useFireBase";
+import Loader from "../components/staff/Loader.vue";
+import ModalWindow from "./staff/ModalWindowPaint.vue";
+import { arrayPerPagePaints } from "../types/index";
+
 export default defineComponent({
   name: 'FeedUsers',
   setup(props, ctx) {
@@ -80,17 +115,22 @@ export default defineComponent({
       goToPage,
       statePaint,
       numberPage,
-    } = useFireBasePaints()
-    const { state } = useFireBase()
+      setPerPage,
+    } = useFireBasePaints();
+    const { state } = useFireBase();
     const form = ref({
-      email: '',
-      namePaint: '',
-    })
-    const loadingListener = ref()
-    const isOpen = ref()
-    const urlOfpaint = ref()
-    const nameOfPaint = ref('')
-    const nameOfUser = ref('')
+      email: "",
+      namePaint: "",
+    });
+    const loadingListener = ref();
+    const isOpen = ref();
+    const urlOfpaint = ref();
+    const nameOfPaint = ref("");
+    const nameOfUser = ref("");
+    const showPagination = ref(false);
+    const setShowPagination = (isShowPagination: boolean) => {
+      showPagination.value = isShowPagination;
+    };
     const paginatedData = computed(() => {
       return feedPaints.value.slice((statePaint.page - 1) * statePaint.perPage, statePaint.page * statePaint.perPage)
     })
@@ -154,9 +194,11 @@ export default defineComponent({
       handleSubmitPaint,
       handleResetPaint,
       numberPage,
-      closeModalWindow,
-      saveImageOnComp,
-    }
+      setPerPage,
+      arrayPerPagePaints,
+      showPagination,
+      setShowPagination,
+    };
   },
   components: { Loader, ModalWindow },
 })

@@ -14,22 +14,27 @@ const statePaint = reactive<StatePaint>({
 })
 
 export interface FireBasePaints {
-  statePaint: DeepReadonly<typeof statePaint>
-  feedPaints: ComputedRef<DataPaint[]>
-  getFeedPaints: () => Promise<void>
-  setFilterValueEmail: (value: string) => void
-  uploadOnServer: (NameOfPaint: string, imageURL: string) => void
-  deleteUserPaint: (name: string, url: string, user: string) => void
-  setSortingValue: (value: string) => void
-  setFilterValuePaint: (value: string) => void
-  nextPage: () => void
-  backPage: () => void
-  goToPage: (numPage: number) => void
-  numberPage: ComputedRef<number>
+  statePaint: DeepReadonly<typeof statePaint>;
+  feedPaints: ComputedRef<DataPaint[]>;
+  getFeedPaints: () => Promise<void>;
+  setFilterValueEmail: (value: string) => void;
+  uploadOnServer: (NameOfPaint: string, imageURL: string) => void;
+  deleteUserPaint: (name: string, url: string, user: string) => void;
+  setSortingValue: (value: string) => void;
+  setFilterValuePaint: (value: string) => void;
+  nextPage: () => void;
+  backPage: () => void;
+  goToPage: (numPage: number) => void;
+  numberPage: ComputedRef<number>;
+  setPerPage: (page: number) => void;
 }
 
 export const useFireBasePaints: () => FireBasePaints = () => {
   const { state } = useFireBase()
+
+  const setPerPage = (page: number) => {
+    statePaint.perPage = page;
+  };
 
   const nextPage = () => {
     if (statePaint.page !== Math.ceil(feedPaints.value.length / statePaint.perPage)) {
@@ -193,5 +198,6 @@ export const useFireBasePaints: () => FireBasePaints = () => {
     backPage,
     goToPage,
     numberPage,
-  }
-}
+    setPerPage,
+  };
+};
